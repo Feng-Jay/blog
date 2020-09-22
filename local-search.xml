@@ -4,25 +4,23 @@
   
   
   <entry>
-    <title>随笔</title>
-    <link href="/2020/09/12/%E9%9A%8F%E7%AC%94/"/>
-    <url>/2020/09/12/%E9%9A%8F%E7%AC%94/</url>
+    <title>欧几里得算法</title>
+    <link href="/2020/09/22/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95/"/>
+    <url>/2020/09/22/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95/</url>
     
-    <content type="html"><![CDATA[<p>自己的流水账…</p><a id="more"></a><p>明天大物考试，今天写了两套卷子，感觉还行，但就是内心莫名紧张，于自习室中写篇随笔，消磨时间。</p><p>近来最大的感受就是：时间不够用、后悔暑假的放纵。</p><p>13号大物考试，20号高数考试，两门学分极高的课程相继进行考试，而且最近还在进行军训。真的是都赶在一起了啊。</p><p>而且我常有的焦虑又来了，明明复习过了，却感觉什么都不会…</p><p>而且这几天自习的时候很明显地发现自己的自制力不如大一上了，大概20多分钟就会不由自主的分神。</p><p>新大一的同学已经来了，我也度过了一年的大学时光，但回看这一年，感觉，怎么说，一事无成。</p><p>一年里只有加权和GPA比较高，但我很少发展过其他的课外内容：python、linux、算法、C++….</p><p>当初认为大二肯定能够成功地进行科研，可现在都到大二了，却连一个科研也没参加过。</p><p>在此立下本学期目标、</p><p>1.减肥，到150斤</p><p>2.C++再学习</p><p>3.算法学习</p><p>4.加权上到93</p><p>加油，复习开始！</p>]]></content>
+    <content type="html"><![CDATA[<p>昨天上算法课听到了这个算法，突发兴趣来写一篇blog。</p><a id="more"></a>]]></content>
     
     
     <categories>
       
-      <category>Daily record</category>
+      <category>Algorithm</category>
       
     </categories>
     
     
     <tags>
       
-      <tag>Thinking</tag>
-      
-      <tag>Anxiety</tag>
+      <tag>Algorithm</tag>
       
     </tags>
     
