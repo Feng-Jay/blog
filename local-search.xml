@@ -8,7 +8,7 @@
     <link href="/2020/09/22/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95/"/>
     <url>/2020/09/22/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95/</url>
     
-    <content type="html"><![CDATA[<p>昨天上算法课听到了这个算法，突发兴趣来写一篇blog。</p><a id="more"></a>]]></content>
+    <content type="html"><![CDATA[<p>昨天上算法课听到了这个算法，突发兴趣来写一篇blog。</p><a id="more"></a><h1 id="欧几里得算法的用处"><a href="#欧几里得算法的用处" class="headerlink" title="欧几里得算法的用处"></a>欧几里得算法的用处</h1><p>欧几里得算法也称为辗转相除法，是求解最大公约数的一种方法。</p><p>若有两个数a和b，求a和b的最大公约数，按照我们之前所学的东西，可能只会枚举a与b的因子，效率很低…</p><p>但欧几里得为我们提供了一个十分便捷的方法。</p><h1 id="一个强大的定理"><a href="#一个强大的定理" class="headerlink" title="一个强大的定理"></a>一个强大的定理</h1><p><strong>gcd(a,b) = gcd(b, a%b)</strong></p><p>下面给出证明</p><pre><code class="hljs cpp">设a与b的公约数为 k ，a=bx+y;则 k|a 且 k|b ，有 a%b=y又有y=a-bx, 所以 k|y。即 k|a%b再假设b 与 a%b的公约数为kk，得 kk|a，所以(a,b)与(b,a%b)的公约数相同，所以其最大公约数也相同。即gcd(a,b)==gcd(b,a%b);</code></pre><h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><p>任何数与0的最大公约数都是他本身，且根据gcd(a,b)==gcd(b,a%b)可得知</p><p>当gcd中余数为0时，另一个数就是最大公约数。</p><p>所以代码如下</p><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">gcd</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a,<span class="hljs-keyword">int</span> b)</span></span><span class="hljs-function"></span>&#123;    <span class="hljs-keyword">int</span> outcome;    <span class="hljs-keyword">int</span> temp;    <span class="hljs-keyword">while</span>(b!=<span class="hljs-number">0</span>)    &#123;        temp=a%b;        a=b;        b=temp;    &#125;    outcome=a;    <span class="hljs-keyword">return</span> outcome;&#125;</code></pre><p><em>溜溜球，去学概率论了…</em></p>]]></content>
     
     
     <categories>
