@@ -186,7 +186,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      925 字
+      1.3k 字
     </span>
   
 
@@ -196,7 +196,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      17
+      24
        分钟
     </span>
   
@@ -292,6 +292,32 @@
 <p>//你可以打开库函数看一下，里面的函数名大多由下划线开始<a target="_blank" rel="noopener" href="https://github.com/gcc-mirror/gcc/blob/master/libstdc%2B%2B-v3/include/c_global/cmath">C++STL源代码</a></p>
 <p>6.C++对于变量名长短没有限制，但有些平台会有长度限制。</p>
 </blockquote>
+<h2 id="变量的初始化方式"><a href="#变量的初始化方式" class="headerlink" title="变量的初始化方式"></a>变量的初始化方式</h2><p>C++提供了多种初始化方式。</p>
+<div class="hljs"><pre><code class="hljs csharp"><span class="hljs-number">1.</span><span class="hljs-keyword">int</span> x = <span class="hljs-keyword">value</span>;
+<span class="hljs-number">2.</span><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">x</span>(<span class="hljs-params"><span class="hljs-keyword">value</span></span>)</span>;
+<span class="hljs-number">3.</span><span class="hljs-keyword">int</span> x&#123;<span class="hljs-keyword">value</span>&#125;;
+<span class="hljs-number">4.</span><span class="hljs-keyword">int</span> x =&#123;<span class="hljs-keyword">value</span>&#125;; <span class="hljs-comment">//大括号的方式也可以用来初始化数组。</span></code></pre></div>
+
+
+
+<h2 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h2><p>常见的有short, int ,long, long long ,char 以及他们的无符号形式。</p>
+<p>我们这里关注的是如何对整型类型进行选择。</p>
+<p>short类型大多用于使用大型整形数组时使用。</p>
+<p>如果变量整数值大于16bits所表示的最大值，推荐使用long，这样即使移植到不同系统也能正常工作。</p>
+<h3 id="各个进制的表示"><a href="#各个进制的表示" class="headerlink" title="各个进制的表示"></a>各个进制的表示</h3><p>常用的进制有 十进制、八进制、十六进制。</p>
+<p>十进制：第一位为1~9。</p>
+<p>八进制：第一位为0，第二位为1~7；</p>
+<p>十六进制：前两位为0x / 0X</p>
+<p>cout中输出各个进制的数字，需要使用控制符: {dec , hex ,oct}  //在命名空间std中。</p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-built_in">cout</span>&lt;&lt; dec &lt;&lt; value;
+<span class="hljs-built_in">cout</span>&lt;&lt; hex &lt;&lt; value;
+<span class="hljs-built_in">cout</span>&lt;&lt; oct &lt;&lt; value; </code></pre></div>
+
+<h2 id="C-程序如何确定常量类型"><a href="#C-程序如何确定常量类型" class="headerlink" title="C++程序如何确定常量类型"></a>C++程序如何确定常量类型</h2><p>当你在程序中使用一个数字时</p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-number">2020</span>&lt;&lt;<span class="hljs-built_in">endl</span>;</code></pre></div>
+
+<p>你知道程序将其存储为什么类型吗？</p>
+<p>除非数字后面有后缀(u,ul,l,ll,ull…)或者数字大小超过int类型，否则程序将其默认存为int型。</p>
 
             </div>
             <hr>
