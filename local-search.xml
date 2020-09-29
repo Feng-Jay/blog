@@ -4,6 +4,56 @@
   
   
   <entry>
+    <title>每日洛谷_9.28</title>
+    <link href="/2020/09/28/%E6%AF%8F%E6%97%A5%E6%B4%9B%E8%B0%B7-9-28/"/>
+    <url>/2020/09/28/%E6%AF%8F%E6%97%A5%E6%B4%9B%E8%B0%B7-9-28/</url>
+    
+    <content type="html"><![CDATA[<p>今天刷洛谷基础题看到一个很好的题，分享一下。</p><a id="more"></a><p>​    <a href="https://www.luogu.com.cn/problem/P2181">原题链接</a></p><h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>对于一个 n 个顶点的凸多边形，它的任何三条对角线都不会交于一点。请求出图形中对角线交点的个数。</p><p>例如，6 边形：</p><img src="/2020/09/28/%E6%AF%8F%E6%97%A5%E6%B4%9B%E8%B0%B7-9-28/6023.png" style="zoom: 80%;"><h2 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式"></a>输入格式</h2><p>输入只有一行一个整数 nnn，代表边数。</p><h2 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h2><p>输出一行一个整数代表答案。</p><h2 id="输入输出样例"><a href="#输入输出样例" class="headerlink" title="输入输出样例"></a>输入输出样例</h2><p>输入 #1 &nbsp;&emsp;输入#2</p><blockquote><p>3 &nbsp; &emsp;&nbsp;      6</p></blockquote><p>输出#2 &nbsp; &emsp; 输入#2</p><blockquote><p>0 &nbsp; &emsp;      &nbsp;15</p></blockquote><h2 id="说明与提示"><a href="#说明与提示" class="headerlink" title="说明与提示"></a>说明与提示</h2><ul><li>对于 50%50 %50% 的数据，保证 3≤n≤100。</li><li>对于 100%100 %100% 的数据，保证 3≤n≤10^5。</li></ul><h1 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h1><p>首先看题目中一句<strong>任何三条对角线都不会交于一点</strong>，所以给定<strong>一个交点，可以确定两条对角线——也就意味着确定了四个角</strong></p><p>所以这道题就变成了一个排列问题</p><p>即求Cn4的组合数问题 ：就是求 n * (n-1) * (n-2) * (n-3) /24</p><p>这时大家可能会想&nbsp;”啊，这个题目这么简单，怎么会有人拿他出来写博客！”</p><p>所以你就写出了下面的代码</p><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;<span class="hljs-keyword">int</span> n;<span class="hljs-keyword">int</span> outcome;<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;    <span class="hljs-built_in">cin</span>&gt;&gt;n;    outcome=n*(n<span class="hljs-number">-1</span>)*(n<span class="hljs-number">-2</span>)*(n<span class="hljs-number">-3</span>)/<span class="hljs-number">24</span>;    <span class="hljs-built_in">cout</span>&lt;&lt;outcome&lt;&lt;<span class="hljs-built_in">endl</span>;    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;&#125;</code></pre><p>结果</p><p><img src="/2020/09/28/%E6%AF%8F%E6%97%A5%E6%B4%9B%E8%B0%B7-9-28/%E7%BB%93%E6%9E%9C.png" alt="结果"></p><p><strong>再仔细阅读下题目，你会发现这道题会爆数据的…</strong></p><p><strong>所以你把int 全部换成了long long 或者unsigned long long ，并沾沾自喜，这么简单不会真有人拿出来写博客吧！</strong></p><p>结果你又发现出现了两个WA…（手动狗头）</p><p>这时你想到，我可以写高精求组合数啊</p><p><em>这无疑是一种很好的解题方法，但对于这样一道入门题来说，未免太…</em></p><p><strong>所以给出了一个很妙的写法</strong></p><p>那就是把 n * (n-1) * (n-2) * (n-3) /24写成 n * (n-1)/2 *(n-2) /3 *(n-3)/4</p><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> n;<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> outcome;<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;    <span class="hljs-built_in">cin</span>&gt;&gt;n;    outcome=n*(n<span class="hljs-number">-1</span>)/<span class="hljs-number">2</span>*(n<span class="hljs-number">-2</span>)/<span class="hljs-number">3</span>*(n<span class="hljs-number">-3</span>)/<span class="hljs-number">4</span>;    <span class="hljs-built_in">cout</span>&lt;&lt;outcome&lt;&lt;<span class="hljs-built_in">endl</span>;&#125;</code></pre><p>现在来分析一下为什么这样写是对的。</p><p>首先n * (n-1)中一定有一个是2的倍数，所以可以被2整除</p><p>n * (n-1) *(n-2)中一定有一个是3的倍数，所以可以被3整除</p><p>n * (n-1) * (n-2) * (n-3) 中一定有一个是4的倍数，所以可以被4整除</p><p>emmmmmmmmmmm，就差不多是这样了</p><p>溜了溜了，上课去。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Algorithm</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Algorithm</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>NEMU实验</title>
+    <link href="/2020/09/27/NEMU%E5%AE%9E%E9%AA%8C/"/>
+    <url>/2020/09/27/NEMU%E5%AE%9E%E9%AA%8C/</url>
+    
+    <content type="html"><![CDATA[<p>一步步记录自己的实验过程。</p><a id="more"></a>]]></content>
+    
+    
+    <categories>
+      
+      <category>Project</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>NEMU_Lab</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>欧几里得算法</title>
     <link href="/2020/09/22/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95/"/>
     <url>/2020/09/22/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95/</url>
