@@ -30,7 +30,10 @@
 
   
     
-    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atelier-dune-dark.min.css" />
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
   
 
   
@@ -38,11 +41,11 @@
 
 <!-- 主题依赖的图标库，不要自行修改 -->
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_6peoq002giu.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
 
 
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
 
 
 <link  rel="stylesheet" href="/css/main.css" />
@@ -172,14 +175,17 @@
             </span>
 
             
-              
-  <div class="mt-3 post-meta">
-    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-09-28 23:10" pubdate>
-      2020年9月28日 晚上
-    </time>
-  </div>
-
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-09-28 23:10" pubdate>
+        2020年9月28日 晚上
+      </time>
+    </span>
+  
+</div>
 
 <div class="mt-1">
   
@@ -256,7 +262,7 @@
 <p>即求Cn4的组合数问题 ：就是求 n * (n-1) * (n-2) * (n-3) /24</p>
 <p>这时大家可能会想&nbsp;”啊，这个题目这么简单，怎么会有人拿他出来写博客！”</p>
 <p>所以你就写出了下面的代码</p>
-<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
 
 <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
 
@@ -270,7 +276,7 @@
     outcome=n*(n<span class="hljs-number">-1</span>)*(n<span class="hljs-number">-2</span>)*(n<span class="hljs-number">-3</span>)/<span class="hljs-number">24</span>;
     <span class="hljs-built_in">cout</span>&lt;&lt;outcome&lt;&lt;<span class="hljs-built_in">endl</span>;
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
-&#125;</code></pre></div>
+&#125;</code></pre>
 
 <p>结果</p>
 <p><img src="/2020/09/28/%E6%AF%8F%E6%97%A5%E6%B4%9B%E8%B0%B7-9-28/%E7%BB%93%E6%9E%9C.png" srcset="/img/loading.gif" alt="结果"></p>
@@ -281,7 +287,7 @@
 <p><em>这无疑是一种很好的解题方法，但对于这样一道入门题来说，未免太…</em></p>
 <p><strong>所以给出了一个很妙的写法</strong></p>
 <p>那就是把 n * (n-1) * (n-2) * (n-3) /24写成 n * (n-1)/2 *(n-2) /3 *(n-3)/4</p>
-<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
 
 <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
 
@@ -295,7 +301,7 @@
     outcome=n*(n<span class="hljs-number">-1</span>)/<span class="hljs-number">2</span>*(n<span class="hljs-number">-2</span>)/<span class="hljs-number">3</span>*(n<span class="hljs-number">-3</span>)/<span class="hljs-number">4</span>;
     <span class="hljs-built_in">cout</span>&lt;&lt;outcome&lt;&lt;<span class="hljs-built_in">endl</span>;
 &#125;
-</code></pre></div>
+</code></pre>
 
 
 
@@ -360,13 +366,42 @@
               <!-- Comments -->
               <article class="comments" id="comments">
                 
-                <script src="https://utteranc.es/client.js"
+                <<<<<<< Updated upstream
+
+  <script type="text/javascript">
+    function loadUtterances() {
+      var light = 'github-dark';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'Feng-Jay/commit-utterance');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    }
+    waitElementVisible('comments', loadUtterances)
+  </script>
+
+=======
+<script src="https://utteranc.es/client.js"
         repo="Feng-Jay/commit-utterance"
         issue-term="pathname"
         theme="github-dark"
         crossorigin="anonymous"
         async>
 </script>
+>>>>>>> Stashed changes
+
               </article>
             
           </article>
@@ -425,15 +460,11 @@
 
   
 
-  <footer class="mt-5">
-  <div class="text-center py-3">
-    <div>
-      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
-      <i class="iconfont icon-love"></i>
-      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
-        <span>Fluid</span></a>
-    </div>
-    
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
   <div class="statistics">
     
     
@@ -459,10 +490,9 @@
   </div>
 
 
-    
+  
 
-    
-  </div>
+  
 </footer>
 
 <!-- SCRIPTS -->
@@ -476,6 +506,10 @@
 
   
     <script  src="/js/lazyload.js" ></script>
+  
+
+
+
   
 
 
@@ -596,8 +630,6 @@
 
 
 
-
-  
 
   
 
