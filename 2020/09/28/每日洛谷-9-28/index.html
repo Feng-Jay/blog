@@ -262,7 +262,7 @@
 <p>即求Cn4的组合数问题 ：就是求 n * (n-1) * (n-2) * (n-3) /24</p>
 <p>这时大家可能会想&nbsp;”啊，这个题目这么简单，怎么会有人拿他出来写博客！”</p>
 <p>所以你就写出了下面的代码</p>
-<pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
 
 <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
 
@@ -276,7 +276,7 @@
     outcome=n*(n<span class="hljs-number">-1</span>)*(n<span class="hljs-number">-2</span>)*(n<span class="hljs-number">-3</span>)/<span class="hljs-number">24</span>;
     <span class="hljs-built_in">cout</span>&lt;&lt;outcome&lt;&lt;<span class="hljs-built_in">endl</span>;
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
-&#125;</code></pre>
+&#125;</code></pre></div>
 
 <p>结果</p>
 <p><img src="/2020/09/28/%E6%AF%8F%E6%97%A5%E6%B4%9B%E8%B0%B7-9-28/%E7%BB%93%E6%9E%9C.png" srcset="/img/loading.gif" alt="结果"></p>
@@ -287,7 +287,7 @@
 <p><em>这无疑是一种很好的解题方法，但对于这样一道入门题来说，未免太…</em></p>
 <p><strong>所以给出了一个很妙的写法</strong></p>
 <p>那就是把 n * (n-1) * (n-2) * (n-3) /24写成 n * (n-1)/2 *(n-2) /3 *(n-3)/4</p>
-<pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
 
 <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
 
@@ -301,7 +301,7 @@
     outcome=n*(n<span class="hljs-number">-1</span>)/<span class="hljs-number">2</span>*(n<span class="hljs-number">-2</span>)/<span class="hljs-number">3</span>*(n<span class="hljs-number">-3</span>)/<span class="hljs-number">4</span>;
     <span class="hljs-built_in">cout</span>&lt;&lt;outcome&lt;&lt;<span class="hljs-built_in">endl</span>;
 &#125;
-</code></pre>
+</code></pre></div>
 
 
 
