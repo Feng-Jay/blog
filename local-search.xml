@@ -4,6 +4,33 @@
   
   
   <entry>
+    <title>Python_Learning</title>
+    <link href="/2020/10/15/Python-Learning/"/>
+    <url>/2020/10/15/Python-Learning/</url>
+    
+    <content type="html"><![CDATA[<p>为了学web先学一门脚本语言 orz</p><a id="more"></a><h1 id="Part1-变量-amp-数据"><a href="#Part1-变量-amp-数据" class="headerlink" title="Part1.变量&amp;数据"></a>Part1.变量&amp;数据</h1><h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><p>python字符串常常由 “” &nbsp; 或者 ‘’ &nbsp; 包括起来，这样你可以在程序中任意地显示&nbsp; ‘ &nbsp; “ , 如果你想要显示一些其他python中已定义含义的字符(例如 \ ),那么你要和CPP一样在前面加上 ‘ \ ‘</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Language</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Language</tag>
+      
+      <tag>Python</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>贪心算法</title>
     <link href="/2020/10/11/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/"/>
     <url>/2020/10/11/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/</url>
@@ -96,33 +123,6 @@
     <tags>
       
       <tag>Thinking</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>C++面向过程总结</title>
-    <link href="/2020/08/12/C-%E9%9D%A2%E5%90%91%E8%BF%87%E7%A8%8B%E6%80%BB%E7%BB%93/"/>
-    <url>/2020/08/12/C-%E9%9D%A2%E5%90%91%E8%BF%87%E7%A8%8B%E6%80%BB%E7%BB%93/</url>
-    
-    <content type="html"><![CDATA[<p>注：本文是我回顾C++面向对象内容前的一些自认为有趣的内容orz </p><p>本博文参考书籍：《C++ primer plus》（第六版）</p><a id="more"></a><h1 id="再从-Hello-World-谈起"><a href="#再从-Hello-World-谈起" class="headerlink" title="再从 Hello World 谈起"></a>再从 Hello World 谈起</h1><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;    <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;Hello World!&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;&#125;</code></pre><p>经过了一年的学习，这个简单的程序感觉不值一提</p><p><strong>但仔细看看，对于：include, iostream, using namespace std这些名词我真的十分了解吗？</strong></p><p> <em>虽然现在也不能说全部了解，我只是把自己掌握的东西分享出来…orz</em></p><h2 id="我们的程序真的只有这么几行吗？"><a href="#我们的程序真的只有这么几行吗？" class="headerlink" title="我们的程序真的只有这么几行吗？"></a>我们的程序真的只有这么几行吗？</h2><p>谈到这个问题就必须引出一个<strong>预处理器</strong>的概念</p><p>对计算机系统有初步了解后，我们可以知道源代码需要经过：预处理器 –&gt; 编译器 –&gt;汇编器 –&gt;链接器后才能生成可执行的二进制文件。</p><p>预处理器有很多种（都是以#开头），include是我们最早见到的一个。</p><p>其作用是：<strong>把我们的源文件和预处理的头文件进行整合，然后对合并后的文件进行编译</strong></p><p><strong>以iostream为例子，其进行整合的目的就是为了让程序能够和外界进行通信，io是input和output的缩写</strong></p><p><em>小知识：endl也是包含在iostream中的哦…</em></p><h2 id="using-namespace-std-是嘛意思？"><a href="#using-namespace-std-是嘛意思？" class="headerlink" title="using namespace std 是嘛意思？"></a>using namespace std 是嘛意思？</h2><p>如果对C语言有过了解，那么你会对这个东东感到很新奇，因为C里面并没有…</p><p><strong>这是C++为了方便合作开发(避免变量和函数名重复导致程序错误的情况)在C基础上提出的概念</strong></p><pre><code class="hljs c++"><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span></code></pre><p>namespace 就是它翻译过来的意思 “命名空间”</p><p>这行代码叫做<strong>using编译指令</strong> //<strong>全局代码的类、函数、变量</strong>命名空间都是std(standard)即c++定义的标准命名空间</p><p>既然这是后来加上的，那么我们自然可以去掉它。</p><p>还是对Hello World来说</p><p>一种是非标准写法</p><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream.h&gt;</span></span><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;    <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;Hello World&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;&#125;</code></pre><p><em>此写法很可能不被你的编译器支持（需要另安插件），运行成功也会出现warning，因为该库是C++旧风格，现在已经不再标准库里</em></p><p>另一种是比较繁琐的写法</p><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;Hello World&quot;</span>&lt;&lt;<span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;&#125;<span class="hljs-comment">//更好的策略是使用 using std::cin或者cout或endl——只使需要的名称可用</span></code></pre><p><em>小知识：带 .h的头文件都是C语言原有的；头文件前带 c的(cmath)是C原有头文件转换为C++文件的</em></p><h1 id="变量与数据"><a href="#变量与数据" class="headerlink" title="变量与数据"></a>变量与数据</h1><p>C++是一门面向对象的编程语言，即使我们现在在对面向过程的部分进行讨论，但它的设计还是为了面向对象服务——只有理解了C++中内置的类型才能自己创造类。</p><p><em>首先让我们复习一下变量的命名规则</em></p><blockquote><p>1.名称中只能使用字母、数字、下划线</p><p>2.名称的第一个字不能说数字</p><p>3.大小写敏感</p><p>4.不能将C++关键字作为变量名</p><p>5.以两个下划线或下划线和大写字母开头的名称将被保留给实现(编译器和其使用的资源)使用，以一个下划线开头的名字被保留给实现，用作全局标识符。</p><p>//你可以打开库函数看一下，里面的函数名大多由下划线开始<a href="https://github.com/gcc-mirror/gcc/blob/master/libstdc%2B%2B-v3/include/c_global/cmath">C++STL源代码</a></p><p>6.C++对于变量名长短没有限制，但有些平台会有长度限制。</p></blockquote><h2 id="变量的初始化方式"><a href="#变量的初始化方式" class="headerlink" title="变量的初始化方式"></a>变量的初始化方式</h2><p>C++提供了多种初始化方式。</p><pre><code class="hljs csharp"><span class="hljs-number">1.</span><span class="hljs-keyword">int</span> x = <span class="hljs-keyword">value</span>;<span class="hljs-number">2.</span><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">x</span>(<span class="hljs-params"><span class="hljs-keyword">value</span></span>)</span>;<span class="hljs-number">3.</span><span class="hljs-keyword">int</span> x&#123;<span class="hljs-keyword">value</span>&#125;;<span class="hljs-number">4.</span><span class="hljs-keyword">int</span> x =&#123;<span class="hljs-keyword">value</span>&#125;; <span class="hljs-comment">//大括号的方式也可以用来初始化数组。</span></code></pre><h2 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h2><p>常见的有short, int ,long, long long ,char 以及他们的无符号形式。</p><p>我们这里关注的是如何对整型类型进行选择。</p><p>short类型大多用于使用大型整形数组时使用。</p><p>如果变量整数值大于16bits所表示的最大值，推荐使用long，这样即使移植到不同系统也能正常工作。</p><h3 id="各个进制的表示"><a href="#各个进制的表示" class="headerlink" title="各个进制的表示"></a>各个进制的表示</h3><p>常用的进制有 十进制、八进制、十六进制。</p><p>十进制：第一位为1~9。</p><p>八进制：第一位为0，第二位为1~7；</p><p>十六进制：前两位为0x / 0X</p><p>cout中输出各个进制的数字，需要使用控制符: {dec , hex ,oct}  //在命名空间std中。</p><pre><code class="hljs cpp"><span class="hljs-built_in">cout</span>&lt;&lt; dec &lt;&lt; value;<span class="hljs-built_in">cout</span>&lt;&lt; hex &lt;&lt; value;<span class="hljs-built_in">cout</span>&lt;&lt; oct &lt;&lt; value; </code></pre><h2 id="C-程序如何确定常量类型"><a href="#C-程序如何确定常量类型" class="headerlink" title="C++程序如何确定常量类型"></a>C++程序如何确定常量类型</h2><p>当你在程序中使用一个数字时</p><pre><code class="hljs cpp"><span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-number">2020</span>&lt;&lt;<span class="hljs-built_in">endl</span>;</code></pre><p>你知道程序将其存储为什么类型吗？</p><p>除非数字后面有后缀(u,ul,l,ll,ull…)或者数字大小超过int类型，否则程序将其默认存为int型。</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>C++</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>Language</tag>
-      
-      <tag>C++</tag>
       
     </tags>
     
