@@ -4,27 +4,13 @@
   
   
   <entry>
-    <title>Python_Learning</title>
-    <link href="/2020/10/15/Python-Learning/"/>
-    <url>/2020/10/15/Python-Learning/</url>
+    <title>近近日的烦恼</title>
+    <link href="/2020/10/18/%E8%BF%91%E8%BF%91%E6%97%A5%E7%9A%84%E7%83%A6%E6%81%BC/"/>
+    <url>/2020/10/18/%E8%BF%91%E8%BF%91%E6%97%A5%E7%9A%84%E7%83%A6%E6%81%BC/</url>
     
-    <content type="html"><![CDATA[<p>为了学web先学一门脚本语言 orz</p><a id="more"></a><h1 id="Part1-变量-amp-数据"><a href="#Part1-变量-amp-数据" class="headerlink" title="Part1.变量&amp;数据"></a>Part1.变量&amp;数据</h1><h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><p>python字符串常常由 “” &nbsp; 或者 ‘’ &nbsp; 包括起来，这样你可以在程序中任意地显示&nbsp; ‘ &nbsp; “ , 如果你想要显示一些其他python中已定义含义的字符(例如 \ ),那么你要和CPP一样在前面加上 ‘ \ ‘</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>Language</category>
-      
-    </categories>
+    <content type="html"><![CDATA[]]></content>
     
     
-    <tags>
-      
-      <tag>Language</tag>
-      
-      <tag>Python</tag>
-      
-    </tags>
     
   </entry>
   
