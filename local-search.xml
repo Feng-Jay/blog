@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>Operating System</title>
+    <link href="/2020/10/27/Operating%E2%80%94-System/"/>
+    <url>/2020/10/27/Operating%E2%80%94-System/</url>
+    
+    <content type="html"><![CDATA[<p>Basic knowledge about OS and Linux. Solutions about MIT 6.828</p><a id="more"></a><h1 id="Processes"><a href="#Processes" class="headerlink" title="Processes"></a>Processes</h1><p>进程是一个正在执行程序的实例，包括了程序代码和它当前的状态（寄存器…）</p><p>一个进程包括三个部分</p><p><img src="/2020/10/27/Operating%E2%80%94-System/Process.png" alt="process contains"></p><p><em>Tips: The differences between process and program</em></p><p><em>Program is just the static text</em></p><p><em>Process is an dynamic entity being executed and has lifecycle</em></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Operating System</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Operating System</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>贪心算法&amp;&amp;优化问题</title>
     <link href="/2020/10/11/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/"/>
     <url>/2020/10/11/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/</url>
