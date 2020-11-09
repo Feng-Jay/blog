@@ -20,7 +20,7 @@
   <meta name="description" content="A Website for record my learning process.">
   <meta name="author" content="Feng Jay">
   <meta name="keywords" content="Blog Study Computer-science">
-  <title>人这一辈子，最不能透支的是什么？ - 在知识海洋中狗刨</title>
+  <title>Dynamic Programming - 在知识海洋中狗刨</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -180,8 +180,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-11-03 13:36" pubdate>
-        2020年11月3日 下午
+      <time datetime="2020-11-07 20:54" pubdate>
+        2020年11月7日 晚上
       </time>
     </span>
   
@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      819 字
+      1.4k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      13
+      28
        分钟
     </span>
   
@@ -232,70 +232,113 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">人这一辈子，最不能透支的是什么？</h1>
+            <h1 style="display: none">Dynamic Programming</h1>
             
             <div class="markdown-body" id="post-body">
-              <p>午觉起来看到知乎一个高赞回答，分享一下，与君共勉。</p>
+              <p>Share and review my study process.</p>
 <a id="more"></a>
 
-<p>作者：简在我心<br>链接：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/422796779/answer/1556486657">知乎链接</a><br>来源：知乎</p>
-<p>生命力。</p>
-<p>今天上午给学生讲解电影《死亡诗社》，对这个问题正好深有感触。</p>
-<p>这个影片里，反复提到一些词：热情，激情，爱，浪漫，强有力，奋斗，寻觅，发现，呐喊……</p>
-<p>人类这个物种有个很大的优势就是对新鲜事物的好奇性。</p>
-<p>我们喜欢探奇历险，喜欢学习研究。但是这种行为具有风险。</p>
-<p>所以长辈或管理者为了安全需要和管理方便，会制定各种规则，把那个内心里生动活泼的小人儿关进牢笼里。</p>
-<p>不让你玩水，不让你玩火，不让你爬树，不让你恋爱，不让你问为什么，不让你做这个做那个。</p>
-<p>美其名曰：为你好。</p>
-<p>然后你的生命力就会在种种禁锢中持续性流失和透支。</p>
-<p>你变得对生活失去了热情，对世界失去了探索的欲望，你没有了学习的兴趣，没有了爱的能力……</p>
-<p>失去生命力的表现：</p>
-<p>你刷着抖音，停不下来，哪怕已经厌倦，也还是忍不住继续滑动手指。</p>
-<p>你躺在床上，睡到头疼，浑身无力，不想再躺下去了，却依然缺乏起床的动力。</p>
-<p>你玩着游戏，玩到疲惫不堪，但依然百无聊赖地点着鼠标，两眼无光。</p>
-<p>你频繁和五姑娘交谈，谈到昏昏沉沉，依然不想松开她。</p>
-<p>你失去了对自己的生命的强有力的感觉。</p>
-<p>你沦丧于无聊的重复的形式中，无力自拔。</p>
-<p>失去了生命的热情和希望。</p>
-<p>失去了对于自我身体的掌控。</p>
-<p>失去了对事物的感知能力。</p>
-<p>你疲惫，疲软，无力，无感，靠反复的刺激来提醒自己好像还活着。</p>
-<p>我认为这就是生命力透支的表现，是最糟糕的生活状态，没有之一。</p>
-<p>我为什么感受那么深？</p>
-<p>最近跟学生交流，发现他们很多人都已经处于这种生命力透支的状态。</p>
-<p>你问他还有什么理想、希望或想做的事情。好像没有，或即便有也是缺乏可持续性。</p>
-<p>所以他们只能浑浑噩噩地混日子。</p>
-<p>为什么那么多人抑郁、自杀或躺平？</p>
-<p>因为他们的生命力已经透支了，枯竭了，对生活已经没有了热情，没有了希望，也没有了信心。</p>
-<p>才不到二十岁的年纪，就失去了狂野、野心、激情、欲望。</p>
-<p>这是一个多么令人痛心的事实。</p>
-<p>所以别说什么成才，就是过好自己平凡一生都很难了。</p>
-<p>这将是一个个了无生趣的生命。</p>
-<p>这就是不重视人文教育的后果。</p>
-<p>生命需要呵护，需要个性的张扬和奔放，需要自由的空气，才能健康成长，才能抵御现实的风霜雪剑。</p>
-<p>可是我们以爱的名义，剥夺了孩子们的生命力，使得他们还没绽放，就已经枯萎了。</p>
+<h1 id="引论"><a href="#引论" class="headerlink" title="引论"></a>引论</h1><p><strong>个人理解动态规划应该是一种设计技巧，和分治法类似，但DP更关心子问题的重叠。</strong></p>
+<p>动态规划是一种在各个不同大小(size)的子问题的优化值之间建立递归关系并求解的过程.</p>
+<p>能使用动态规划求解的问题必须<strong>满足优化原理：</strong></p>
+<p><strong>优化解包含的子问题的解也是最优的</strong></p>
+<p>即可利用优化原理，使用枚举法建立不同长度子问题优化值之间的递归关系—动态规划方程。</p>
+<p><em>注意，动态规划算法得出的解为精确解，子问题的数目决定了该算法的复杂度.</em></p>
+<p><em>Ps: 尽量不要用递归</em></p>
+<h1 id="经典的0-1背包"><a href="#经典的0-1背包" class="headerlink" title="经典的0/1背包"></a>经典的0/1背包</h1><p><strong>给定 n 种物品和一个容量为 C 的背包，物品 i 的重量是 wi，其价值为 vi 。</strong></p>
+<p><strong>问：应该如何选择装入背包的物品，使得装入背包中的物品的总价值最大？</strong></p>
+<p>&emsp; </p>
+<p>在学习DP算法之前，我们面对01背包问题有的思路就是贪心和穷举：</p>
+<p>不管是对价值排序还是对价值密度排序，只是改变了贪心策略，但还是贪心算法，也就意味着我们只能求解一个近似解，无法得到精确解。</p>
+<p>而穷举法的开销太大了，在很多情况下复杂且不适用。</p>
+<p><strong>既然贪心法在理论上是无法得到精确解的，那我们能否在穷举的基础上进行优化呢？</strong></p>
+<h2 id="来一个具体的例子"><a href="#来一个具体的例子" class="headerlink" title="来一个具体的例子"></a><strong>来一个具体的例子</strong></h2><p>n=5,c=10,w=[2,2,6,5,4],p=[6,3,5,4,6]. </p>
+<p>可知此时的优化解为(1,1,0,0,1),即装1,2,5物品</p>
+<p>想要用DP算法，首先要判断<strong>问题是否满足优化原理</strong></p>
+<p>即优化解包含的子问题的解是否最优。</p>
+<blockquote>
+<p>当我们先装物品1时。</p>
+<p>物品1装入，子问题为n=4,c’=c-2(物品1的重量),物品为2,3,4,5</p>
+<p>可以看到子问题的优化解为(1,0,0,1)</p>
+<p>与优化解相同</p>
+</blockquote>
+<p>可以得知<strong>01背包问题满足优化原理</strong>。</p>
+<h2 id="DP的思路分析"><a href="#DP的思路分析" class="headerlink" title="DP的思路分析"></a>DP的思路分析</h2><p>面对n个物品，我们并不知道该拿哪几个才是最优解，那么就使用计算机最擅长的技能：计算(遍历)</p>
+<p>只不过我们会对遍历进行一些操作</p>
+<p>设函数 f(i,y)表示当背包容量为y时，面对 i，i+1,…，n物品时的最优解。</p>
+<p>可以知道f(1,c)就是我们最终要求的答案</p>
+<p>求 f(1,c)遇到的第一个问题就是物品1拿不拿？</p>
+<p>答案是：不知道。&emsp; 但我们可以根据子问题推出来物品1拿不拿。</p>
+<p><strong>f(1,c)=max{f(2,c), f(2,c-w1)+p1}</strong></p>
+<p>这样我们的思路就出来了：建立一个父问题与子问题递归式。即在最后一个物品时返回两种情况：拿或不拿。再一路返回到第一种情况，判断物品1拿不拿。</p>
+<p>下面是递归算法和非递归算法</p>
+<h2 id="递归法"><a href="#递归法" class="headerlink" title="递归法"></a>递归法</h2><div class="hljs"><pre><code class="hljs cpp"><span class="hljs-comment">//递归算法</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;algorithm&gt;</span></span>
+
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+
+<span class="hljs-keyword">int</span> content;
+<span class="hljs-keyword">int</span> num_things;
+
+<span class="hljs-keyword">int</span> weightt[<span class="hljs-number">101</span>];
+<span class="hljs-keyword">int</span> value[<span class="hljs-number">101</span>];
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">dp</span><span class="hljs-params">(<span class="hljs-keyword">int</span> thing,<span class="hljs-keyword">int</span> content)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> dp1=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">int</span> dp2;
+    <span class="hljs-keyword">if</span>(thing==num_things<span class="hljs-number">-1</span>)
+    &#123;
+        <span class="hljs-keyword">if</span>(content&lt;weightt[num_things<span class="hljs-number">-1</span>])
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">else</span>
+        &#123;
+            <span class="hljs-keyword">return</span> value[num_things<span class="hljs-number">-1</span>];
+        &#125;
+
+    &#125;
+    <span class="hljs-keyword">if</span>(content&gt;=weightt[thing])
+    dp1=dp(thing+<span class="hljs-number">1</span>,content-weightt[thing])+value[thing];
+    dp2=dp(thing+<span class="hljs-number">1</span>,content);
+    <span class="hljs-keyword">return</span> max(dp1,dp2);
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-built_in">cin</span>&gt;&gt;content&gt;&gt;num_things;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;num_things;i++)
+    <span class="hljs-built_in">cin</span>&gt;&gt;weightt[i];
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;num_things;i++)
+    <span class="hljs-built_in">cin</span>&gt;&gt;value[i];
+    <span class="hljs-built_in">cout</span>&lt;&lt;dp(<span class="hljs-number">0</span>,content)&lt;&lt;<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre></div>
+
+<p>由于递归算法开销很大，所以我们使用元组法来实现DP</p>
+<h2 id="元组法"><a href="#元组法" class="headerlink" title="元组法"></a>元组法</h2><p>仔细回想我们的01背包问题，是否有这样一个感觉，效益值=f(i,y)是一个分段函数，且每一段都是效益值不变的水平直线。</p>
+<p>那么我们只要记住分段函数的跳跃点，是否就可以对输入的每种情况进行还原(和数据结构中稀疏矩阵的存储相似)</p>
+<p>&emsp;</p>
+<p>由于f(i, y)=max{ f(i+1,y),f(i+1,y-w<del>i</del>)+p<del>i</del> }</p>
+<p>设f(i,y)对应元组P(i), f(i+1,y-w<del>i</del>)+p<del>i</del>对应元组Q</p>
+<p>我们想要得到的是P(i)，所以我们需要求P(i+1)和Q。</p>
+<p>由于f(i+1,y-w<del>i</del>)+p<del>i</del>可看作f(i+1,y)向右向上平移，所以P中每个元组(a,b)对应Q中的(a+wi,b+pi)</p>
+<p>&emsp; </p>
+<p>求出P(i+1)和Q后，使用类似于merge排序的方法把两个元组中的点合并</p>
+<p><strong>合并规则：</strong></p>
+<p><strong>合并时使用以下支配(选优)规则:</strong></p>
+<p><strong>设(a,b)和(u,v)是来自P(i+1)和Q的元组,若a≥u且b＜v,则称(a,b)受(u,v) 支配. 因为</strong></p>
+<p><strong>(a,b)代表以容量a得到效益值b的方案,</strong></p>
+<p><strong>而(u,v)代表以较少的容量u得到较大效益值v的装包方案.</strong></p>
+<p>(可以想象为两个分段函数一直取x相等时二者y值最大的一段)</p>
+<p>&emsp;</p>
+<p><strong>得到P(2)后我们可以不求P(1)</strong></p>
+<p>直接利用w<del>1</del>和P(2)来求出满足w<del>1</del>+w&lt;C的最后一个元组（w,v）</p>
+<p>将v+p<del>1</del>与原来P(2)中最后一个满足条件的效益值比较，取最大的那个。 </p>
 
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/Life/">Life</a>
-                    
-                  </div>
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/Life/">Life</a>
-                    
-                      <a class="hover-with-bg" href="/tags/Thinking/">Thinking</a>
-                    
-                  </div>
                 
               </div>
               
@@ -306,18 +349,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/11/07/Dynamic-Programming/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Dynamic Programming</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/10/27/Operating%E2%80%94-System/">
-                        <span class="hidden-mobile">Operating System</span>
+                      <a href="/2020/11/03/%E5%85%B1%E5%8B%89/">
+                        <span class="hidden-mobile">人这一辈子，最不能透支的是什么？</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -491,7 +528,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "人这一辈子，最不能透支的是什么？&nbsp;",
+        "Dynamic Programming&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
