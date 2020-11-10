@@ -272,7 +272,46 @@
 <p><strong>f(1,c)=max{f(2,c), f(2,c-w1)+p1}</strong></p>
 <p>这样我们的思路就出来了：建立一个父问题与子问题递归式。即在最后一个物品时返回两种情况：拿或不拿。再一路返回到第一种情况，判断物品1拿不拿。</p>
 <p>下面是递归算法和非递归算法</p>
-<h2 id="递归法"><a href="#递归法" class="headerlink" title="递归法"></a>递归法</h2><figure class="highlight cpp"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line"><span class="comment">//递归算法</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> content;</span><br><span class="line"><span class="keyword">int</span> num_things;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> weightt[<span class="number">101</span>];</span><br><span class="line"><span class="keyword">int</span> value[<span class="number">101</span>];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dp</span><span class="params">(<span class="keyword">int</span> thing,<span class="keyword">int</span> content)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> dp1=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> dp2;</span><br><span class="line">    <span class="keyword">if</span>(thing==num_things<span class="number">-1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(content&lt;weightt[num_things<span class="number">-1</span>])</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> value[num_things<span class="number">-1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(content&gt;=weightt[thing])</span><br><span class="line">    dp1=dp(thing+<span class="number">1</span>,content-weightt[thing])+value[thing];</span><br><span class="line">    dp2=dp(thing+<span class="number">1</span>,content);</span><br><span class="line">    <span class="keyword">return</span> max(dp1,dp2);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cin</span>&gt;&gt;content&gt;&gt;num_things;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;num_things;i++)</span><br><span class="line">    <span class="built_in">cin</span>&gt;&gt;weightt[i];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;num_things;i++)</span><br><span class="line">    <span class="built_in">cin</span>&gt;&gt;value[i];</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;dp(<span class="number">0</span>,content)&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></div></td></tr></table></figure>
+<h2 id="递归法"><a href="#递归法" class="headerlink" title="递归法"></a>递归法</h2><div class="hljs"><pre><code class="hljs cpp"><span class="hljs-comment">//递归算法</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;algorithm&gt;</span></span>
+
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+
+<span class="hljs-keyword">int</span> content;
+<span class="hljs-keyword">int</span> num_things;
+
+<span class="hljs-keyword">int</span> weightt[<span class="hljs-number">101</span>];
+<span class="hljs-keyword">int</span> value[<span class="hljs-number">101</span>];
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">dp</span><span class="hljs-params">(<span class="hljs-keyword">int</span> thing,<span class="hljs-keyword">int</span> content)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> dp1=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">int</span> dp2;
+    <span class="hljs-keyword">if</span>(thing==num_things<span class="hljs-number">-1</span>)
+    &#123;
+        <span class="hljs-keyword">if</span>(content&lt;weightt[num_things<span class="hljs-number">-1</span>])
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">else</span>
+        &#123;
+            <span class="hljs-keyword">return</span> value[num_things<span class="hljs-number">-1</span>];
+        &#125;
+        
+    &#125;
+    <span class="hljs-keyword">if</span>(content&gt;=weightt[thing])
+    dp1=dp(thing+<span class="hljs-number">1</span>,content-weightt[thing])+value[thing];
+    dp2=dp(thing+<span class="hljs-number">1</span>,content);
+    <span class="hljs-keyword">return</span> max(dp1,dp2);
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-built_in">cin</span>&gt;&gt;content&gt;&gt;num_things;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;num_things;i++)
+    <span class="hljs-built_in">cin</span>&gt;&gt;weightt[i];
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;num_things;i++)
+    <span class="hljs-built_in">cin</span>&gt;&gt;value[i];
+    <span class="hljs-built_in">cout</span>&lt;&lt;dp(<span class="hljs-number">0</span>,content)&lt;&lt;<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre></div>
 
 <p>由于递归算法开销很大，所以我们使用元组法来实现DP</p>
 <h2 id="元组法"><a href="#元组法" class="headerlink" title="元组法"></a>元组法</h2><p>仔细回想我们的01背包问题，是否有这样一个感觉，效益值=f(i,y)是一个分段函数，且每一段都是效益值不变的水平直线。</p>

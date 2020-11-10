@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      646 字
+      644 字
     </span>
   
 
@@ -262,7 +262,21 @@
 <p>即求Cn4的组合数问题 ：就是求 n * (n-1) * (n-2) * (n-3) /24</p>
 <p>这时大家可能会想&nbsp;”啊，这个题目这么简单，怎么会有人拿他出来写博客！”</p>
 <p>所以你就写出了下面的代码</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> outcome;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cin</span>&gt;&gt;n;</span><br><span class="line">    outcome=n*(n<span class="number">-1</span>)*(n<span class="number">-2</span>)*(n<span class="number">-3</span>)/<span class="number">24</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;outcome&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></div></td></tr></table></figure>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+
+<span class="hljs-keyword">int</span> n;
+
+<span class="hljs-keyword">int</span> outcome;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-built_in">cin</span>&gt;&gt;n;
+    outcome=n*(n<span class="hljs-number">-1</span>)*(n<span class="hljs-number">-2</span>)*(n<span class="hljs-number">-3</span>)/<span class="hljs-number">24</span>;
+    <span class="hljs-built_in">cout</span>&lt;&lt;outcome&lt;&lt;<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre></div>
 
 <p>结果</p>
 <p><img src="/2020/09/28/%E6%AF%8F%E6%97%A5%E6%B4%9B%E8%B0%B7-9-28/%E7%BB%93%E6%9E%9C.png" srcset="/img/loading.gif" alt="结果"></p>
@@ -273,7 +287,21 @@
 <p><em>这无疑是一种很好的解题方法，但对于这样一道入门题来说，未免太…</em></p>
 <p><strong>所以给出了一个很妙的写法</strong></p>
 <p>那就是把 n * (n-1) * (n-2) * (n-3) /24写成 n * (n-1)/2 *(n-2) /3 *(n-3)/4</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> n;</span><br><span class="line"></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> outcome;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cin</span>&gt;&gt;n;</span><br><span class="line">    outcome=n*(n<span class="number">-1</span>)/<span class="number">2</span>*(n<span class="number">-2</span>)/<span class="number">3</span>*(n<span class="number">-3</span>)/<span class="number">4</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;outcome&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></div></td></tr></table></figure>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+
+<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> n;
+
+<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> outcome;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-built_in">cin</span>&gt;&gt;n;
+    outcome=n*(n<span class="hljs-number">-1</span>)/<span class="hljs-number">2</span>*(n<span class="hljs-number">-2</span>)/<span class="hljs-number">3</span>*(n<span class="hljs-number">-3</span>)/<span class="hljs-number">4</span>;
+    <span class="hljs-built_in">cout</span>&lt;&lt;outcome&lt;&lt;<span class="hljs-built_in">endl</span>;
+&#125;
+</code></pre></div>
 
 
 
