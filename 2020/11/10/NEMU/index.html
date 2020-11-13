@@ -32,7 +32,7 @@
     
     
       
-      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/vs2015.min.css" />
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark.min.css" />
     
   
 
@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      0 字
+      464 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      10
        分钟
     </span>
   
@@ -235,12 +235,75 @@
             <h1 style="display: none">NEMU</h1>
             
             <div class="markdown-body" id="post-body">
-              
+              <p>Record my programming process and give others some inspirations.</p>
+<a id="more"></a>
+
+<p>You can find source code from <a target="_blank" rel="noopener" href="https://github.com/Feng-Jay/NEMU">My github repo</a></p>
+<p>/* But please do not just ctrl+c and ctrl+v */</p>
+<p>And here is a very useful manual <a target="_blank" rel="noopener" href="https://nju-ics.gitbooks.io/ics2015-programming-assignment/content/PA0.html">NEMU_gitbook</a></p>
+<h1 id="PA2"><a href="#PA2" class="headerlink" title="PA2"></a>PA2</h1><p>PA2要求我们在NEMU中实现部分X86指令集中的内容。</p>
+<p>如果是第一次真正接触底层指令编写的话，一开始肯定是很茫然和无措的。(切身体会)</p>
+<p>但别灰心，CS就是这样，只有不会才能提升嘛。那么就….开始！</p>
+<h2 id="三个关键宏"><a href="#三个关键宏" class="headerlink" title="三个关键宏"></a>三个关键宏</h2><p>阅读指导书，会发现这样三个宏定义在实现新指令时都会被用到。</p>
+<div class="hljs"><pre><code class="hljs c"><span class="hljs-string">&quot;nemu/include/cpu/helper.h&quot;</span>
+<span class="hljs-comment">/* All function defined with &#x27;make_helper&#x27; return the length of the operation. */</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> make_helper(name) int name(swaddr_t eip)</span>
+
+<span class="hljs-string">&quot;nemu/include/cpu/exec/helper.h&quot;</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> make_helper_v(name) </span>
+	make_helper(concat(name, _v)) &#123; 
+		<span class="hljs-keyword">return</span> (ops_decoded.is_operand_size_16 ? concat(name, _w) : concat(name, _l)) (eip); \
+	&#125;
+<span class="hljs-string">&quot;nemu/include/cpu/exec/helper.h&quot;</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> make_instr_helper(type) </span>
+	make_helper(concat5(instr, _, type, _, SUFFIX)) &#123; 
+		<span class="hljs-keyword">return</span> idex(eip, concat4(decode_, type, _, SUFFIX), do_execute); 
+	&#125;</code></pre></div>
+
+<p>这三个宏定义很巧妙地使用了函数指针和宏定义的配合。<a target="_blank" rel="noopener" href="https://blog.csdn.net/Zz_1996/article/details/78758627">感兴趣可以了解一下</a></p>
+<p><strong>其中，make_helper函数的功能是声明一个函数，并且返回操作的长度</strong></p>
+<p>可以通过阅读代码知道，make_helper函数每次都要传入一个参数eip，返回一个int值。</p>
+<p>&emsp;</p>
+<p><strong>make_helper_v函数的作用是用来确定一个函数的后缀</strong></p>
+<p>16位指令的话就+w(word,16bits)，否则就+l(long word, 32bits);</p>
+<p>&emsp;</p>
+<p><strong>make_instr_helper函数的作用就是确定函数的形式，并且进行译码、执行</strong></p>
+<p>其中 <code>type</code> 为指令的形式, 通过调用 <code>idex()</code> 函数来进行执行的译码和执行。</p>
+<p>&emsp;</p>
+<p>如果看不太懂没关系，下面来一个实例</p>
+<p><strong>mov_i2r_b指令的实现</strong></p>
+<div class="hljs"><pre><code class="hljs c"><span class="hljs-string">&quot;nemu/src/cpu/exec/date-mov/mov.h&quot;</span>
+make_helper(mov_i2r_b);
+
+<span class="hljs-string">&quot;nemu/src/cpu/exec/date-mov/mov.c &quot;</span>
+make_helper_v(mov_i2r)
+    
+<span class="hljs-string">&quot;nemu/src/cpu/exec/date-mov/mov-template.h&quot;</span>
+make_instr_helper(i2r)
+    <span class="hljs-comment">/*ignored the do_execute part*/</span></code></pre></div>
+
+
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Operating-System/">Operating System</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/OS/">OS</a>
+                    
+                      <a class="hover-with-bg" href="/tags/C/">C</a>
+                    
+                  </div>
                 
               </div>
               

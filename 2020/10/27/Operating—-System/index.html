@@ -32,7 +32,7 @@
     
     
       
-      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/vs2015.min.css" />
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark.min.css" />
     
   
 
@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      76 字
+      364 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      7
        分钟
     </span>
   
@@ -235,15 +235,30 @@
             <h1 style="display: none">Operating System</h1>
             
             <div class="markdown-body" id="post-body">
-              <p>Basic knowledge about OS and Linux. Solutions about MIT 6.828</p>
+              <p>Basic knowledge about OS &amp;&amp; Linux. Solutions about MIT 6.828</p>
 <a id="more"></a>
 
-<h1 id="Processes"><a href="#Processes" class="headerlink" title="Processes"></a>Processes</h1><p>进程是一个正在执行程序的实例，包括了程序代码和它当前的状态（寄存器…）</p>
+<h1 id="Processes"><a href="#Processes" class="headerlink" title="Processes"></a>Processes</h1><h2 id="进程模型"><a href="#进程模型" class="headerlink" title="进程模型"></a>进程模型</h2><p>进程是一个正在执行程序的实例，包括了程序代码和它当前的状态（寄存器…）</p>
 <p>一个进程包括三个部分</p>
 <p><img src="/2020/10/27/Operating%E2%80%94-System/Process.png" srcset="/img/loading.gif" alt="process contains"></p>
 <p><em>Tips: The differences between process and program</em></p>
 <p><em>Program is just the static text</em></p>
 <p><em>Process is an dynamic entity being executed and has lifecycle</em></p>
+<p><em>So if a program exec two times ,there should be two processes</em></p>
+<h2 id="进程的创建"><a href="#进程的创建" class="headerlink" title="进程的创建"></a>进程的创建</h2><p>四种事件会导致进程的创建:</p>
+<p>1.系统初始化</p>
+<p>2.正在运行的程序执行了创建进程的系统调用</p>
+<p>3.用户请求创建一个新进程</p>
+<p>4.批处理作业的初始化</p>
+<p>新进程都是由一个已存在的进程执行了一个用于创建进程的系统调用而创建。</p>
+<p>在Linux中，只有fork这个系统调用可用来创建进程。</p>
+<p>fork后，创建的子进程会和父进程拥有相同的内存映像、环境变量。通常，子进程会接着执行一个execve之类的系统调用来修改内存映像从而运行一个新的程序。</p>
+<h2 id="进程的终止"><a href="#进程的终止" class="headerlink" title="进程的终止"></a>进程的终止</h2><p>进程终止的条件：</p>
+<p>1.正常退出(自愿的)</p>
+<p>2.出错退出(自愿的) 自愿时通常调用exit系统调用</p>
+<p>3.严重错误(非自愿)</p>
+<p>4.被其他进程杀死(非自愿)//在Linux和Windows中，如果一个进程被杀死，但他创建的进程不会被全部杀死</p>
+<h2 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h2><p><img src="/2020/10/27/Operating%E2%80%94-System/%E7%8A%B6%E6%80%81.png" srcset="/img/loading.gif" alt="进程状态"></p>
 
             </div>
             <hr>

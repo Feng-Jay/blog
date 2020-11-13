@@ -8,9 +8,23 @@
     <link href="/2020/11/10/NEMU/"/>
     <url>/2020/11/10/NEMU/</url>
     
-    <content type="html"><![CDATA[]]></content>
+    <content type="html"><![CDATA[<p>Record my programming process and give others some inspirations.</p><a id="more"></a><p>You can find source code from <a href="https://github.com/Feng-Jay/NEMU">My github repo</a></p><p>/* But please do not just ctrl+c and ctrl+v */</p><p>And here is a very useful manual <a href="https://nju-ics.gitbooks.io/ics2015-programming-assignment/content/PA0.html">NEMU_gitbook</a></p><h1 id="PA2"><a href="#PA2" class="headerlink" title="PA2"></a>PA2</h1><p>PA2要求我们在NEMU中实现部分X86指令集中的内容。</p><p>如果是第一次真正接触底层指令编写的话，一开始肯定是很茫然和无措的。(切身体会)</p><p>但别灰心，CS就是这样，只有不会才能提升嘛。那么就….开始！</p><h2 id="三个关键宏"><a href="#三个关键宏" class="headerlink" title="三个关键宏"></a>三个关键宏</h2><p>阅读指导书，会发现这样三个宏定义在实现新指令时都会被用到。</p><pre><code class="hljs c"><span class="hljs-string">&quot;nemu/include/cpu/helper.h&quot;</span><span class="hljs-comment">/* All function defined with &#x27;make_helper&#x27; return the length of the operation. */</span><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> make_helper(name) int name(swaddr_t eip)</span><span class="hljs-string">&quot;nemu/include/cpu/exec/helper.h&quot;</span><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> make_helper_v(name) </span>make_helper(concat(name, _v)) &#123; <span class="hljs-keyword">return</span> (ops_decoded.is_operand_size_16 ? concat(name, _w) : concat(name, _l)) (eip); \&#125;<span class="hljs-string">&quot;nemu/include/cpu/exec/helper.h&quot;</span><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> make_instr_helper(type) </span>make_helper(concat5(instr, _, type, _, SUFFIX)) &#123; <span class="hljs-keyword">return</span> idex(eip, concat4(decode_, type, _, SUFFIX), do_execute); &#125;</code></pre><p>这三个宏定义很巧妙地使用了函数指针和宏定义的配合。<a href="https://blog.csdn.net/Zz_1996/article/details/78758627">感兴趣可以了解一下</a></p><p><strong>其中，make_helper函数的功能是声明一个函数，并且返回操作的长度</strong></p><p>可以通过阅读代码知道，make_helper函数每次都要传入一个参数eip，返回一个int值。</p><p>&emsp;</p><p><strong>make_helper_v函数的作用是用来确定一个函数的后缀</strong></p><p>16位指令的话就+w(word,16bits)，否则就+l(long word, 32bits);</p><p>&emsp;</p><p><strong>make_instr_helper函数的作用就是确定函数的形式，并且进行译码、执行</strong></p><p>其中 <code>type</code> 为指令的形式, 通过调用 <code>idex()</code> 函数来进行执行的译码和执行。</p><p>&emsp;</p><p>如果看不太懂没关系，下面来一个实例</p><p><strong>mov_i2r_b指令的实现</strong></p><pre><code class="hljs c"><span class="hljs-string">&quot;nemu/src/cpu/exec/date-mov/mov.h&quot;</span>make_helper(mov_i2r_b);<span class="hljs-string">&quot;nemu/src/cpu/exec/date-mov/mov.c &quot;</span>make_helper_v(mov_i2r)    <span class="hljs-string">&quot;nemu/src/cpu/exec/date-mov/mov-template.h&quot;</span>make_instr_helper(i2r)    <span class="hljs-comment">/*ignored the do_execute part*/</span></code></pre>]]></content>
     
     
+    <categories>
+      
+      <category>Operating System</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>OS</tag>
+      
+      <tag>C</tag>
+      
+    </tags>
     
   </entry>
   
@@ -73,7 +87,7 @@
     <link href="/2020/10/27/Operating%E2%80%94-System/"/>
     <url>/2020/10/27/Operating%E2%80%94-System/</url>
     
-    <content type="html"><![CDATA[<p>Basic knowledge about OS and Linux. Solutions about MIT 6.828</p><a id="more"></a><h1 id="Processes"><a href="#Processes" class="headerlink" title="Processes"></a>Processes</h1><p>进程是一个正在执行程序的实例，包括了程序代码和它当前的状态（寄存器…）</p><p>一个进程包括三个部分</p><p><img src="/2020/10/27/Operating%E2%80%94-System/Process.png" alt="process contains"></p><p><em>Tips: The differences between process and program</em></p><p><em>Program is just the static text</em></p><p><em>Process is an dynamic entity being executed and has lifecycle</em></p>]]></content>
+    <content type="html"><![CDATA[<p>Basic knowledge about OS &amp;&amp; Linux. Solutions about MIT 6.828</p><a id="more"></a><h1 id="Processes"><a href="#Processes" class="headerlink" title="Processes"></a>Processes</h1><h2 id="进程模型"><a href="#进程模型" class="headerlink" title="进程模型"></a>进程模型</h2><p>进程是一个正在执行程序的实例，包括了程序代码和它当前的状态（寄存器…）</p><p>一个进程包括三个部分</p><p><img src="/2020/10/27/Operating%E2%80%94-System/Process.png" alt="process contains"></p><p><em>Tips: The differences between process and program</em></p><p><em>Program is just the static text</em></p><p><em>Process is an dynamic entity being executed and has lifecycle</em></p><p><em>So if a program exec two times ,there should be two processes</em></p><h2 id="进程的创建"><a href="#进程的创建" class="headerlink" title="进程的创建"></a>进程的创建</h2><p>四种事件会导致进程的创建:</p><p>1.系统初始化</p><p>2.正在运行的程序执行了创建进程的系统调用</p><p>3.用户请求创建一个新进程</p><p>4.批处理作业的初始化</p><p>新进程都是由一个已存在的进程执行了一个用于创建进程的系统调用而创建。</p><p>在Linux中，只有fork这个系统调用可用来创建进程。</p><p>fork后，创建的子进程会和父进程拥有相同的内存映像、环境变量。通常，子进程会接着执行一个execve之类的系统调用来修改内存映像从而运行一个新的程序。</p><h2 id="进程的终止"><a href="#进程的终止" class="headerlink" title="进程的终止"></a>进程的终止</h2><p>进程终止的条件：</p><p>1.正常退出(自愿的)</p><p>2.出错退出(自愿的) 自愿时通常调用exit系统调用</p><p>3.严重错误(非自愿)</p><p>4.被其他进程杀死(非自愿)//在Linux和Windows中，如果一个进程被杀死，但他创建的进程不会被全部杀死</p><h2 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h2><p><img src="/2020/10/27/Operating%E2%80%94-System/%E7%8A%B6%E6%80%81.png" alt="进程状态"></p>]]></content>
     
     
     <categories>
