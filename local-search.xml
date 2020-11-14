@@ -4,6 +4,33 @@
   
   
   <entry>
+    <title>Operating System</title>
+    <link href="/2020/11/14/Operating%E2%80%94-System/"/>
+    <url>/2020/11/14/Operating%E2%80%94-System/</url>
+    
+    <content type="html"><![CDATA[<p>Basic knowledge about OS &amp;&amp; Linux. Solutions about MIT 6.828</p><a id="more"></a><h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><h2 id="进程模型"><a href="#进程模型" class="headerlink" title="进程模型"></a>进程模型</h2><p>进程是一个正在执行程序的实例，包括了程序代码和它当前的状态（寄存器…）</p><p>一个进程包括三个部分</p><p><img src="/2020/11/14/Operating%E2%80%94-System/Process.png" alt="process contains"></p><p><em>Tips: The differences between process and program</em></p><p><em>Program is just the static text</em></p><p><em>Process is an dynamic entity being executed and has lifecycle</em></p><p><em>So if a program exec two times ,there should be two processes</em></p><h2 id="进程的创建"><a href="#进程的创建" class="headerlink" title="进程的创建"></a>进程的创建</h2><p>四种事件会导致进程的创建:</p><p>1.系统初始化</p><p>2.正在运行的程序执行了创建进程的系统调用</p><p>3.用户请求创建一个新进程</p><p>4.批处理作业的初始化</p><p>新进程都是由一个已存在的进程执行了一个用于创建进程的系统调用而创建。</p><p>在Linux中，只有fork这个系统调用可用来创建进程。</p><p>fork后，创建的子进程会和父进程拥有相同的内存映像、环境变量。通常，子进程会接着执行一个execve之类的系统调用来修改内存映像从而运行一个新的程序。</p><h2 id="进程的终止"><a href="#进程的终止" class="headerlink" title="进程的终止"></a>进程的终止</h2><p>进程终止的条件：</p><p>1.正常退出(自愿的)</p><p>2.出错退出(自愿的) 自愿时通常调用exit系统调用</p><p>3.严重错误(非自愿)</p><p>4.被其他进程杀死(非自愿)//在Linux和Windows中，如果一个进程被杀死，但他创建的进程不会被全部杀死</p><h2 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h2><p><img src="/2020/11/14/Operating%E2%80%94-System/%E7%8A%B6%E6%80%81.png" alt="进程状态"></p><p>处于阻塞状态的进程不会参与进程调度，处在运行和就绪状态的进程会在就绪队列中。</p><p>Running-&gt;Block：进程需要等待数据(自发)</p><p>Running-&gt;Ready：调度程序造成(优先级调度、时间片流转…)</p><p>Ready-&gt;Running：调度程序造成</p><p>Block-&gt;Ready：1.进程发起。2.OS发起。</p><h2 id="进程的生命周期"><a href="#进程的生命周期" class="headerlink" title="进程的生命周期"></a>进程的生命周期</h2><img src="/2020/11/14/Operating%E2%80%94-System/lifeline.png" alt="image-20201114151211842" style="zoom: 67%;"><p><strong>I (Idle) state</strong>（空闲状态）</p><p>进程在被创造前需要在进程/线程表中申请一个空间，这时处于SNONE状态</p><p>进程正在被创作时，需要向内存申请存储空间，此时处于SIDL状态。</p><p><strong>A (active) state</strong>（活跃状态）</p><p>当进程处于A状态时，他会有一个或多个线程处于R(ready to run)状态。这些线程必须和其他处于R态的线程共用CPU。CPU同时只能跑一个线程(不考虑多处理器)</p><p>当线程需要等待事件发生或者输入输出时，为了不浪费CPU，他会进入sleep状态并且放弃CPU使用权。当输入/输出结束，线程会被唤醒进入R状态。</p><p>线程可能会被一些信号终止或者开启。当线程被挂起时，他处于T状态，无法执行。</p><p><strong>Z (zombie) state</strong>（僵尸状态）</p><p>当一个进程死亡(结束）时，他会变成僵尸进程。</p><p>僵尸进程除了进程/线程表外不占用其他资源。他只会存活很短的时间，直到他的父进程发出信号，清理进线程表。</p><p>但是当一个进程的父进程先于子进程死亡时/或者无法发出信号时，就会在OS中留下僵尸进程。</p><p>如果OS长时间运行，进程表可能会被僵尸进程塞满，无法再开启新的进程(重启系统)。</p><h1 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h1><h2 id="我们为什么需要线程？"><a href="#我们为什么需要线程？" class="headerlink" title="我们为什么需要线程？"></a>我们为什么需要线程？</h2><p>进程模型的抽象让我们不必再考虑CPU中断，时钟周期，上下文切换之类的底层内容，只要考虑并行进程即可。</p><p>但对于很多进程来说，他们还需要一种能够共享存储空间与数据的能力(例如word文档，他需要有定时保存，同时修改多页内容等功能)</p><p>而且使用线程后可以将某些阻塞的活动(IO)的时间用来进行其他功能，可增大CPU利用率。</p><p>而且线程相对于进程来说是一个更加轻量级的模型，更容易被创建、结束。</p><p>典型的例子就是word、web服务器…</p><hr><p>在没有多线程的情况下，我们通过有限状态机这样的设计实现Web服务器</p><p>即使用非阻塞版本的系统调用来进行IO，再有需求进来时，会进行新工作。</p><p>在这种设计中，“顺序进程”模型消失了，但进程每次切换工作时都要将先前内容进行存储。</p><p>可以认为我们模拟了线程及其堆栈。</p><table><thead><tr><th align="center">模型</th><th align="center">特性</th></tr></thead><tbody><tr><td align="center">多线程</td><td align="center">并行、阻塞系统调用</td></tr><tr><td align="center">单线程进程</td><td align="center">无并行性、阻塞系统调用</td></tr><tr><td align="center">有限状态机</td><td align="center">并行性、非阻塞系统调用、中断</td></tr></tbody></table><h2 id="经典线程、POSIX线程"><a href="#经典线程、POSIX线程" class="headerlink" title="经典线程、POSIX线程"></a>经典线程、POSIX线程</h2><img src="/2020/11/14/Operating%E2%80%94-System/传统线程.png" alt="传统线程" style="zoom: 67%;"><p>在图a中可以看到三个传统的进程，每个进程有自己的地址空间和一个控制线程。</p><p>图b中可以看到一个进程拥有三个控制线程，且运行在同一地址空间。</p><p>在多线程进程中，所有线程都共享完全一样的地址空间，也就是共享同样的全局变量，且线程之间是不存在保护的。</p> <img src="/2020/11/14/Operating%E2%80%94-System/进线程内容.png" style="zoom:67%;"><p>上图给出了进线程中所包含的内容。</p><p>有了线程的概念后，<strong>可以把进程当作资源管理的单位，线程当做执行的单位</strong>。</p><hr><p><strong>每个线程都有自己的堆栈</strong></p><p>假设有下面这样的情况：过程X调用Y，Y调用Z，当Z执行时，XYZ使用的栈帧都会存在堆栈中。而每个线程往往会执行不同的过程，这就让他们有各自不同的历史，也就是每个线程都要有自己的堆栈。</p><p><em>线程也可以创造线程，且线程间一般不会存在父子关系</em></p><hr><p><strong>POSIX线程</strong></p><p><a href="https://blog.csdn.net/dreams_deng/article/details/104201715">POSIX提供了很多系统调用来实现线程</a></p><p> 通过一个求PI的程序来说明。    </p><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;pthread.h&gt;</span></span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unistd.h&gt;</span></span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdlib.h&gt;</span></span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;time.h&gt;</span></span><span class="hljs-keyword">double</span> PI;<span class="hljs-keyword">long</span> num_thread;<span class="hljs-keyword">long</span> N;<span class="hljs-keyword">double</span> tim;<span class="hljs-keyword">pthread_t</span>* threads;<span class="hljs-keyword">pthread_mutex_t</span> lock;<span class="hljs-function"><span class="hljs-keyword">void</span>* <span class="hljs-title">thread</span><span class="hljs-params">(<span class="hljs-keyword">void</span>* ID)</span></span><span class="hljs-function"></span>&#123;      <span class="hljs-keyword">long</span> id=(<span class="hljs-keyword">long</span>)ID;<span class="hljs-keyword">int</span> length=N/num_thread;<span class="hljs-keyword">int</span> i;pthread_mutex_lock(&amp;lock);<span class="hljs-keyword">for</span>(i=id*length;i&lt;(id+<span class="hljs-number">1</span>)*length;i++)&#123;PI+=(<span class="hljs-number">4.0</span>/N)*(<span class="hljs-number">1.0</span>/(<span class="hljs-number">1</span>+((i+<span class="hljs-number">0.5</span>)/N)*((i+<span class="hljs-number">0.5</span>)/N)));&#125;pthread_mutex_unlock(&amp;lock);&#125;      <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;       <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Please input the num of threads\n&quot;</span>);<span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%ld&quot;</span>,&amp;num_thread);<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Please input the N of calculator\n&quot;</span>);<span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%ld&quot;</span>,&amp;N);<span class="hljs-keyword">clock_t</span> start,<span class="hljs-built_in">end</span>;start=clock();threads=(<span class="hljs-keyword">pthread_t</span>*)<span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">pthread_t</span>)*num_thread);<span class="hljs-keyword">long</span> i;<span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>;i&lt;num_thread;i++)&#123;        pthread_create(&amp;threads[i],<span class="hljs-literal">NULL</span>,thread,(<span class="hljs-keyword">void</span>*)i);&#125;<span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>;i&lt;num_thread;i++)&#123;pthread_join(threads[i],<span class="hljs-literal">NULL</span>);&#125;<span class="hljs-built_in">end</span>=clock();tim=(<span class="hljs-keyword">double</span>)(<span class="hljs-built_in">end</span>-start)/CLOCKS_PER_SEC;<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Running Time: %fs\n&quot;</span>,tim);<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;PI= %.15f\n&quot;</span>,PI);        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;&#125;  </code></pre><h2 id="在用户-内核中实现线程"><a href="#在用户-内核中实现线程" class="headerlink" title="在用户/内核中实现线程"></a>在用户/内核中实现线程</h2><p><strong>1.在用户空间实现线程</strong></p><p>此时内核并没有线程的概念，他仍然只会对进程进行调度。此时线程的实现需要用户级程序去完成。</p><p>其实现大都使用pthread的系统调用。</p><p>同时，在用户空间管理线程时，每个进程也要有对应的线程表来记录进程中的线程。</p><p><strong>优点：</strong></p><p><strong>1.线程间切换很快</strong></p><p>当一个线程引发了自己的阻塞，那么他就会存储自己的状态，并在线程表中查看可运行的线程，将新线程的保存值重新装入机器的寄存器中。</p><p>因此，只要堆栈指针和程序计数器一被切换，新的线程就会自动运行。</p><p>这样的切换要比陷入内核来说更快。</p><p><strong>2.每个进程可以有自己的调度算法，且扩展性强</strong></p><p>可让用户程序自定义线程的运行状态。内核线程需要一些固定的表格空间和堆栈，如果内核线程数量很大就会出现问题。</p><hr><p><strong>缺点：</strong></p><p>1.如何实现阻塞系统调用</p><p>线程的目标是允许每个线程使用阻塞调用，且要避免被阻塞的线程影响其他线程。</p><p>2.starvation问题</p><p>如果一个线程开始运行，那么在该进程中的其他线程都无法运行。除非该线程主动放弃CPU。</p><p>由于在进程中不会有中断的概念，所以无法使用轮转调度的方法调度线程。</p><p>3.最大问题出现在本身</p><p>程序员通常会在经常发生线程阻塞的应用中才希望使用多线程。</p><p>但在一个服务器中，线程一直在进行着系统调用，如果原有线程阻塞，就很难让内核进行线程切换。否则就一直使用select系统调用。</p><p>但这样的话多线程的意义就不大了，并没有什么实质性的好处。</p><hr>]]></content>
+    
+    
+    <categories>
+      
+      <category>Operating System</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>OS</tag>
+      
+      <tag>C</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>大学？人生？</title>
     <link href="/2020/11/13/%E6%9C%88%E5%A4%9C%E6%9D%82%E8%B0%88/"/>
     <url>/2020/11/13/%E6%9C%88%E5%A4%9C%E6%9D%82%E8%B0%88/</url>
@@ -20,7 +47,9 @@
     
     <tags>
       
-      <tag>Life, Thinking</tag>
+      <tag>Life</tag>
+      
+      <tag>Thinking</tag>
       
     </tags>
     
@@ -100,31 +129,6 @@
       <tag>Life</tag>
       
       <tag>Thinking</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Operating System</title>
-    <link href="/2020/10/27/Operating%E2%80%94-System/"/>
-    <url>/2020/10/27/Operating%E2%80%94-System/</url>
-    
-    <content type="html"><![CDATA[<p>Basic knowledge about OS &amp;&amp; Linux. Solutions about MIT 6.828</p><a id="more"></a><h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><h2 id="进程模型"><a href="#进程模型" class="headerlink" title="进程模型"></a>进程模型</h2><p>进程是一个正在执行程序的实例，包括了程序代码和它当前的状态（寄存器…）</p><p>一个进程包括三个部分</p><p><img src="/2020/10/27/Operating%E2%80%94-System/Process.png" alt="process contains"></p><p><em>Tips: The differences between process and program</em></p><p><em>Program is just the static text</em></p><p><em>Process is an dynamic entity being executed and has lifecycle</em></p><p><em>So if a program exec two times ,there should be two processes</em></p><h2 id="进程的创建"><a href="#进程的创建" class="headerlink" title="进程的创建"></a>进程的创建</h2><p>四种事件会导致进程的创建:</p><p>1.系统初始化</p><p>2.正在运行的程序执行了创建进程的系统调用</p><p>3.用户请求创建一个新进程</p><p>4.批处理作业的初始化</p><p>新进程都是由一个已存在的进程执行了一个用于创建进程的系统调用而创建。</p><p>在Linux中，只有fork这个系统调用可用来创建进程。</p><p>fork后，创建的子进程会和父进程拥有相同的内存映像、环境变量。通常，子进程会接着执行一个execve之类的系统调用来修改内存映像从而运行一个新的程序。</p><h2 id="进程的终止"><a href="#进程的终止" class="headerlink" title="进程的终止"></a>进程的终止</h2><p>进程终止的条件：</p><p>1.正常退出(自愿的)</p><p>2.出错退出(自愿的) 自愿时通常调用exit系统调用</p><p>3.严重错误(非自愿)</p><p>4.被其他进程杀死(非自愿)//在Linux和Windows中，如果一个进程被杀死，但他创建的进程不会被全部杀死</p><h2 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h2><p><img src="/2020/10/27/Operating%E2%80%94-System/%E7%8A%B6%E6%80%81.png" alt="进程状态"></p><p>处于阻塞状态的进程不会参与进程调度，处在运行和就绪状态的进程会在就绪队列中。</p><p>Running-&gt;Block：进程需要等待数据(自发)</p><p>Running-&gt;Ready：调度程序造成(优先级调度、时间片流转…)</p><p>Ready-&gt;Running：调度程序造成</p><p>Block-&gt;Ready：1.进程发起。2.OS发起。</p><h2 id="进程的生命周期"><a href="#进程的生命周期" class="headerlink" title="进程的生命周期"></a>进程的生命周期</h2><img src="/2020/10/27/Operating%E2%80%94-System/lifeline.png" alt="image-20201114151211842" style="zoom: 67%;"><p><strong>I (Idle) state</strong>（空闲状态）</p><p>进程在被创造前需要在进程/线程表中申请一个空间，这时处于SNONE状态</p><p>进程正在被创作时，需要向内存申请存储空间，此时处于SIDL状态。</p><p><strong>A (active) state</strong>（活跃状态）</p><p>当进程处于A状态时，他会有一个或多个线程处于R(ready to run)状态。这些线程必须和其他处于R态的线程共用CPU。CPU同时只能跑一个线程(不考虑多处理器)</p><p>当线程需要等待事件发生或者输入输出时，为了不浪费CPU，他会进入sleep状态并且放弃CPU使用权。当输入/输出结束，线程会被唤醒进入R状态。</p><p>线程可能会被一些信号终止或者开启。当线程被挂起时，他处于T状态，无法执行。</p><p><strong>Z (zombie) state</strong>（僵尸状态）</p><p>当一个进程死亡(结束）时，他会变成僵尸进程。</p><p>僵尸进程除了进程/线程表外不占用其他资源。他只会存活很短的时间，直到他的父进程发出信号，清理进线程表。</p><p>但是当一个进程的父进程先于子进程死亡时/或者无法发出信号时，就会在OS中留下僵尸进程。</p><p>如果OS长时间运行，进程表可能会被僵尸进程塞满，无法再开启新的进程(重启系统)。</p><h1 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h1><h2 id="我们为什么需要线程？"><a href="#我们为什么需要线程？" class="headerlink" title="我们为什么需要线程？"></a>我们为什么需要线程？</h2><p>进程模型的抽象让我们不必再考虑CPU中断，时钟周期，上下文切换之类的底层内容，只要考虑并行进程即可。</p><p>但对于很多进程来说，他们还需要一种能够共享存储空间与数据的能力(例如word文档，他需要有定时保存，同时修改多页内容等功能)</p><p>而且使用线程后可以将某些阻塞的活动(IO)的时间用来进行其他功能，可增大CPU利用率。</p><p>而且线程相对于进程来说是一个更加轻量级的模型，更容易被创建、结束。</p><p>典型的例子就是word、web服务器…</p><p>&nbsp;</p><p>在没有线程的情况下，我们通过有限状态机这样的设计来模拟线程及其堆栈。</p><table><thead><tr><th align="center">模型</th><th align="center">特性</th></tr></thead><tbody><tr><td align="center">多线程</td><td align="center">并行、阻塞系统调用</td></tr><tr><td align="center">单线程进程</td><td align="center">无并行性、阻塞系统调用</td></tr><tr><td align="center">有限状态机</td><td align="center">并行性、非阻塞系统调用、中断</td></tr></tbody></table>]]></content>
-    
-    
-    <categories>
-      
-      <category>Operating System</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>Operating System</tag>
       
     </tags>
     
