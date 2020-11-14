@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      824 字
+      1.1k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      15
+      19
        分钟
     </span>
   
@@ -238,7 +238,7 @@
               <p>Basic knowledge about OS &amp;&amp; Linux. Solutions about MIT 6.828</p>
 <a id="more"></a>
 
-<h1 id="Processes"><a href="#Processes" class="headerlink" title="Processes"></a>Processes</h1><h2 id="进程模型"><a href="#进程模型" class="headerlink" title="进程模型"></a>进程模型</h2><p>进程是一个正在执行程序的实例，包括了程序代码和它当前的状态（寄存器…）</p>
+<h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><h2 id="进程模型"><a href="#进程模型" class="headerlink" title="进程模型"></a>进程模型</h2><p>进程是一个正在执行程序的实例，包括了程序代码和它当前的状态（寄存器…）</p>
 <p>一个进程包括三个部分</p>
 <p><img src="/2020/10/27/Operating%E2%80%94-System/Process.png" srcset="/img/loading.gif" alt="process contains"></p>
 <p><em>Tips: The differences between process and program</em></p>
@@ -278,6 +278,33 @@
 <p>僵尸进程除了进程/线程表外不占用其他资源。他只会存活很短的时间，直到他的父进程发出信号，清理进线程表。</p>
 <p>但是当一个进程的父进程先于子进程死亡时/或者无法发出信号时，就会在OS中留下僵尸进程。</p>
 <p>如果OS长时间运行，进程表可能会被僵尸进程塞满，无法再开启新的进程(重启系统)。</p>
+<h1 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h1><h2 id="我们为什么需要线程？"><a href="#我们为什么需要线程？" class="headerlink" title="我们为什么需要线程？"></a>我们为什么需要线程？</h2><p>进程模型的抽象让我们不必再考虑CPU中断，时钟周期，上下文切换之类的底层内容，只要考虑并行进程即可。</p>
+<p>但对于很多进程来说，他们还需要一种能够共享存储空间与数据的能力(例如word文档，他需要有定时保存，同时修改多页内容等功能)</p>
+<p>而且使用线程后可以将某些阻塞的活动(IO)的时间用来进行其他功能，可增大CPU利用率。</p>
+<p>而且线程相对于进程来说是一个更加轻量级的模型，更容易被创建、结束。</p>
+<p>典型的例子就是word、web服务器…</p>
+<p>&nbsp;</p>
+<p>在没有线程的情况下，我们通过有限状态机这样的设计来模拟线程及其堆栈。</p>
+<table>
+<thead>
+<tr>
+<th align="center">模型</th>
+<th align="center">特性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">多线程</td>
+<td align="center">并行、阻塞系统调用</td>
+</tr>
+<tr>
+<td align="center">单线程进程</td>
+<td align="center">无并行性、阻塞系统调用</td>
+</tr>
+<tr>
+<td align="center">有限状态机</td>
+<td align="center">并行性、非阻塞系统调用、中断</td>
+</tr>
+</tbody></table>
 
             </div>
             <hr>
