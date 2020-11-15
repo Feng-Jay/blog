@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.2k 字
+      4.8k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      41
+      91
        分钟
     </span>
   
@@ -402,7 +402,250 @@
 <p>程序员通常会在经常发生线程阻塞的应用中才希望使用多线程。</p>
 <p>但在一个服务器中，线程一直在进行着系统调用，如果原有线程阻塞，就很难让内核进行线程切换。否则就一直使用select系统调用。</p>
 <p>但这样的话多线程的意义就不大了，并没有什么实质性的好处。</p>
-<hr>
+<h1 id="调度程序-Important"><a href="#调度程序-Important" class="headerlink" title="调度程序(Important)"></a>调度程序(Important)</h1><p>在计算机中，如果有多个进程处于就绪状态，而只有一个CPU可用，那么OS就必须对下一个要运行的进程进行选择。完成这个工作的就是调度程序。</p>
+<p>早期的批处理系统中的调度程序就是：顺序执行磁带上的每一个作业。由于那时CPU是稀缺资源，所以调度程序的作用十分重要。</p>
+<p>但随着PC的普及以及CPU速度的快速增长，OS中多数时间只有一个活动进程，而且时间大多花费在等待用户输入，而非等待CPU计算。</p>
+<p>但在Web服务器中，经常会有多个进程抢占CPU，此时的调度程序又十分重要。</p>
+<p><strong>为什么要好的调度程序？</strong></p>
+<p>因为进程切换的代价是十分高昂的：要先从用户态切换到内核态；保存进程状态；调度选择新进程；将新进程的内存印象装入MMU，开始运行。</p>
+<p>如果调度程序每秒切换进程次数太多，会耗费大量CPU时间。</p>
+<h2 id="何时调度进程？"><a href="#何时调度进程？" class="headerlink" title="何时调度进程？"></a>何时调度进程？</h2><p>1.在创建一个新进程后，需要决定是运行父进程还是子进程</p>
+<p>2.在一个进程退出时必须调度</p>
+<p>3.进程阻塞时必须调度</p>
+<p>4.一个IO中断发生时必须调度</p>
+<h2 id="调度算法分类及其目标"><a href="#调度算法分类及其目标" class="headerlink" title="调度算法分类及其目标"></a>调度算法分类及其目标</h2><p>对于所有系统，使用调度程序的目标都是要实现：公平(每个进程有公平的CPU份额)、策略强制执行(规定的策略被执行)、平衡(系统的所有部分都忙碌)</p>
+<p>在不同系统中，需要的调度程序的类型、目标也不同，可划分为三组环境：</p>
+<p>1.批处理(Batch System)</p>
+<p>其目标要实现：吞吐量、周转时间、CPU利用率的最优。</p>
+<p>2.交互式(Interactive System)</p>
+<p>其目标为：实现响应时间、均衡性的最优。</p>
+<p>3.实时(Real-time System)</p>
+<p>其目标为：满足截止时间(避免丢失数据)、可预测性</p>
+<h2 id="批处理系统中的调度-Important"><a href="#批处理系统中的调度-Important" class="headerlink" title="批处理系统中的调度(Important)"></a>批处理系统中的调度(Important)</h2><h3 id="先来先服务"><a href="#先来先服务" class="headerlink" title="先来先服务"></a>先来先服务</h3><p>按照进程请求CPU的顺序来使用CPU。类似于队列的FIFO机制，优点在于公平且思路简单。</p>
+<p>但缺点也很明显：<strong>护航效应</strong>。</p>
+<p>假如此时有一个CPU密集型和一个IO密集型的进程在就绪队列中，CPU密集型的进程在CPU中执行一段时间，进入IO；此时IO密集型进程进入CPU，执行很短很短的时间也进入IO；此时CPU空闲，CPU密集型进程再次进入就绪队列，IO进程又会等待CPU密集型进程完成。</p>
+<p>可以看到，在这种情况下，IO进程总是在等待着计算密集型进程使用完CPU，从而导致运行时间很长。</p>
+<p>如果有可能让IO进程直接单独抢占一段时间，那么运行时间会大大减少。</p>
+<p><em>可通过下图理解进程执行的过程，并不是一直使用CPU然后一直使用IO就结束了，而是交错着的</em></p>
+<img src="/2020/11/14/Operating%E2%80%94-System/密集型.png" srcset="/img/loading.gif" style="zoom:50%;">
+
+<h3 id="最短作业优先"><a href="#最短作业优先" class="headerlink" title="最短作业优先"></a>最短作业优先</h3><p><em>由于需要知道运行时间，因此多用于专用OS，但可能出现starvation问题</em></p>
+<h3 id="最短剩余时间优先"><a href="#最短剩余时间优先" class="headerlink" title="最短剩余时间优先"></a>最短剩余时间优先</h3><p><em>由于需要知道剩余运行时间，只能在专用OS使用</em></p>
+<h3 id="高响应比优先"><a href="#高响应比优先" class="headerlink" title="高响应比优先"></a>高响应比优先</h3><p>响应比的计算:Response Radio = Turnaround time / Executing time = 1 + Waiting Time/ Executing Time</p>
+<h3 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h3><p>在一单道批处理系统中，一组作业的提交时刻和运行时间如下表所示。试计算一下三种作业调度算法的平均周转时间 T 和平均带权周转时间 W。 (1) 先来先服务; (2) 短作业优先 (3) 高响应比优先。作业提交时刻和运行时间如下表</p>
+<p><img src="/2020/11/14/Operating%E2%80%94-System/%E4%BE%8B%E9%A2%98.png" srcset="/img/loading.gif" alt="例题"></p>
+<p>1.先来先服务</p>
+<p>根据题目可得到以下数据</p>
+<table>
+<thead>
+<tr>
+<th>作业</th>
+<th>提交时刻</th>
+<th>运行时间</th>
+<th align="left">开始时间</th>
+<th>完成时间</th>
+<th>周转时间</th>
+<th>带权周转时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>8.0</td>
+<td>1.0</td>
+<td align="left">8.0</td>
+<td>9.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>8.5</td>
+<td>0.5</td>
+<td align="left">9.0</td>
+<td>9.5</td>
+<td>1.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>9.0</td>
+<td>0.2</td>
+<td align="left">9.5</td>
+<td>9.7</td>
+<td>0.7</td>
+<td>3.5</td>
+</tr>
+<tr>
+<td>4</td>
+<td>9.1</td>
+<td>0.1</td>
+<td align="left">9.7</td>
+<td>9.8</td>
+<td>0.7</td>
+<td>7.0</td>
+</tr>
+</tbody></table>
+<p>所以平均周转时间T=(1.0+1.0+0.7+0.7)/4=0.85</p>
+<p>平均带权周转时间W=(1.0+2.0+3.5+7.0)/4=3.375</p>
+<p>2.短作业优先</p>
+<p>可知在8.0时系统中只有作业1，所以作业1仍为第一个执行的。</p>
+<p>作业1执行完成时间为9.0</p>
+<p>此时系统中有作业2,3两个作业，短作业优先选择作业3</p>
+<p>作业3执行完成时间为9.2</p>
+<p>此时系统中有作业2,4两个作业，短作业优先选择作业4</p>
+<p>作业4执行完成时间为9.3</p>
+<p>此时只有作业2</p>
+<p>作业2执行完成时间为9.8</p>
+<p>表格如下</p>
+<table>
+<thead>
+<tr>
+<th>作业</th>
+<th>提交时刻</th>
+<th>运行时间</th>
+<th align="left">开始时间</th>
+<th>完成时间</th>
+<th>周转时间</th>
+<th>带权周转时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>8.0</td>
+<td>1.0</td>
+<td align="left">8.0</td>
+<td>9.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>9.0</td>
+<td>0.2</td>
+<td align="left">9.0</td>
+<td>9.2</td>
+<td>0.2</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>9.1</td>
+<td>0.1</td>
+<td align="left">9.2</td>
+<td>9.3</td>
+<td>0.2</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>8.5</td>
+<td>0.5</td>
+<td align="left">9.3</td>
+<td>9.8</td>
+<td>1.3</td>
+<td>2.6</td>
+</tr>
+</tbody></table>
+<p>可以得到</p>
+<p>平均周转时间T=(1+0.2+0.2+1.3)/4=0.675</p>
+<p>平均带权周转时间W=(1.0+1.0+2.0+2.6)/4=1.65</p>
+<p>3.高响应比优先</p>
+<p>同样8.0时系统只有作业1，执行作业1</p>
+<p>作业1执行完成时间为9.0</p>
+<p>此时系统中有作业2,3</p>
+<p>此时作业2 response radio=(1+0.5/0.5)=2; 作业3 response radio=1</p>
+<p>所以先执行作业2</p>
+<p>作业2执行完成时间为9.5</p>
+<p>此时系统中有作业3,4</p>
+<p>此时作业3的response radio=(1+0.5/0.2)=3.5</p>
+<p>作业4的response radio =（1+0.4/0.1）=5</p>
+<p>所以先执行作业4</p>
+<p>作业4执行完时间为9.6</p>
+<p>执行作业3</p>
+<p>执行完成时间为9.8</p>
+<p>可列为如下表格</p>
+<table>
+<thead>
+<tr>
+<th>作业</th>
+<th>提交时刻</th>
+<th>运行时间</th>
+<th align="left">开始时间</th>
+<th>完成时间</th>
+<th>周转时间</th>
+<th>带权周转时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>8.0</td>
+<td>1.0</td>
+<td align="left">8.0</td>
+<td>9.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>8.5</td>
+<td>0.5</td>
+<td align="left">9.0</td>
+<td>9.5</td>
+<td>1.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>9.1</td>
+<td>0.1</td>
+<td align="left">9.5</td>
+<td>9.6</td>
+<td>0.5</td>
+<td>5.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>9.0</td>
+<td>0.2</td>
+<td align="left">9.6</td>
+<td>9.8</td>
+<td>0.8</td>
+<td>4.0</td>
+</tr>
+</tbody></table>
+<p>可知平均周转时间T=(1+1+0.5+0.8)/4=0.825</p>
+<p>平均带权周转时间W=(1+2+5+4)/4=3</p>
+<h3 id="区分一下带权周转时间和响应比的概念"><a href="#区分一下带权周转时间和响应比的概念" class="headerlink" title="区分一下带权周转时间和响应比的概念"></a>区分一下带权周转时间和响应比的概念</h3><p><strong>二者虽然看上去计算公式相同，但他们的性质是不同的</strong></p>
+<p><strong>带权周转时间是在调度完成后评价该调度程序的一个指标，是静态的</strong></p>
+<p><strong>而响应比是作为调度的一个条件来使用的，每当调度一次后，每个作业的响应比都会变化。是动态的。</strong></p>
+<h2 id="交互式系统中的调度-Important"><a href="#交互式系统中的调度-Important" class="headerlink" title="交互式系统中的调度(Important)"></a>交互式系统中的调度(Important)</h2><h3 id="Round-robin-scheduling-轮转调度"><a href="#Round-robin-scheduling-轮转调度" class="headerlink" title="Round-robin scheduling (轮转调度)"></a>Round-robin scheduling (轮转调度)</h3><p>这是最简单、公平、使用最广的调度算法.</p>
+<p>每个进程被分配一个<strong>时间片</strong>，即允许该进程在该时间段中运行。如果进程在时间片结束时还在运行，那就夺走CPU分配给下一个进程。如果进程在时间片结束前就完成或者阻塞，CPU就立即进行切换。</p>
+<p>调度程序要做的就是维护一个可运行程序列表，并对使用完时间片的程序进行调整。</p>
+<p><strong>唯一要考虑的就是时间片的长度</strong></p>
+<p>时间片太短会导致进程切换过于频繁，降低CPU效率。太长又会引起对短的交互请求的不响应。</p>
+<p>常将时间片设置在20~50ms之间</p>
+<h3 id="Priority-scheduling-优先级调度"><a href="#Priority-scheduling-优先级调度" class="headerlink" title="Priority scheduling (优先级调度)"></a>Priority scheduling (优先级调度)</h3><p>在Round-robin中，我们把每个进程都看作同等重要，而优先级调度就是要改变这种想法，给每个进程赋予一个优先级，优先级高的进程会先运行。</p>
+<p>为了防止高优先级进程一直运行下去，调度程序可能在每个时钟中断时降低其优先级，如果有高于其的进程，就开始调度。</p>
+<p>也可以给每个进程设置一个允许允许的最大时间片，超过时间片后次高级进程就会运行。</p>
+<img src="/2020/11/14/Operating%E2%80%94-System/优先级.png" srcset="/img/loading.gif" style="zoom:67%;">
+
+<h2 id="线程调度"><a href="#线程调度" class="headerlink" title="线程调度"></a>线程调度</h2><h3 id="用户态线程"><a href="#用户态线程" class="headerlink" title="用户态线程"></a>用户态线程</h3><p>内核并不知道线程的存在，因此还是会直接对线程使用调度程序。</p>
+<p>此时由进程中的线程调度程序来决定线程的运行。由于这里面并不存在时钟中断，所以线程可以按其意愿任意运行直到进程时间用完。</p>
+<h3 id="内核线程"><a href="#内核线程" class="headerlink" title="内核线程"></a>内核线程</h3><p>此时内核选择特定的线程运行，且不用考虑线程属于哪个进程。可以分配时间…</p>
+<p>&nbsp;</p>
+<p>二者的差别主要在于性能。</p>
+<p>用户级线程的切换只需要少量指令，但内核级线程切换需要上下文切换,修改内存，高速缓存…</p>
+<p>但内核级线程如果阻塞，并不用直接将整个进程挂起。</p>
+<p><em>另外，从A的线程切换到B的线程的代价高于在一个进程中切换线程，因此，在有多种选择的情况下，倾向于在相同进程中切换线程。</em></p>
+<h1 id="竞争条件与信号量-Important"><a href="#竞争条件与信号量-Important" class="headerlink" title="竞争条件与信号量(Important)"></a>竞争条件与信号量(Important)</h1><p>竞争条件：多个进程读写某些共享数据，而最后的结果取决于进程运行的精确时序。且随着多核的增长，竞争条件变得越来越普遍。</p>
+<p>其原因在于OS的调度进程不会，也不可能确保各个进程之间有确定的顺序。</p>
+<p>因此，我们要做的就是避免竞争条件。其<strong>关键就是阻止多个进程同时读写共享的数据。</strong></p>
+<p>我们把对共享内存进行访问的程序片段成为临界区域(critical region/section)。</p>
+<p><strong>对于一个好的解决方法要满足4个条件：</strong></p>
+<p><strong>1.任何两个进程不能同时在临界区中</strong></p>
+<p>2.不对CPU的速度和数量做任何假设</p>
+<p><strong>3.临界区外运行的进程不得阻塞其他进程</strong></p>
+<p>4.不得使进程无限期等待进入临界区</p>
 
             </div>
             <hr>
