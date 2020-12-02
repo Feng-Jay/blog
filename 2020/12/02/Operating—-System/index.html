@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      5.5k 字
+      5.6k 字
     </span>
   
 
@@ -421,7 +421,7 @@
 <p>其目标为：实现响应时间、均衡性的最优。</p>
 <p>3.实时(Real-time System)</p>
 <p>其目标为：满足截止时间(避免丢失数据)、可预测性</p>
-<h2 id="批处理系统中的调度-Important"><a href="#批处理系统中的调度-Important" class="headerlink" title="批处理系统中的调度(Important)"></a>批处理系统中的调度(Important)</h2><h3 id="先来先服务"><a href="#先来先服务" class="headerlink" title="先来先服务"></a>先来先服务</h3><p>按照进程请求CPU的顺序来使用CPU。类似于队列的FIFO机制，优点在于公平且思路简单。</p>
+<h2 id="批处理系统中的调度-Important"><a href="#批处理系统中的调度-Important" class="headerlink" title="批处理系统中的调度(Important)"></a><font color="red">批处理系统中的调度(Important)</font></h2><h3 id="先来先服务"><a href="#先来先服务" class="headerlink" title="先来先服务"></a>先来先服务</h3><p>按照进程请求CPU的顺序来使用CPU。类似于队列的FIFO机制，优点在于公平且思路简单。</p>
 <p>但缺点也很明显：<strong>护航效应</strong>。</p>
 <p>假如此时有一个CPU密集型和一个IO密集型的进程在就绪队列中，CPU密集型的进程在CPU中执行一段时间，进入IO；此时IO密集型进程进入CPU，执行很短很短的时间也进入IO；此时CPU空闲，CPU密集型进程再次进入就绪队列，IO进程又会等待CPU密集型进程完成。</p>
 <p>可以看到，在这种情况下，IO进程总是在等待着计算密集型进程使用完CPU，从而导致运行时间很长。</p>
@@ -618,7 +618,7 @@
 <h3 id="区分一下带权周转时间和响应比的概念"><a href="#区分一下带权周转时间和响应比的概念" class="headerlink" title="区分一下带权周转时间和响应比的概念"></a>区分一下带权周转时间和响应比的概念</h3><p><strong>二者虽然看上去计算公式相同，但他们的性质是不同的</strong></p>
 <p><strong>带权周转时间是在调度完成后评价该调度程序的一个指标，是静态的</strong></p>
 <p><strong>而响应比是作为调度的一个条件来使用的，每当调度一次后，每个作业的响应比都会变化。是动态的。</strong></p>
-<h2 id="交互式系统中的调度-Important"><a href="#交互式系统中的调度-Important" class="headerlink" title="交互式系统中的调度(Important)"></a>交互式系统中的调度(Important)</h2><h3 id="Round-robin-scheduling-轮转调度"><a href="#Round-robin-scheduling-轮转调度" class="headerlink" title="Round-robin scheduling (轮转调度)"></a>Round-robin scheduling (轮转调度)</h3><p>这是最简单、公平、使用最广的调度算法.</p>
+<h2 id="交互式系统中的调度-Important"><a href="#交互式系统中的调度-Important" class="headerlink" title="交互式系统中的调度(Important)"></a><font color="red">交互式系统中的调度(Important)</font></h2><h3 id="Round-robin-scheduling-轮转调度"><a href="#Round-robin-scheduling-轮转调度" class="headerlink" title="Round-robin scheduling (轮转调度)"></a>Round-robin scheduling (轮转调度)</h3><p>这是最简单、公平、使用最广的调度算法.</p>
 <p>每个进程被分配一个<strong>时间片</strong>，即允许该进程在该时间段中运行。如果进程在时间片结束时还在运行，那就夺走CPU分配给下一个进程。如果进程在时间片结束前就完成或者阻塞，CPU就立即进行切换。</p>
 <p>调度程序要做的就是维护一个可运行程序列表，并对使用完时间片的程序进行调整。</p>
 <p><strong>唯一要考虑的就是时间片的长度</strong></p>
@@ -637,7 +637,7 @@
 <p>用户级线程的切换只需要少量指令，但内核级线程切换需要上下文切换,修改内存，高速缓存…</p>
 <p>但内核级线程如果阻塞，并不用直接将整个进程挂起。</p>
 <p><em>另外，从A的线程切换到B的线程的代价高于在一个进程中切换线程，因此，在有多种选择的情况下，倾向于在相同进程中切换线程。</em></p>
-<h1 id="竞争条件与信号量-Important"><a href="#竞争条件与信号量-Important" class="headerlink" title="竞争条件与信号量(Important)"></a>竞争条件与信号量(Important)</h1><p>竞争条件：多个进程读写某些共享数据，而最后的结果取决于进程运行的精确时序。且随着多核的增长，竞争条件变得越来越普遍。</p>
+<h1 id="竞争条件与信号量"><a href="#竞争条件与信号量" class="headerlink" title="竞争条件与信号量"></a><font color="red">竞争条件与信号量</font></h1><p>竞争条件：多个进程读写某些共享数据，而最后的结果取决于进程运行的精确时序。且随着多核的增长，竞争条件变得越来越普遍。</p>
 <p>其原因在于OS的调度进程不会，也不可能确保各个进程之间有确定的顺序。</p>
 <p>因此，我们要做的就是避免竞争条件。其<strong>关键就是阻止多个进程同时读写共享的数据。</strong></p>
 <p>我们把对共享内存进行访问的程序片段成为**临界区域(critical region/section)**。</p>
@@ -713,17 +713,8 @@ leave_region:
 	MOVE LOCK,<span class="hljs-variable">$0</span>			|锁中存0
 	RET				        |<span class="hljs-built_in">return</span></code></pre></div>
 
-
-
-
-
-
-
-
-
-
-
-
+<p>在intel的指令集中也有这样的操作：XCHG</p>
+<h2 id="生产者消费者问题"><a href="#生产者消费者问题" class="headerlink" title="生产者消费者问题"></a><font color="red">生产者消费者问题</font></h2><h2 id="信号量-Semaphore"><a href="#信号量-Semaphore" class="headerlink" title="信号量(Semaphore)"></a>信号量(Semaphore)</h2>
             </div>
             <hr>
             <div>
