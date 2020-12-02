@@ -20,7 +20,7 @@
   <meta name="description" content="A Website for record my learning process.">
   <meta name="author" content="Feng Jay">
   <meta name="keywords" content="Blog Study Computer-science">
-  <title>Operating System - 在知识海洋中狗刨</title>
+  <title>Linux-进程 - 在知识海洋中狗刨</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.8k 字
+      5.4k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      91
+      103
        分钟
     </span>
   
@@ -232,7 +232,7 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">Operating System</h1>
+            <h1 style="display: none">Linux-进程</h1>
             
             <div class="markdown-body" id="post-body">
               <p>Basic knowledge about OS &amp;&amp; Linux. Solutions about MIT 6.828</p>
@@ -640,12 +640,81 @@
 <h1 id="竞争条件与信号量-Important"><a href="#竞争条件与信号量-Important" class="headerlink" title="竞争条件与信号量(Important)"></a>竞争条件与信号量(Important)</h1><p>竞争条件：多个进程读写某些共享数据，而最后的结果取决于进程运行的精确时序。且随着多核的增长，竞争条件变得越来越普遍。</p>
 <p>其原因在于OS的调度进程不会，也不可能确保各个进程之间有确定的顺序。</p>
 <p>因此，我们要做的就是避免竞争条件。其<strong>关键就是阻止多个进程同时读写共享的数据。</strong></p>
-<p>我们把对共享内存进行访问的程序片段成为临界区域(critical region/section)。</p>
+<p>我们把对共享内存进行访问的程序片段成为**临界区域(critical region/section)**。</p>
+<p>&emsp;</p>
 <p><strong>对于一个好的解决方法要满足4个条件：</strong></p>
 <p><strong>1.任何两个进程不能同时在临界区中</strong></p>
 <p>2.不对CPU的速度和数量做任何假设</p>
 <p><strong>3.临界区外运行的进程不得阻塞其他进程</strong></p>
 <p>4.不得使进程无限期等待进入临界区</p>
+<p>&nbsp; </p>
+<h2 id="忙等待-busy-waiting-的互斥"><a href="#忙等待-busy-waiting-的互斥" class="headerlink" title="忙等待(busy waiting)的互斥"></a>忙等待(busy waiting)的互斥</h2><h3 id="一、屏蔽中断"><a href="#一、屏蔽中断" class="headerlink" title="一、屏蔽中断"></a>一、屏蔽中断</h3><p>对于单处理器来说，在进程进入临界区后立即屏蔽所有中断，在离开前打开中断是最直接的方法。屏蔽中断后，时钟中断也被屏蔽——CPU就不会切换到其他进程。</p>
+<p>其缺点在于给了用户程序太大的权力。屏蔽中断对于OS来说很好，但对用户程序却不太合适。</p>
+<p>且由于多核的普及，其他CPU也是可以访问共享内存的。</p>
+<h3 id="二、锁变量"><a href="#二、锁变量" class="headerlink" title="二、锁变量"></a>二、锁变量</h3><p>一种软件解决方法。设置一个共享锁变量，进入临界区前要先开锁才能进入。</p>
+<p>但由于调度的不确定性，如果一个进程在读锁变量为0后，在准备将其设置为1之前被调度，另一个程序将其设置为1，进入临界区。此时再返回，第一个进程将锁变量设为1，也进入临界区。此时临界区中有两个程序。</p>
+<h3 id="三、严格轮换法"><a href="#三、严格轮换法" class="headerlink" title="三、严格轮换法"></a>三、严格轮换法</h3><div class="hljs"><pre><code class="hljs cpp">
+<span class="hljs-keyword">int</span> turn=<span class="hljs-number">0</span>;
+<span class="hljs-comment">/*进程 0*/</span>
+<span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)
+&#123;
+    <span class="hljs-keyword">while</span>(turn!=<span class="hljs-number">0</span>)
+    critical_region();
+    turn=<span class="hljs-number">1</span>;
+    noncritical_region();
+&#125;
+<span class="hljs-comment">/*进程 1*/</span>
+<span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)
+&#123;
+    <span class="hljs-keyword">while</span>(turn!=<span class="hljs-number">1</span>)
+    critical_region();
+    turn=<span class="hljs-number">0</span>;
+    noncritical_region();
+&#125;</code></pre></div>
+
+<p><em>功能描述：</em> 进程0首先检查turn为0，进入临界区；进程1检查turn为0，执行循环一直检查turn直至为1.</p>
+<p>连续测试一个变量直到某个值出现称为<strong>忙等待(Busy waiting)</strong> ——浪费CPU时间，上述锁称为自旋锁。</p>
+<p><em>但这种解法也是存在问题的</em></p>
+<p>假如进程0结束临界区操作，将turn设置为1,。进程0迅速完成非临界区操作，而进程1正在忙于非临界区操作。此时进程0无法进入临界区(turn==1),进程1也不进入临界区。<strong>说明在一个进程比另一个慢得多的情况下，该解法并不太好。</strong></p>
+<p><strong>违背前述条件3，进程0被在临界区外的进程1阻塞无法进入临界区。</strong></p>
+<h3 id="四、Peterson解法-针对两个进程"><a href="#四、Peterson解法-针对两个进程" class="headerlink" title="四、Peterson解法   (针对两个进程)"></a>四、Peterson解法   (针对两个进程)</h3><div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> FALSE 0</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> TRUE 1</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> N 2 <span class="hljs-comment">//进程数量</span></span>
+
+<span class="hljs-keyword">int</span> turn; <span class="hljs-comment">//轮到谁？</span>
+
+<span class="hljs-keyword">int</span> interested[N]=&#123;<span class="hljs-number">0</span>&#125;; <span class="hljs-comment">//所有值初始化为0</span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">enter_region</span><span class="hljs-params">(<span class="hljs-keyword">int</span> process<span class="hljs-comment">/*进程是0或1*/</span>)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> other;					    <span class="hljs-comment">/*另一进程号*/</span>
+    other=<span class="hljs-number">1</span>-process;				
+    interested[process]=TRUE;		<span class="hljs-comment">/*表示感兴趣*/</span>
+    turn = process;					<span class="hljs-comment">/*设置标志*/</span>
+    <span class="hljs-keyword">while</span>(turn=process&amp;&amp;interested[other]==TRUE); <span class="hljs-comment">/*空语句*/</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">leave_region</span><span class="hljs-params">(<span class="hljs-keyword">int</span> process)</span> 		<span class="hljs-comment">/*离开的进程*/</span></span>
+<span class="hljs-function"></span>&#123;
+    interested[process]=FALSE;		<span class="hljs-comment">/*离开临界区*/</span>
+&#125;</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             </div>
             <hr>
@@ -677,6 +746,12 @@
                 <div class="post-prevnext row">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2020/11/17/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Linux-存储管理</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
@@ -857,7 +932,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Operating System&nbsp;",
+        "Linux-进程&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

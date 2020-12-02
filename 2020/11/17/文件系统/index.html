@@ -20,10 +20,23 @@
   <meta name="description" content="A Website for record my learning process.">
   <meta name="author" content="Feng Jay">
   <meta name="keywords" content="Blog Study Computer-science">
-  <title>分类 - 在知识海洋中狗刨</title>
+  <title>Linux-存储管理 - 在知识海洋中狗刨</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark.min.css" />
+    
+  
+
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -46,7 +59,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -152,7 +165,7 @@
 </nav>
 
     <div class="banner intro-2" id="background" parallax=true
-         style="background: url('/img/fenlei.jpg') no-repeat center center;
+         style="background: url('/img/article.jpg') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
@@ -160,6 +173,43 @@
             <span class="h2" id="subtitle">
               
             </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-11-17 17:42" pubdate>
+        2020年11月17日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      185 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      3
+       分钟
+    </span>
+  
+
+  
+  
+</div>
 
             
           </div>
@@ -172,255 +222,110 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
+      
 
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">Linux-存储管理</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <p>计算机组成及Linux系统基础知识、实验思路解析</p>
+<a id="more"></a>
 
-
-
-
-
-
-<div class="category-list">
-  
-  
-  
-  
-    
-    
-    <div class="category row">
-      <a
-        class="category-item collapsed list-group-item category-item-action col-10 col-md-11"
-        id="heading-ckhc30xzz0003jku03gs20hyw" role="tab" data-toggle="collapse" href="#collapse-ckhc30xzz0003jku03gs20hyw"
-        aria-expanded="false"
-      >
-        Algorithm
-        <i class="iconfont icon-arrowright"></i>
-      </a>
-      <a href="/categories/Algorithm/" class="category-count col-2 col-md-1">
-        <i class="iconfont icon-articles"></i>
-        <span>4</span>
-      </a>
-      <div class="category-collapse">
-        
-          
-  <div id="collapse-ckhc30xzz0003jku03gs20hyw" class="collapse in" role="tabpanel"
-       aria-labelledby="heading-ckhc30xzz0003jku03gs20hyw">
-    
-    
-    
-      
-      
-        <a href="/2020/11/07/Dynamic-Programming/" class="list-group-item list-group-item-action">
-          <span class="category-post">Dynamic Programming</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2020/10/11/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/" class="list-group-item list-group-item-action">
-          <span class="category-post">贪心算法&amp;&amp;优化问题</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2020/09/28/%E6%AF%8F%E6%97%A5%E6%B4%9B%E8%B0%B7-9-28/" class="list-group-item list-group-item-action">
-          <span class="category-post">每日洛谷_9.28</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2020/09/22/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95/" class="list-group-item list-group-item-action">
-          <span class="category-post">欧几里得算法</span>
-        </a>
-      
-    
-  </div>
-
-        
-      </div>
-    </div>
-  
-    
-    
-    <div class="category row">
-      <a
-        class="category-item collapsed list-group-item category-item-action col-10 col-md-11"
-        id="heading-ckhc30y06000ejku0ge660pxd" role="tab" data-toggle="collapse" href="#collapse-ckhc30y06000ejku0ge660pxd"
-        aria-expanded="false"
-      >
-        Operating System
-        <i class="iconfont icon-arrowright"></i>
-      </a>
-      <a href="/categories/Operating-System/" class="category-count col-2 col-md-1">
-        <i class="iconfont icon-articles"></i>
-        <span>3</span>
-      </a>
-      <div class="category-collapse">
-        
-          
-  <div id="collapse-ckhc30y06000ejku0ge660pxd" class="collapse in" role="tabpanel"
-       aria-labelledby="heading-ckhc30y06000ejku0ge660pxd">
-    
-    
-    
-      
-      
-        <a href="/2020/11/17/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" class="list-group-item list-group-item-action">
-          <span class="category-post">Linux-存储管理</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2020/11/14/Operating%E2%80%94-System/" class="list-group-item list-group-item-action">
-          <span class="category-post">Linux-进程</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2020/11/10/NEMU/" class="list-group-item list-group-item-action">
-          <span class="category-post">NEMU</span>
-        </a>
-      
-    
-  </div>
-
-        
-      </div>
-    </div>
-  
-    
-    
-    <div class="category row">
-      <a
-        class="category-item collapsed list-group-item category-item-action col-10 col-md-11"
-        id="heading-ckhc30y0a000rjku0eio86dx5" role="tab" data-toggle="collapse" href="#collapse-ckhc30y0a000rjku0eio86dx5"
-        aria-expanded="false"
-      >
-        Life
-        <i class="iconfont icon-arrowright"></i>
-      </a>
-      <a href="/categories/Life/" class="category-count col-2 col-md-1">
-        <i class="iconfont icon-articles"></i>
-        <span>2</span>
-      </a>
-      <div class="category-collapse">
-        
-          
-  <div id="collapse-ckhc30y0a000rjku0eio86dx5" class="collapse in" role="tabpanel"
-       aria-labelledby="heading-ckhc30y0a000rjku0eio86dx5">
-    
-    
-    
-      
-      
-        <a href="/2020/11/13/%E6%9C%88%E5%A4%9C%E6%9D%82%E8%B0%88/" class="list-group-item list-group-item-action">
-          <span class="category-post">大学？人生？</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2020/11/03/%E5%85%B1%E5%8B%89/" class="list-group-item list-group-item-action">
-          <span class="category-post">人这一辈子，最不能透支的是什么？</span>
-        </a>
-      
-    
-  </div>
-
-        
-      </div>
-    </div>
-  
-    
-    
-    <div class="category row">
-      <a
-        class="category-item collapsed list-group-item category-item-action col-10 col-md-11"
-        id="heading-ckhc30y040008jku0a3iy4g3j" role="tab" data-toggle="collapse" href="#collapse-ckhc30y040008jku0a3iy4g3j"
-        aria-expanded="false"
-      >
-        Bucket List
-        <i class="iconfont icon-arrowright"></i>
-      </a>
-      <a href="/categories/Bucket-List/" class="category-count col-2 col-md-1">
-        <i class="iconfont icon-articles"></i>
-        <span>1</span>
-      </a>
-      <div class="category-collapse">
-        
-          
-  <div id="collapse-ckhc30y040008jku0a3iy4g3j" class="collapse in" role="tabpanel"
-       aria-labelledby="heading-ckhc30y040008jku0a3iy4g3j">
-    
-    
-    
-      
-      
-        <a href="/2020/08/11/My-Bucket-List-version-1/" class="list-group-item list-group-item-action">
-          <span class="category-post">My Bucket List -- version 1</span>
-        </a>
-      
-    
-  </div>
-
-        
-      </div>
-    </div>
-  
-    
-    
-    <div class="category row">
-      <a
-        class="category-item collapsed list-group-item category-item-action col-10 col-md-11"
-        id="heading-ckhc30y09000kjku0gau87ck0" role="tab" data-toggle="collapse" href="#collapse-ckhc30y09000kjku0gau87ck0"
-        aria-expanded="false"
-      >
-        Socialism
-        <i class="iconfont icon-arrowright"></i>
-      </a>
-      <a href="/categories/Socialism/" class="category-count col-2 col-md-1">
-        <i class="iconfont icon-articles"></i>
-        <span>1</span>
-      </a>
-      <div class="category-collapse">
-        
-          
-  <div id="collapse-ckhc30y09000kjku0gau87ck0" class="collapse in" role="tabpanel"
-       aria-labelledby="heading-ckhc30y09000kjku0gau87ck0">
-    
-    
-    
-      
-      
-        <a href="/2020/09/03/%E4%B8%96%E7%95%8C%E5%8F%8D%E6%B3%95%E8%A5%BF%E6%96%AF%E6%88%98%E4%BA%89%E8%83%9C%E5%88%A975%E5%91%A8%E5%B9%B4%E6%9C%89%E6%84%9F/" class="list-group-item list-group-item-action">
-          <span class="category-post">世界反法西斯战争胜利75周年有感</span>
-        </a>
-      
-    
-  </div>
-
-        
-      </div>
-    </div>
-  
-</div>
-
-              </div>
+<h1 id="speed-problem"><a href="#speed-problem" class="headerlink" title="speed problem"></a>speed problem</h1><p>局部性原理</p>
+<p>TLB(Translation Lookaside Buffer)&emsp; 相联存储器 &emsp; 快表(内存中叫慢表，存了全部的页表信息)</p>
+<h1 id="Storage-Problem"><a href="#Storage-Problem" class="headerlink" title="Storage Problem"></a>Storage Problem</h1><p>请求式分页+多级页表(局部性原理) &emsp;时间换空间</p>
+<p>倒排页表</p>
+<p>1 OS，1 page，大小取决于物理内存大小。</p>
+<p>下标为物理页帧号，内容存的是逻辑页号。</p>
+<p>根据内容查找。</p>
+<p>硬件实现hash查找(TLB)</p>
+<h1 id="缺页中断"><a href="#缺页中断" class="headerlink" title="缺页中断"></a>缺页中断</h1><h1 id="页面置换算法"><a href="#页面置换算法" class="headerlink" title="页面置换算法"></a>页面置换算法</h1><p>抖动(thrashing)</p>
+<h2 id="最优页面置换算法"><a href="#最优页面置换算法" class="headerlink" title="最优页面置换算法"></a>最优页面置换算法</h2><h2 id="最近未使用页面置换算法"><a href="#最近未使用页面置换算法" class="headerlink" title="最近未使用页面置换算法"></a>最近未使用页面置换算法</h2><h2 id="FF置换算法"><a href="#FF置换算法" class="headerlink" title="FF置换算法"></a>FF置换算法</h2><h2 id="二次机会页面算法"><a href="#二次机会页面算法" class="headerlink" title="二次机会页面算法"></a>二次机会页面算法</h2><h2 id="时钟页面置换算法"><a href="#时钟页面置换算法" class="headerlink" title="时钟页面置换算法"></a>时钟页面置换算法</h2><h2 id="LRU-最近最少使用"><a href="#LRU-最近最少使用" class="headerlink" title="LRU 最近最少使用"></a>LRU 最近最少使用</h2>
             </div>
-          </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Operating-System/">Operating System</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/OS/">OS</a>
+                    
+                      <a class="hover-with-bg" href="/tags/C/">C</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/11/14/Operating%E2%80%94-System/">
+                        <span class="hidden-mobile">Linux-进程</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                <script src="https://utteranc.es/client.js"
+        repo="Feng-Jay/commit-utterance"
+        issue-term="title"
+        theme="github-dark"
+        crossorigin="anonymous"
+        async>
+</script>
+              </article>
+            
+          </article>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
   </main>
 
@@ -521,6 +426,31 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
 
 
   <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
@@ -528,7 +458,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "分类&nbsp;",
+        "Linux-存储管理&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
@@ -543,6 +473,21 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "rigth",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
 
 
   <script  src="/js/local-search.js" ></script>
@@ -556,6 +501,20 @@
   </script>
 
 
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
 
 
 
