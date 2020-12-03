@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      6.2k 字
+      6.5k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      121
+      128
        分钟
     </span>
   
@@ -828,9 +828,56 @@ semaphore full=<span class="hljs-number">0</span>;
 
 
 
+<h1 id="哲学家就餐问题"><a href="#哲学家就餐问题" class="headerlink" title="哲学家就餐问题"></a><font color="red">哲学家就餐问题</font></h1><div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> N 5 <span class="hljs-comment">/*哲学家数目*/</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> LEFT (i+N-1)%N <span class="hljs-comment">/*i的左邻居编号*/</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> RIGHT (i+1)%N <span class="hljs-comment">/*i的右邻居编号*/</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> THINKING 0 <span class="hljs-comment">/*哲学家在思考*/</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> HUNGRY 1 <span class="hljs-comment">/*哲学家试图拿起叉子*/</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> EATING 2 <span class="hljs-comment">/*哲学家进餐*/</span></span>
 
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">int</span> semaphore;
 
+<span class="hljs-keyword">int</span> state[N];<span class="hljs-comment">/*记录每位哲学家的状态*/</span>
+semaphore mutex=<span class="hljs-number">1</span>;<span class="hljs-comment">/*临界区互斥*/</span>
+semaphore s[N];<span class="hljs-comment">/*每个哲学家一个信号量*/</span>
 
+<span class="hljs-comment">/*检查哲学家是否可以就餐*/</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">test</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i<span class="hljs-comment">/*每个哲学家编号*/</span>)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span>(state[i]==HUNGRY&amp;&amp;state[LEFT]!=EATING&amp;&amp;state[RIGHT]!=EATING)&#123;
+        state[i]=EATING;
+        V(&amp;s[i]);
+    &#125;
+&#125;
+<span class="hljs-comment">/*拿叉子，一次拿两个*/</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">take_forks</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i)</span></span>
+<span class="hljs-function"></span>&#123;
+    P(&amp;mutex);
+    state[i]=HUNGRY;<span class="hljs-comment">/*记录哲学家i处于饥饿状态*/</span>
+    test(i);	<span class="hljs-comment">/*尝试获取两把叉子*/</span>
+    V(&amp;mutex);	
+    P(&amp;s[i]);	<span class="hljs-comment">/*得不到需要的叉子就阻塞*/</span>
+&#125;
+<span class="hljs-comment">/*放下叉子*/</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">put_forks</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i)</span></span>
+<span class="hljs-function"></span>&#123;
+    P(&amp;mutex);
+    state[i]=THINKING;<span class="hljs-comment">/*哲学家就餐完毕*/</span>
+    test(LEFT);
+    test(RIGHT);<span class="hljs-comment">/*检查左右是否可吃*/</span>
+    V(&amp;mutex);
+&#125;
+
+<span class="hljs-comment">/*主函数*/</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">philosopher</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;
+        think();
+        take_forks(i);<span class="hljs-comment">/*获取两把叉子或阻塞*/</span>
+        eat();
+        put_forks(i);<span class="hljs-comment">/*放回两把叉子*/</span>
+    &#125;
+&#125;</code></pre></div>
 
 
             </div>
