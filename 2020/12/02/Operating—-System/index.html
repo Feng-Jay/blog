@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      6.5k 字
+      6.7k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      128
+      133
        分钟
     </span>
   
@@ -879,6 +879,43 @@ semaphore s[N];<span class="hljs-comment">/*每个哲学家一个信号量*/</sp
     &#125;
 &#125;</code></pre></div>
 
+<h1 id="读者—写者问题"><a href="#读者—写者问题" class="headerlink" title="读者—写者问题"></a><font color="red">读者—写者问题</font></h1><p>解决多个进程读写数据的情况：读者无互斥，读写，写写，有互斥。</p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">int</span> semaphore;
+semaphore mutex=<span class="hljs-number">1</span>;<span class="hljs-comment">/*控制对reader的访问*/</span>
+semaphore database=<span class="hljs-number">1</span>;
+<span class="hljs-keyword">int</span> reader=<span class="hljs-number">0</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">reader</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>
+<span class="hljs-function"></span>&#123;
+	<span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)
+	&#123;
+		P(&amp;mutex);
+		reader++;
+		<span class="hljs-keyword">if</span>(reader==<span class="hljs-number">1</span>)<span class="hljs-comment">//只需要让第一个读者获取数据库访问权限，其他读者仅需要reader++即可</span>
+		P(&amp;database);
+		V(&amp;mutex);
+		read_database();
+		P(mutex);
+		reader--;
+		<span class="hljs-keyword">if</span>(reader==<span class="hljs-number">0</span>)
+		V(&amp;database);
+		V(&amp;mutex);
+		use_data();
+	&#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">writer</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>
+<span class="hljs-function"></span>&#123;
+	<span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)
+	&#123;
+		P(&amp;database);<span class="hljs-comment">//写者只关心数据库权限是否拥有即可。</span>
+		write_data();
+		V(&amp;database);
+	&#125;
+&#125;</code></pre></div>
+
+<p><strong>只需要让第一个读者获取数据库访问权限</strong>，<strong>其他读者仅需要</strong> <strong>reader++</strong> <strong>即可</strong>。</p>
+<p>而写者关心的问题就比较少了，只需要看是否有其他进程有数据库权限即可(写者和写者、读者间都要互斥)</p>
 
             </div>
             <hr>
