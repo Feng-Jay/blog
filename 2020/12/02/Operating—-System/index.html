@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      5.6k 字
+      6.2k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      106
+      121
        分钟
     </span>
   
@@ -714,7 +714,125 @@ leave_region:
 	RET				        |<span class="hljs-built_in">return</span></code></pre></div>
 
 <p>在intel的指令集中也有这样的操作：XCHG</p>
-<h2 id="生产者消费者问题"><a href="#生产者消费者问题" class="headerlink" title="生产者消费者问题"></a><font color="red">生产者消费者问题</font></h2><h2 id="信号量-Semaphore"><a href="#信号量-Semaphore" class="headerlink" title="信号量(Semaphore)"></a>信号量(Semaphore)</h2>
+<h1 id="信号量-Semaphore"><a href="#信号量-Semaphore" class="headerlink" title="信号量(Semaphore)"></a><font color="red">信号量(Semaphore)</font></h1><p>信号量是0或者大于0的整数。</p>
+<p>信号量只能被PV操作控制 (初始化除外；即使只想要读信号量的值也要通过PV)</p>
+<p><em>PV操作是原子操作</em>&emsp;</p>
+<p>P操作检查信号量，若大于0则将其减1。若等于0，则进程睡眠。</p>
+<p>V操作对信号量的值增加1。</p>
+<p><strong>PV在睡眠—唤醒中的实现</strong></p>
+<div class="hljs"><pre><code class="hljs c++"><span class="hljs-comment">/*P operation*/</span>
+P(Semaphore S)
+&#123;
+	S=S<span class="hljs-number">-1</span>;
+    <span class="hljs-keyword">if</span>(S&lt;<span class="hljs-number">0</span>)&#123;
+        added to the semaphore<span class="hljs-number">&#x27;</span>s <span class="hljs-built_in">queue</span> <span class="hljs-keyword">and</span> sleep;
+    &#125;
+&#125;
+
+<span class="hljs-comment">/*V operation*/</span>
+V(Semaphore S)
+&#123;
+    S=S+<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">if</span>(S&lt;<span class="hljs-number">0</span>)&#123;
+        wake up waiting <span class="hljs-built_in">process</span> in the semaphore<span class="hljs-number">&#x27;</span>s <span class="hljs-built_in">queue</span>;
+    &#125;
+&#125;</code></pre></div>
+
+<p><strong>PV在忙等待中的实现</strong></p>
+<div class="hljs"><pre><code class="hljs c++"><span class="hljs-comment">/*P operation*/</span>
+P(Semaphore S)
+&#123;
+    <span class="hljs-keyword">while</span>(!S&gt;<span class="hljs-number">0</span>)
+    <span class="hljs-built_in">yield</span> the CPU;
+    S--;
+&#125;
+
+<span class="hljs-comment">/*V operation*/</span>
+V(Semaphore S)
+&#123;
+    S++;
+&#125;</code></pre></div>
+
+
+
+<h1 id="生产者消费者问题"><a href="#生产者消费者问题" class="headerlink" title="生产者消费者问题"></a><font color="red">生产者消费者问题</font></h1><p>两个进程共享一个公共的固定大小的缓冲区，其中一个是生产者：将信息放入缓冲区；另一个是消费者：从缓冲区中读取信息。主要是解决<strong>当缓冲区已满，生产者无法在放入新数据，让他睡眠。当缓冲区为空时，消费者睡眠直到生产者向其中放入一些数据后再将其唤醒。</strong></p>
+<p>下面给出一个有问题的代码，你可以思考一下哪里出了错误</p>
+<div class="hljs"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> N 100</span>
+<span class="hljs-keyword">int</span> count=<span class="hljs-number">0</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">producer</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> item;
+    <span class="hljs-keyword">while</span>(TRUE)&#123;
+        item=produce_item();
+        <span class="hljs-keyword">if</span>(count==N)
+        sleep();
+        insert_item(item);
+        count=count+<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">if</span>(count==<span class="hljs-number">1</span>)
+        wakeup(consumer);
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">consumer</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> item;
+    <span class="hljs-keyword">while</span>(TRUE)&#123;
+        <span class="hljs-keyword">if</span>(count==<span class="hljs-number">0</span>)
+        sleep();
+        item=remove_item();
+        count=count<span class="hljs-number">-1</span>;
+        <span class="hljs-keyword">if</span>(count==N<span class="hljs-number">-1</span>)
+        wakeup(producer);
+        consume_item(item);
+    &#125;
+&#125;</code></pre></div>
+
+<p>这份代码的问题在于对count的访问没有限制。</p>
+<p>假设这种情况：缓冲区为空，消费者读取count==0，此时调度程序突然调度——阻塞消费者，启动生产者。生产者生产1个数据后count+1，唤醒消费者。但此时消费者并没有sleep，wakeup信号消失。而消费者下次运行时直接sleep；生产者总会生产完N个然后sleep。此时两个进程都在sleep，会永远睡眠下去。</p>
+<p><em>解决方法：加一个唤醒等待位，即不让wakeup信号消失。</em></p>
+<p><strong>但这种解决方法并没有从根本上解决问题</strong></p>
+<p>下面给出一份使用信号量的代码</p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> N 100</span>
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">int</span> semaphore;
+
+semaphore mutex=<span class="hljs-number">1</span>;
+semaphore empty=N;
+semaphore full=<span class="hljs-number">0</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">producer</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> item;
+    <span class="hljs-keyword">while</span>(TRUE)&#123;
+        item=prodece_item();<span class="hljs-comment">//产生数据</span>
+        P(&amp;empty);			<span class="hljs-comment">//空槽--</span>
+        P(&amp;mutex);			<span class="hljs-comment">//进入临界区</span>
+        inster_item();		<span class="hljs-comment">//数据放入临界区</span>
+        V(&amp;mutex);			<span class="hljs-comment">//离开临界区</span>
+        V(&amp;full);			<span class="hljs-comment">//满槽++</span>
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">consumer</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> item;
+    <span class="hljs-keyword">while</span>(TRUE)&#123;
+        P(&amp;full);		<span class="hljs-comment">//满槽--</span>
+        P(&amp;mutex);		<span class="hljs-comment">//进入临界区</span>
+        item=remove_item();		<span class="hljs-comment">//从缓冲区读出数据</span>
+        V(&amp;mutex);		<span class="hljs-comment">//离开临界区</span>
+        V(&amp;empty);		<span class="hljs-comment">//空槽++</span>
+        consume_item(item);		<span class="hljs-comment">//处理数据</span>
+    &#125;
+&#125;</code></pre></div>
+
+
+
+
+
+
+
+
             </div>
             <hr>
             <div>
