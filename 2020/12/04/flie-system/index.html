@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      282 字
+      329 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      5
+      6
        分钟
     </span>
   
@@ -253,7 +253,14 @@
 <h1 id="多级索引-商用"><a href="#多级索引-商用" class="headerlink" title="多级索引 商用"></a>多级索引 商用</h1><p> 部分作为直接指针（指向数据块）</p>
 <p>部分作为K级间接指针(指向表)</p>
 <p><strong>计算指向数据大小</strong></p>
-<p>12+（1024/4)+(1024/4)(1024/4)+(1024/4)^3</p>
+<p>12+（1024/4)+(1024/4)(1024/4)+(1024/4)^3 </p>
+<h1 id="Realize-file-system"><a href="#Realize-file-system" class="headerlink" title="Realize file system"></a>Realize file system</h1><p><strong>VFS将用户与file system隔绝</strong></p>
+<p><strong>EXT2</strong></p>
+<p>filesystem is full when:</p>
+<p>1.No more inode block</p>
+<p>2.No more data block</p>
+<p> 多少个字节应该有一个inode( bytes-per-inode) 4096default(1:31)</p>
+<p><strong>空闲块管理</strong></p>
 
             </div>
             <hr>

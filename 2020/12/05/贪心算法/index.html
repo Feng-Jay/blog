@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.2k 字
+      2.8k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      52
+      65
        分钟
     </span>
   
@@ -540,7 +540,88 @@ sort(target_array, target_array+length,cmp);
 
 
 
-<h1 id="拓扑排序"><a href="#拓扑排序" class="headerlink" title="拓扑排序"></a>拓扑排序</h1>
+<h1 id="拓扑排序"><a href="#拓扑排序" class="headerlink" title="拓扑排序"></a>拓扑排序</h1><p><strong>定义：</strong></p>
+<p>任务的先后顺序可用有向图表示，称为AOV网络。<strong>有向图的顶点代表任务，有向边(i,j)表示先后关系：任务i完成后才能开始任务j。</strong></p>
+<p>拓扑排序要求对任务进行排序，使得排序序列先后关系和AOV网定义的先后关系一致。</p>
+<p><strong>根据任务的有向图建立拓扑序列的过程称为拓扑排序。</strong></p>
+<hr>
+<p>朴素思想就是对这n个任务进行全排列，<strong>时间复杂度为O(n!)</strong></p>
+<p>&emsp;</p>
+<p><strong>而贪心法从空集开始，每步产生拓扑序列中的一个顶点W。</strong></p>
+<p><strong>Greedy Startget</strong>：从当前不在拓扑序列的顶点中选取一顶点w，其所有先行节点v都在已产生的拓扑序列中，并将其加入到拓扑序列。</p>
+<p><em>使用检测入度的方法确定w：入度为0的顶点要加入到拓扑序列中。</em></p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;queue&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">tuopu</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; martix,<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; &amp;indegree,<span class="hljs-keyword">int</span> num_node)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-built_in">queue</span>&lt;<span class="hljs-keyword">int</span>&gt; ans;
+    <span class="hljs-keyword">int</span> counter=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)<span class="hljs-comment">/*ini the queue*/</span>
+    &#123;
+        <span class="hljs-keyword">if</span>(indegree[i]==<span class="hljs-number">0</span>)
+        &#123; 
+            ans.push(i);
+            indegree[i]=<span class="hljs-number">-1</span>;
+        &#125;
+    &#125;
+    <span class="hljs-keyword">while</span>(!ans.empty())&#123;
+        <span class="hljs-keyword">int</span> temp=ans.front();
+        <span class="hljs-built_in">cout</span>&lt;&lt;temp&lt;&lt;<span class="hljs-string">&quot; &quot;</span>;
+        ans.pop();
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)<span class="hljs-comment">/*pop,then modify indegree array, then push new node!*/</span>
+        &#123;
+            <span class="hljs-keyword">if</span>(martix[i][temp]&gt;<span class="hljs-number">0</span>)
+            &#123;
+                martix[i][temp]--;
+                indegree[i]--;
+            &#125;
+            <span class="hljs-keyword">if</span>(indegree[i]==<span class="hljs-number">0</span>)
+            &#123;
+                ans.push(i);
+                indegree[i]=<span class="hljs-number">-1</span>;
+            &#125;
+        &#125;
+        counter++;
+    &#125;
+    <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">if</span>(counter!=num_node)<span class="hljs-comment">/*check circle*/</span>
+    &#123;
+        <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;Circle inside!&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> num_edge,num_node;
+    <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;Input number of nodes and edges&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+    <span class="hljs-built_in">cin</span>&gt;&gt;num_node&gt;&gt;num_edge;
+
+    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; <span class="hljs-title">martix</span><span class="hljs-params">(num_node,<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;(num_node) )</span></span>;
+   
+    <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;Input nodes of each edge:x-&gt;y&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">int</span> x,y;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;num_edge;i++)
+    &#123;
+        <span class="hljs-built_in">cin</span>&gt;&gt;x&gt;&gt;y;
+        martix[y][x]++;
+    &#125;
+    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">indegree</span><span class="hljs-params">(num_node)</span></span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)<span class="hljs-comment">/*calcilate indegree array*/</span>
+    &#123;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j=<span class="hljs-number">0</span>;j&lt;num_node;j++)
+        &#123;
+            <span class="hljs-keyword">if</span>(martix[i][j]!=<span class="hljs-number">0</span>)
+            indegree[i]++;
+        &#125;
+    &#125;
+    tuopu(martix,indegree,num_node);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre></div>
+
+
             </div>
             <hr>
             <div>
