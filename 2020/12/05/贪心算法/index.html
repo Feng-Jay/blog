@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      65
+      66
        分钟
     </span>
   
@@ -550,7 +550,8 @@ sort(target_array, target_array+length,cmp);
 <p><strong>而贪心法从空集开始，每步产生拓扑序列中的一个顶点W。</strong></p>
 <p><strong>Greedy Startget</strong>：从当前不在拓扑序列的顶点中选取一顶点w，其所有先行节点v都在已产生的拓扑序列中，并将其加入到拓扑序列。</p>
 <p><em>使用检测入度的方法确定w：入度为0的顶点要加入到拓扑序列中。</em></p>
-<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-comment">/*easy code using martix to storage graphy*/</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
 <span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
 <span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;queue&gt;</span></span>
 <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
