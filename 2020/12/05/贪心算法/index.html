@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.8k 字
+      3.3k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      66
+      80
        分钟
     </span>
   
@@ -619,6 +619,95 @@ sort(target_array, target_array+length,cmp);
         &#125;
     &#125;
     tuopu(martix,indegree,num_node);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre></div>
+
+<h1 id="单源最短路经"><a href="#单源最短路经" class="headerlink" title="单源最短路经"></a>单源最短路经</h1><p><strong>问题描述：</strong>给定有向图G，其每条边都有一个非负的权值a[ i ] [ j ]，路径长度定义为路径上边的权值之和。<strong>给定源节点S，找出从S到图中所有其他节点的最短路径及其长度。</strong></p>
+<hr>
+<p><strong>迪杰斯特拉算法</strong> <em>适用于权值非负情况</em></p>
+<p>步骤：</p>
+<p><strong>1.维护一个集合S，该集合中源节点到其他节点的最短路已知，初始时该集合为空</strong></p>
+<p><strong>2.从V-S集合中寻找节点v，使源节点到该点距离最小</strong></p>
+<p><strong>3.更新V的临界点到源节点的距离值。</strong></p>
+<p><strong>正确性原理：</strong> 如果权值非负，那么最短路的子路径也是最短路，其长度小于原来路径长度。<em>so，我们从长度小的最短路找起。</em></p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-comment">/*easy code using martix to storage martix*/</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> max_node=<span class="hljs-number">50</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> max_dis=<span class="hljs-number">9999</span>;
+
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+
+<span class="hljs-keyword">int</span>* S;
+<span class="hljs-keyword">int</span>* visted;
+<span class="hljs-keyword">int</span> G [max_node][max_node];
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">dijkstra</span><span class="hljs-params">(<span class="hljs-keyword">int</span> num_node,<span class="hljs-keyword">int</span>* S,<span class="hljs-keyword">int</span> *visted,<span class="hljs-keyword">int</span> G[max_node][max_node])</span></span>
+<span class="hljs-function"></span>&#123;
+
+    <span class="hljs-keyword">int</span> temp;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> m=<span class="hljs-number">0</span>;m&lt;num_node;m++)
+    &#123;
+        <span class="hljs-keyword">int</span> min_dis=max_dis;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)
+        &#123;
+            <span class="hljs-keyword">if</span>(visted[i]==<span class="hljs-number">0</span> &amp;&amp; S[i]&lt;min_dis)&#123;
+                min_dis=S[i];
+                temp=i;
+            &#125;
+        &#125;
+       
+        visted[temp]=<span class="hljs-number">1</span>;
+
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)
+        &#123;
+            <span class="hljs-keyword">if</span>(G[temp][i]&lt;max_dis)
+            &#123;
+                <span class="hljs-keyword">if</span>(S[i]&gt;S[temp]+G[temp][i])
+                &#123;
+                    S[i]=S[temp]+G[temp][i];
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> num_node,num_edge;
+    <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;Input the number of nodes and edge&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+    <span class="hljs-built_in">cin</span>&gt;&gt;num_node&gt;&gt;num_edge;
+
+    S=<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span> [num_node];
+    visted=<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[num_node];
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)
+    visted[i]=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)&#123;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j=<span class="hljs-number">0</span>;j&lt;num_node;j++)&#123;
+            <span class="hljs-keyword">if</span>(i==j)
+            G[i][j]=<span class="hljs-number">0</span>;
+            <span class="hljs-keyword">else</span>
+            G[i][j]=max_dis;
+        &#125;
+    &#125;
+
+    <span class="hljs-keyword">int</span> x,y,weight;
+    <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;Input the edge:X-&gt;Y and input the weight&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;num_edge;i++)
+    &#123;
+        <span class="hljs-built_in">cin</span>&gt;&gt;x&gt;&gt;y&gt;&gt;weight;
+        G[x<span class="hljs-number">-1</span>][y<span class="hljs-number">-1</span>]=weight;
+    &#125;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)
+    &#123;
+        S[i]=G[<span class="hljs-number">0</span>][i];
+    &#125;
+    visted[<span class="hljs-number">0</span>]=<span class="hljs-number">1</span>;
+
+    dijkstra(num_node,S,visted,G);
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)
+    <span class="hljs-built_in">cout</span>&lt;&lt;S[i]&lt;&lt;<span class="hljs-string">&quot; &quot;</span>;
+    <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 &#125;</code></pre></div>
 
