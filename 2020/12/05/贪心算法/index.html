@@ -20,7 +20,7 @@
   <meta name="description" content="A Website for record my learning process.">
   <meta name="author" content="Feng Jay">
   <meta name="keywords" content="Blog Study Computer-science">
-  <title>贪心算法&amp;&amp;优化问题 - 在知识海洋中狗刨</title>
+  <title>Greedy Algorithm - 在知识海洋中狗刨</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.7k 字
+      4.1k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      92
+      103
        分钟
     </span>
   
@@ -232,7 +232,7 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">贪心算法&amp;&amp;优化问题</h1>
+            <h1 style="display: none">Greedy Algorithm</h1>
             
             <div class="markdown-body" id="post-body">
               <p>Try to be a good coder and emmm… review !</p>
@@ -714,7 +714,7 @@ sort(target_array, target_array+length,cmp);
 <h1 id="最小生成树"><a href="#最小生成树" class="headerlink" title="最小生成树"></a>最小生成树</h1><p><strong>问题描述：</strong></p>
 <p>具有n个顶点的联通的无向图G，图的每条边e有一非负权值c(e)，也称为成本，求有最小成本的生成树，每个生成树刚好具有n-1条边。</p>
 <p>即选择n-1条边使他们形成G的最小生成树。</p>
-<h2 id="Kruskal-算法"><a href="#Kruskal-算法" class="headerlink" title="Kruskal 算法"></a>Kruskal 算法</h2><p><strong>贪心策略：</strong>每次都选权值最小且与以前选择的边不构成cycle的边e。</p>
+<h2 id="Kruskal-算法（以边为对象）"><a href="#Kruskal-算法（以边为对象）" class="headerlink" title="Kruskal 算法（以边为对象）"></a>Kruskal 算法（以边为对象）</h2><p><strong>贪心策略：</strong>每次都选权值最小且与以前选择的边不构成cycle的边e。</p>
 <p><em>需要按权值由大到小对边排序</em></p>
 <div class="hljs"><pre><code class="hljs cpp"><span class="hljs-comment">/*easy code by merge set*/</span>
 <span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
@@ -804,7 +804,82 @@ sort(target_array, target_array+length,cmp);
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 &#125;</code></pre></div>
 
-<h2 id="Prime-算法"><a href="#Prime-算法" class="headerlink" title="Prime 算法"></a>Prime 算法</h2>
+<h2 id="Prime-算法-（以点为对象）"><a href="#Prime-算法-（以点为对象）" class="headerlink" title="Prime 算法 （以点为对象）"></a>Prime 算法 （以点为对象）</h2><p><strong>算法描述：</strong></p>
+<p><strong>1）以某一个点开始，寻找当前该点可以访问的所有的边；</strong><br><strong>2）在已经寻找的边中发现最小边，这个边必须有一个点还没有访问过，将还没有访问的点加入我们的集合，记录添加的边；</strong><br><strong>3）寻找当前集合可以访问的所有边，重复2的过程，直到没有新的点可以加入；</strong><br><strong>4）此时由所有边构成的树即为最小生成树。</strong></p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-comment">/*easy code using martix to storage graphy*/</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> Max_dis=<span class="hljs-number">9999</span>;
+
+<span class="hljs-keyword">int</span> num_node,num_edge;
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">prime</span><span class="hljs-params">(<span class="hljs-keyword">int</span>**G,<span class="hljs-keyword">int</span> num_node,<span class="hljs-keyword">int</span> num_edge)</span></span>;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;Input the number of nodes and edges&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+    <span class="hljs-built_in">cin</span>&gt;&gt;num_node&gt;&gt;num_edge;
+    <span class="hljs-keyword">int</span> **G=<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>* [num_node];
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt;num_node;i++)
+		G[i] = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[num_node];
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)&#123;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j=<span class="hljs-number">0</span>;j&lt;num_node;j++)&#123;
+            <span class="hljs-keyword">if</span>(i==j)
+            G[i][j]=<span class="hljs-number">0</span>;
+            <span class="hljs-keyword">else</span>
+            G[i][j]=Max_dis;
+        &#125;
+    &#125;
+
+    <span class="hljs-keyword">int</span> x,y,weight;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;num_edge;i++)
+    &#123;
+        <span class="hljs-built_in">cin</span>&gt;&gt;x&gt;&gt;y&gt;&gt;weight;
+        G[x<span class="hljs-number">-1</span>][y<span class="hljs-number">-1</span>]=weight;
+        G[y<span class="hljs-number">-1</span>][x<span class="hljs-number">-1</span>]=weight;
+    &#125;
+    <span class="hljs-built_in">cout</span>&lt;&lt;prime(G,num_node,num_edge)&lt;&lt;<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">prime</span><span class="hljs-params">(<span class="hljs-keyword">int</span>**G ,<span class="hljs-keyword">int</span> num_node,<span class="hljs-keyword">int</span> num_edge)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> start[num_node];
+    <span class="hljs-keyword">int</span> lowdis[num_node];
+    <span class="hljs-keyword">int</span> minid=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">int</span> sum=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)
+    &#123;
+        lowdis[i]=G[<span class="hljs-number">0</span>][i];
+    &#125;
+    start[<span class="hljs-number">0</span>]=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;num_node;i++)
+    &#123;
+        <span class="hljs-keyword">int</span> mindis=Max_dis;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j=<span class="hljs-number">1</span>;j&lt;num_node;j++)
+        &#123;
+            <span class="hljs-keyword">if</span>(lowdis[j]&lt;mindis&amp;&amp;lowdis[j]!=<span class="hljs-number">0</span>)
+            &#123;
+                mindis=lowdis[j];
+                minid=j;
+            &#125;
+        &#125;
+        lowdis[minid]=<span class="hljs-number">0</span>;
+        sum+=mindis;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j=<span class="hljs-number">1</span>;j&lt;num_node;j++)
+        &#123;
+            <span class="hljs-keyword">if</span>(lowdis[j]&gt;G[minid][j])
+            &#123;
+                lowdis[j]=G[minid][j];
+                start[j]=minid;
+            &#125;
+        &#125;
+    &#125;
+    <span class="hljs-keyword">return</span> sum;
+&#125;</code></pre></div>
+
+
             </div>
             <hr>
             <div>
@@ -1013,7 +1088,7 @@ sort(target_array, target_array+length,cmp);
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "贪心算法&&优化问题&nbsp;",
+        "Greedy Algorithm&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
