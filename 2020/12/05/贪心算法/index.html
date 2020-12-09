@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.3k 字
+      3.7k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      80
+      92
        分钟
     </span>
   
@@ -711,7 +711,100 @@ sort(target_array, target_array+length,cmp);
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 &#125;</code></pre></div>
 
+<h1 id="最小生成树"><a href="#最小生成树" class="headerlink" title="最小生成树"></a>最小生成树</h1><p><strong>问题描述：</strong></p>
+<p>具有n个顶点的联通的无向图G，图的每条边e有一非负权值c(e)，也称为成本，求有最小成本的生成树，每个生成树刚好具有n-1条边。</p>
+<p>即选择n-1条边使他们形成G的最小生成树。</p>
+<h2 id="Kruskal-算法"><a href="#Kruskal-算法" class="headerlink" title="Kruskal 算法"></a>Kruskal 算法</h2><p><strong>贪心策略：</strong>每次都选权值最小且与以前选择的边不构成cycle的边e。</p>
+<p><em>需要按权值由大到小对边排序</em></p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-comment">/*easy code by merge set*/</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
 
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;algorithm&gt;</span></span>
+
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> max_node=<span class="hljs-number">50</span>;
+<span class="hljs-keyword">int</span>* father;
+<span class="hljs-keyword">int</span>* son;
+
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Edge</span>&#123;</span>
+    <span class="hljs-keyword">int</span> x,y;<span class="hljs-comment">/*x-&gt;y*/</span>
+    <span class="hljs-keyword">int</span> weight;
+&#125;;
+
+<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">mycmp</span><span class="hljs-params">(Edge a, Edge b)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">return</span> a.weight&lt;b.weight;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">find_root</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">return</span> x==father[x] ? x : find_root(father[x]); 
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">merge_set</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x,<span class="hljs-keyword">int</span> y)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> rootx=find_root(x);
+    <span class="hljs-keyword">int</span> rooty=find_root(y);
+    <span class="hljs-keyword">if</span>(rootx==rooty)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(son[rootx]&gt;=son[rooty])&#123;
+        father[rooty]=rootx;
+        son[rootx]=son[rooty]+son[rootx];
+    &#125;
+    <span class="hljs-keyword">else</span>
+    &#123;
+        father[rootx]=rooty;
+        son[rooty]=son[rooty]+son[rootx];
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> num_node,num_edge;
+    <span class="hljs-keyword">int</span> counter=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">int</span> flag=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">int</span> ans=<span class="hljs-number">0</span>;
+    <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;Input the number of nodes and edges&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+    <span class="hljs-built_in">cin</span>&gt;&gt;num_node&gt;&gt;num_edge;
+    Edge* edge=<span class="hljs-keyword">new</span> Edge[num_edge];
+    father= <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span> [num_node];
+    son=<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span> [num_node];
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)&#123;
+        father[i]=i;
+        son[i]=<span class="hljs-number">1</span>;
+    &#125;
+    <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;Input the edge:x-&gt;y and the weight&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;num_edge;i++)&#123;
+        <span class="hljs-built_in">cin</span>&gt;&gt;edge[i].x&gt;&gt;edge[i].y&gt;&gt;edge[i].weight;
+    &#125;
+    sort(edge,edge+num_edge,mycmp);
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;num_edge<span class="hljs-number">-1</span>;i++)&#123;
+        <span class="hljs-keyword">if</span>(merge_set(edge[i].x,edge[i].y))
+        &#123;
+            counter++;
+            ans+=edge[i].weight;
+            <span class="hljs-built_in">cout</span>&lt;&lt;edge[i].x&lt;&lt;<span class="hljs-string">&quot;-&gt;&quot;</span>&lt;&lt;edge[i].y&lt;&lt;<span class="hljs-built_in">endl</span>;
+        &#125;
+        <span class="hljs-keyword">if</span>(counter==num_node<span class="hljs-number">-1</span>)
+        &#123;
+            flag=<span class="hljs-number">1</span>;
+            <span class="hljs-keyword">break</span>;
+        &#125;
+    &#125;
+    <span class="hljs-keyword">if</span>(flag)
+    &#123;
+        <span class="hljs-built_in">cout</span>&lt;&lt;ans&lt;&lt;<span class="hljs-built_in">endl</span>;
+    &#125;
+    <span class="hljs-keyword">else</span>
+    &#123;
+        <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;Wrong data&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre></div>
+
+<h2 id="Prime-算法"><a href="#Prime-算法" class="headerlink" title="Prime 算法"></a>Prime 算法</h2>
             </div>
             <hr>
             <div>
