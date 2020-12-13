@@ -20,7 +20,7 @@
   <meta name="description" content="A Website for record my learning process.">
   <meta name="author" content="Feng Jay">
   <meta name="keywords" content="Blog Study Computer-science">
-  <title>flie-system - 在知识海洋中狗刨</title>
+  <title>南京大屠杀死难者国家公祭日 - 在知识海洋中狗刨</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -180,8 +180,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-12-04 10:36" pubdate>
-        2020年12月4日 上午
+      <time datetime="2020-12-13 10:16" pubdate>
+        2020年12月13日 上午
       </time>
     </span>
   
@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      452 字
+      36 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      9
+      1
        分钟
     </span>
   
@@ -232,54 +232,33 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">flie-system</h1>
+            <h1 style="display: none">南京大屠杀死难者国家公祭日</h1>
             
             <div class="markdown-body" id="post-body">
-              <p>文件：名称(存在目录中)，属性，数据(存在数据块中)</p>
-<p>inode 可以连续存储也可以非连续存储</p>
-<p>存储属性(owner group size type…)。</p>
-<p>1 file 1 inode-&gt; inumber</p>
-<p>目录文件也有对应的inode，属性，内容(目录内文件名，inumber)</p>
-<p>inode表由内核维护共享</p>
-<p>root dic 的inumber由系统记录。</p>
-<p>root dir 由inumber查inode表，读其数据块，知道目录内文件及inumber</p>
-<p>索引复杂度取决于：目录深度与各层目录下文件多少。</p>
-<p>OS可以控制目录深度：CWD（当前工作目录）//使用相对路径</p>
-<p>data值即为pointer</p>
-<h1 id="shared-files"><a href="#shared-files" class="headerlink" title="shared files"></a>shared files</h1><p>软链接/硬链接</p>
-<h1 id="连续分配"><a href="#连续分配" class="headerlink" title="连续分配"></a>连续分配</h1><p>按块/扇区分配，优点：访问速度快。实现随机访问。</p>
-<p>缺点：连续存储对文件大小不固定的文件可能会导致没有空余空间，只能剪切。</p>
-<h1 id="非连续，link-list"><a href="#非连续，link-list" class="headerlink" title="非连续，link list"></a>非连续，link list</h1><p>大小灵活，访问速度慢。</p>
-<h1 id="多级索引-商用"><a href="#多级索引-商用" class="headerlink" title="多级索引 商用"></a>多级索引 商用</h1><p> 部分作为直接指针（指向数据块）</p>
-<p>部分作为K级间接指针(指向表)</p>
-<p><strong>计算指向数据大小</strong></p>
-<p>12+（1024/4)+(1024/4)(1024/4)+(1024/4)^3 </p>
-<h1 id="Realize-file-system"><a href="#Realize-file-system" class="headerlink" title="Realize file system"></a>Realize file system</h1><p><strong>VFS将用户与file system隔绝</strong></p>
-<p><strong>EXT2</strong></p>
-<p>filesystem is full when:</p>
-<p>1.No more inode block</p>
-<p>2.No more data block</p>
-<p> 多少个字节应该有一个inode( bytes-per-inode) 4096default(1:31)</p>
-<p><strong>空闲块管理</strong></p>
-<h1 id="Storage"><a href="#Storage" class="headerlink" title="Storage"></a>Storage</h1><h2 id="disk"><a href="#disk" class="headerlink" title="disk"></a>disk</h2><p>IDE<em>并行接口</em></p>
-<p>ATA<em>串行接口</em></p>
-<p>-PATA（parallel ATA / IDE）</p>
-<p>-SATA（serial ATA）</p>
-<p>SCS</p>
-<p>SAS /server/</p>
-<p>SSD/读写不对称，读&gt;&gt;写/</p>
-<p><strong>磁盘臂调度算法</strong></p>
-<p>time： seek time + rotational time + data read time(要读扇区转的时间)</p>
-<h2 id="调度算法"><a href="#调度算法" class="headerlink" title="调度算法"></a><strong>调度算法</strong></h2><h3 id="FCFS"><a href="#FCFS" class="headerlink" title="FCFS"></a>FCFS</h3><h3 id="SSTF"><a href="#SSTF" class="headerlink" title="SSTF"></a>SSTF</h3><h3 id="SCAN"><a href="#SCAN" class="headerlink" title="SCAN"></a>SCAN</h3><p>一定会到顶，再折返。指明当前位置与方向。</p>
-<h3 id="C-SCAN"><a href="#C-SCAN" class="headerlink" title="C-SCAN"></a>C-SCAN</h3><p>返程不响应。 解决SCAN对两端的不公平。</p>
-<h3 id="LOOK"><a href="#LOOK" class="headerlink" title="LOOK"></a>LOOK</h3><p> 不会到顶。请求max min，确定范围。返程提供服务</p>
-<h3 id="C-LOOK"><a href="#C-LOOK" class="headerlink" title="C-LOOK"></a>C-LOOK</h3><p>返程不响应。不会到顶。</p>
-<h2 id="partition"><a href="#partition" class="headerlink" title="partition"></a>partition</h2>
+              <p><strong>让真相就是真相，是不随时间而转移的真相</strong></p>
+<a id="more"></a>
+
+<p>晚辈定不负前辈之托，为中华之崛起而读书。</p>
+
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%BC%85%E6%80%80/">缅怀</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Thinking/">Thinking</a>
+                    
+                  </div>
                 
               </div>
               
@@ -290,18 +269,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/12/05/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Greedy Algorithm</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/12/02/Operating%E2%80%94-System/">
-                        <span class="hidden-mobile">Linux-进程</span>
+                      <a href="/2020/12/12/Divide-and-Conquer/">
+                        <span class="hidden-mobile">Divide and Conquer</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -475,7 +448,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "flie-system&nbsp;",
+        "南京大屠杀死难者国家公祭日&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

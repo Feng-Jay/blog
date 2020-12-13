@@ -20,23 +20,10 @@
   <meta name="description" content="A Website for record my learning process.">
   <meta name="author" content="Feng Jay">
   <meta name="keywords" content="Blog Study Computer-science">
-  <title>flie-system - 在知识海洋中狗刨</title>
+  <title>分类 - Reading - 在知识海洋中狗刨</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
-
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
-  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
-
-  
-    
-    
-      
-      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark.min.css" />
-    
-  
-
-  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -59,7 +46,7 @@
 
 
 <body>
-  <header style="height: 70vh;">
+  <header style="height: 60vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -165,7 +152,7 @@
 </nav>
 
     <div class="banner intro-2" id="background" parallax=true
-         style="background: url('/img/article.jpg') no-repeat center center;
+         style="background: url('/img/fenlei.jpg') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
@@ -173,43 +160,6 @@
             <span class="h2" id="subtitle">
               
             </span>
-
-            
-              <div class="mt-3">
-  
-  
-    <span class="post-meta">
-      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-12-04 10:36" pubdate>
-        2020年12月4日 上午
-      </time>
-    </span>
-  
-</div>
-
-<div class="mt-1">
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      452 字
-    </span>
-  
-
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      9
-       分钟
-    </span>
-  
-
-  
-  
-</div>
 
             
           </div>
@@ -222,127 +172,37 @@
 
   <main>
     
+      <div class="container nopadding-md">
+        <div class="py-5" id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<div class="list-group">
+  <p class="h4">共计 1 篇文章</p>
+  <hr>
+  
+    
       
+      <p class="h5">2020</p>
+    
+    <a href="/2020/12/11/%E3%80%8A%E5%AD%94%E4%B9%99%E5%B7%B1%E3%80%8B/" class="list-group-item list-group-item-action">
+      <span class="archive-post-title">《孔乙己》</span>
+      <time style="float: right;">12-11</time>
+    </a>
+  
+</div>
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="d-none d-lg-block col-lg-2"></div>
-    <div class="col-lg-8 nopadding-md">
-      <div class="container nopadding-md" id="board-ctn">
-        <div class="py-5" id="board">
-          <article class="post-content mx-auto" id="post">
-            <!-- SEO header -->
-            <h1 style="display: none">flie-system</h1>
-            
-            <div class="markdown-body" id="post-body">
-              <p>文件：名称(存在目录中)，属性，数据(存在数据块中)</p>
-<p>inode 可以连续存储也可以非连续存储</p>
-<p>存储属性(owner group size type…)。</p>
-<p>1 file 1 inode-&gt; inumber</p>
-<p>目录文件也有对应的inode，属性，内容(目录内文件名，inumber)</p>
-<p>inode表由内核维护共享</p>
-<p>root dic 的inumber由系统记录。</p>
-<p>root dir 由inumber查inode表，读其数据块，知道目录内文件及inumber</p>
-<p>索引复杂度取决于：目录深度与各层目录下文件多少。</p>
-<p>OS可以控制目录深度：CWD（当前工作目录）//使用相对路径</p>
-<p>data值即为pointer</p>
-<h1 id="shared-files"><a href="#shared-files" class="headerlink" title="shared files"></a>shared files</h1><p>软链接/硬链接</p>
-<h1 id="连续分配"><a href="#连续分配" class="headerlink" title="连续分配"></a>连续分配</h1><p>按块/扇区分配，优点：访问速度快。实现随机访问。</p>
-<p>缺点：连续存储对文件大小不固定的文件可能会导致没有空余空间，只能剪切。</p>
-<h1 id="非连续，link-list"><a href="#非连续，link-list" class="headerlink" title="非连续，link list"></a>非连续，link list</h1><p>大小灵活，访问速度慢。</p>
-<h1 id="多级索引-商用"><a href="#多级索引-商用" class="headerlink" title="多级索引 商用"></a>多级索引 商用</h1><p> 部分作为直接指针（指向数据块）</p>
-<p>部分作为K级间接指针(指向表)</p>
-<p><strong>计算指向数据大小</strong></p>
-<p>12+（1024/4)+(1024/4)(1024/4)+(1024/4)^3 </p>
-<h1 id="Realize-file-system"><a href="#Realize-file-system" class="headerlink" title="Realize file system"></a>Realize file system</h1><p><strong>VFS将用户与file system隔绝</strong></p>
-<p><strong>EXT2</strong></p>
-<p>filesystem is full when:</p>
-<p>1.No more inode block</p>
-<p>2.No more data block</p>
-<p> 多少个字节应该有一个inode( bytes-per-inode) 4096default(1:31)</p>
-<p><strong>空闲块管理</strong></p>
-<h1 id="Storage"><a href="#Storage" class="headerlink" title="Storage"></a>Storage</h1><h2 id="disk"><a href="#disk" class="headerlink" title="disk"></a>disk</h2><p>IDE<em>并行接口</em></p>
-<p>ATA<em>串行接口</em></p>
-<p>-PATA（parallel ATA / IDE）</p>
-<p>-SATA（serial ATA）</p>
-<p>SCS</p>
-<p>SAS /server/</p>
-<p>SSD/读写不对称，读&gt;&gt;写/</p>
-<p><strong>磁盘臂调度算法</strong></p>
-<p>time： seek time + rotational time + data read time(要读扇区转的时间)</p>
-<h2 id="调度算法"><a href="#调度算法" class="headerlink" title="调度算法"></a><strong>调度算法</strong></h2><h3 id="FCFS"><a href="#FCFS" class="headerlink" title="FCFS"></a>FCFS</h3><h3 id="SSTF"><a href="#SSTF" class="headerlink" title="SSTF"></a>SSTF</h3><h3 id="SCAN"><a href="#SCAN" class="headerlink" title="SCAN"></a>SCAN</h3><p>一定会到顶，再折返。指明当前位置与方向。</p>
-<h3 id="C-SCAN"><a href="#C-SCAN" class="headerlink" title="C-SCAN"></a>C-SCAN</h3><p>返程不响应。 解决SCAN对两端的不公平。</p>
-<h3 id="LOOK"><a href="#LOOK" class="headerlink" title="LOOK"></a>LOOK</h3><p> 不会到顶。请求max min，确定范围。返程提供服务</p>
-<h3 id="C-LOOK"><a href="#C-LOOK" class="headerlink" title="C-LOOK"></a>C-LOOK</h3><p>返程不响应。不会到顶。</p>
-<h2 id="partition"><a href="#partition" class="headerlink" title="partition"></a>partition</h2>
-            </div>
-            <hr>
-            <div>
-              <div class="post-metas mb-3">
-                
-                
+
+
               </div>
-              
-                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
-              
-              
-                <div class="post-prevnext row">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2020/12/05/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Greedy Algorithm</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2020/12/02/Operating%E2%80%94-System/">
-                        <span class="hidden-mobile">Linux-进程</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
             </div>
-
-            
-              <!-- Comments -->
-              <article class="comments" id="comments">
-                
-                <script src="https://utteranc.es/client.js"
-        repo="Feng-Jay/commit-utterance"
-        issue-term="title"
-        theme="github-dark"
-        crossorigin="anonymous"
-        async>
-</script>
-              </article>
-            
-          </article>
+          </div>
         </div>
       </div>
-    </div>
-    
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div id="tocbot"></div>
-</div>
-
-      </div>
-    
-  </div>
-</div>
-
-<!-- Custom -->
-
-
     
   </main>
 
@@ -443,31 +303,6 @@
 
 
 
-  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
-  <script>
-    $(document).ready(function () {
-      var boardCtn = $('#board-ctn');
-      var boardTop = boardCtn.offset().top;
-
-      tocbot.init({
-        tocSelector: '#tocbot',
-        contentSelector: '#post-body',
-        headingSelector: 'h1,h2,h3,h4,h5,h6',
-        linkClass: 'tocbot-link',
-        activeLinkClass: 'tocbot-active-link',
-        listClass: 'tocbot-list',
-        isCollapsedClass: 'tocbot-is-collapsed',
-        collapsibleClass: 'tocbot-is-collapsible',
-        collapseDepth: 0,
-        scrollSmooth: true,
-        headingsOffset: -boardTop
-      });
-      if ($('.toc-list-item').length > 0) {
-        $('#toc').css('visibility', 'visible');
-      }
-    });
-  </script>
-
 
 
   <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
@@ -475,7 +310,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "flie-system&nbsp;",
+        "分类 - Reading&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
@@ -490,21 +325,6 @@
 
 
 
-  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
-  <script>
-    anchors.options = {
-      placement: "rigth",
-      visible: "hover",
-      
-    };
-    var el = "h1,h2,h3,h4,h5,h6".split(",");
-    var res = [];
-    for (item of el) {
-      res.push(".markdown-body > " + item)
-    }
-    anchors.add(res.join(", "))
-  </script>
-
 
 
   <script  src="/js/local-search.js" ></script>
@@ -518,20 +338,6 @@
   </script>
 
 
-
-  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-  <script>
-    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
-      function () {
-        var element = document.createElement('a');
-        $(element).attr('data-fancybox', 'images');
-        $(element).attr('href', $(this).attr('src'));
-        $(this).wrap(element);
-      }
-    );
-  </script>
 
 
 
