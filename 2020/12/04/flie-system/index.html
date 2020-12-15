@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      452 字
+      507 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      9
+      10
        分钟
     </span>
   
@@ -274,7 +274,18 @@
 <h3 id="C-SCAN"><a href="#C-SCAN" class="headerlink" title="C-SCAN"></a>C-SCAN</h3><p>返程不响应。 解决SCAN对两端的不公平。</p>
 <h3 id="LOOK"><a href="#LOOK" class="headerlink" title="LOOK"></a>LOOK</h3><p> 不会到顶。请求max min，确定范围。返程提供服务</p>
 <h3 id="C-LOOK"><a href="#C-LOOK" class="headerlink" title="C-LOOK"></a>C-LOOK</h3><p>返程不响应。不会到顶。</p>
-<h2 id="partition"><a href="#partition" class="headerlink" title="partition"></a>partition</h2>
+<h2 id="partition"><a href="#partition" class="headerlink" title="partition"></a>partition</h2><h1 id="LVM-server-back"><a href="#LVM-server-back" class="headerlink" title="LVM(server/back)"></a>LVM(server/back)</h1><p>Volume Group</p>
+<p>Physical Volume分成PE，以块为单位划分为逻辑卷</p>
+<div class="hljs"><pre><code class="hljs bash">pvcreat /dev/sda3
+vgcreate
+lvcreate -L 50M -n</code></pre></div>
+
+<h1 id="RAID"><a href="#RAID" class="headerlink" title="RAID"></a>RAID</h1><p><strong>redundant array of independent disks</strong></p>
+<p>PC:</p>
+<p>slower, less reliable , smaller , but cheap;</p>
+<p>RAID use multiple hard disks int an array to create a logic device.</p>
+<p>Spare disk</p>
+<h1 id="IO"><a href="#IO" class="headerlink" title="IO"></a>IO</h1>
             </div>
             <hr>
             <div>

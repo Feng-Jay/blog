@@ -180,8 +180,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-12-12 13:46" pubdate>
-        2020年12月12日 下午
+      <time datetime="2020-12-15 13:46" pubdate>
+        2020年12月15日 下午
       </time>
     </span>
   
@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      747 字
+      2k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      21
+      55
        分钟
     </span>
   
@@ -235,7 +235,83 @@
             <h1 style="display: none">Divide and Conquer</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="Merge-Sort"><a href="#Merge-Sort" class="headerlink" title="Merge Sort"></a>Merge Sort</h1><div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+              <p>Try to be a good coder and emmm… review algorithm class.XD</p>
+<a id="more"></a>
+
+<h1 id="残缺棋盘"><a href="#残缺棋盘" class="headerlink" title="残缺棋盘"></a>残缺棋盘</h1><div class="hljs"><pre><code class="hljs cpp"><span class="hljs-comment">/*A great number of recrusive...XD*/</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;string.h&gt;</span></span>
+
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+
+<span class="hljs-keyword">char</span> mylist[<span class="hljs-number">100</span>][<span class="hljs-number">100</span>];
+<span class="hljs-keyword">int</span> ans=<span class="hljs-number">0</span>;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">makeup_board</span><span class="hljs-params">(<span class="hljs-keyword">int</span> tr,<span class="hljs-keyword">int</span> tc, <span class="hljs-keyword">int</span> dr, <span class="hljs-keyword">int</span> dc, <span class="hljs-keyword">int</span> size)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> t,s;
+    <span class="hljs-keyword">if</span>(size&lt;<span class="hljs-number">2</span>)
+    <span class="hljs-keyword">return</span> ;
+    ans+=<span class="hljs-number">1</span>;
+    t=ans;
+    s=size/<span class="hljs-number">2</span>;
+    <span class="hljs-keyword">if</span>(dr&lt;tr+s&amp;&amp;dc&lt;tc+s)&#123;
+        <span class="hljs-comment">//show that the defective part is in the up-left area</span>
+        makeup_board(tr,tc,dr,dc,s);
+        mylist[tr+s][tc+s]=t+<span class="hljs-string">&#x27;A&#x27;</span>;
+        mylist[tr+s<span class="hljs-number">-1</span>][tc+s]=t+<span class="hljs-string">&#x27;A&#x27;</span>;
+        mylist[tr+s][tc+s<span class="hljs-number">-1</span>]=t+<span class="hljs-string">&#x27;A&#x27;</span>;
+        makeup_board(tr,tc+s,tr+s<span class="hljs-number">-1</span>,tc+s,s);
+        makeup_board(tr+s,tc,tr+s,tc+s<span class="hljs-number">-1</span>,s);
+        makeup_board(tr+s,tc+s,tr+s,tc+s,s);
+    &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(dr&lt;tr+s&amp;&amp;dc&gt;=tc+s)&#123;<span class="hljs-comment">//up-right</span>
+        makeup_board(tr,tc+s,dr,dc,s);
+        mylist[tr+s][tc+s]=t+<span class="hljs-string">&#x27;A&#x27;</span>;
+        mylist[tr+s][tc+s<span class="hljs-number">-1</span>]=t+<span class="hljs-string">&#x27;A&#x27;</span>;
+        mylist[tr+s<span class="hljs-number">-1</span>][tc+s<span class="hljs-number">-1</span>]=t+<span class="hljs-string">&#x27;A&#x27;</span>;
+        makeup_board(tr,tc,tr+s<span class="hljs-number">-1</span>,tc+s<span class="hljs-number">-1</span>,s);
+        makeup_board(tr+s,tc,tr+s,tc+s<span class="hljs-number">-1</span>,s);
+        makeup_board(tr+s,tc+s,tr+s,tc+s,s);
+    &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(dr&gt;=tr+s&amp;&amp;dc&lt;tc+s)&#123;<span class="hljs-comment">//down-left</span>
+        makeup_board(tr+s,tc,dr,dc,s);
+        mylist[tr+s][tc+s]=t+<span class="hljs-string">&#x27;A&#x27;</span>;
+        mylist[tr+s<span class="hljs-number">-1</span>][tc+s]=t+<span class="hljs-string">&#x27;A&#x27;</span>;
+        mylist[tr+s<span class="hljs-number">-1</span>][tc+s<span class="hljs-number">-1</span>]=t+<span class="hljs-string">&#x27;A&#x27;</span>;
+        makeup_board(tr,tc,tr+s<span class="hljs-number">-1</span>,tc+s<span class="hljs-number">-1</span>,s);
+        makeup_board(tr,tc+s,tr+s<span class="hljs-number">-1</span>,tc+s,s);
+        makeup_board(tr+s,tc+s,tr+s,tc+s,s);
+    &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(dr&gt;=tr+s&amp;&amp;dc&gt;=tc+s)&#123;<span class="hljs-comment">//down-right</span>
+        makeup_board(tr+s,tc+s,dr,dc,s);
+        mylist[tr+s<span class="hljs-number">-1</span>][tc+s<span class="hljs-number">-1</span>]=t+<span class="hljs-string">&#x27;A&#x27;</span>;
+        mylist[tr+s][tc+s<span class="hljs-number">-1</span>]=t+<span class="hljs-string">&#x27;A&#x27;</span>;
+        mylist[tr+s<span class="hljs-number">-1</span>][tc+s]=t+<span class="hljs-string">&#x27;A&#x27;</span>;
+        makeup_board(tr,tc,tr+s<span class="hljs-number">-1</span>,tc+s<span class="hljs-number">-1</span>,s);
+        makeup_board(tr+s,tc,tr+s,tc+s<span class="hljs-number">-1</span>,s);
+        makeup_board(tr,tc+s,tr+s<span class="hljs-number">-1</span>,tc+s,s);
+    &#125;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;Please input the value of k (used to calculate 2^k)&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">int</span> k,size=<span class="hljs-number">1</span>,x,y;
+    <span class="hljs-built_in">cin</span>&gt;&gt;k;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;k;i++)
+    size*=<span class="hljs-number">2</span>;
+    <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;Please input the defective location (x,y) from 1~2^k&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+    <span class="hljs-built_in">cin</span>&gt;&gt;x&gt;&gt;y;
+    <span class="hljs-built_in">memset</span>(mylist,<span class="hljs-string">&#x27;#&#x27;</span>,<span class="hljs-keyword">sizeof</span>(mylist));
+    makeup_board(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,x<span class="hljs-number">-1</span>,y<span class="hljs-number">-1</span>,size);
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;size;i++)&#123;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j=<span class="hljs-number">0</span>;j&lt;size;j++)
+        <span class="hljs-built_in">cout</span>&lt;&lt;mylist[i][j]&lt;&lt;<span class="hljs-string">&quot; &quot;</span>;
+        <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre></div>
+
+
+
+<hr>
+<h1 id="Merge-Sort"><a href="#Merge-Sort" class="headerlink" title="Merge Sort"></a>Merge Sort</h1><div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
 
 <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
 
@@ -318,48 +394,38 @@ min&lt; - min (min1 , min2)
 <p>C(n)=θ(n)</p>
 <hr>
 <h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;algorithm&gt;</span></span>
+
 <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
 
-<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">partition</span><span class="hljs-params">(<span class="hljs-keyword">int</span> *mylist, <span class="hljs-keyword">int</span> left, <span class="hljs-keyword">int</span> right)</span></span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">partation</span><span class="hljs-params">(<span class="hljs-keyword">int</span> * mylist, <span class="hljs-keyword">int</span> left ,<span class="hljs-keyword">int</span> right)</span></span>
 <span class="hljs-function"></span>&#123;
-    <span class="hljs-keyword">int</span> i=left+<span class="hljs-number">1</span>;
-    <span class="hljs-keyword">int</span> j=right;
-    <span class="hljs-keyword">int</span> temp=mylist[left];
-    <span class="hljs-keyword">while</span>(i&lt;=j)
-    &#123;
-        <span class="hljs-keyword">while</span>(mylist[i]&lt;temp)
-        i++;
-        <span class="hljs-keyword">while</span>(mylist[j]&gt;temp)
-        j--;
-        <span class="hljs-keyword">if</span>(i&lt;j)
-        swap(mylist[i++],mylist[j--]);
-        <span class="hljs-keyword">else</span>
-        i++;
+    <span class="hljs-keyword">int</span> povit=mylist[left];
+    <span class="hljs-keyword">while</span>(left&lt;right)&#123;
+        <span class="hljs-keyword">while</span> (left&lt;right&amp;&amp;mylist[right]&gt;=povit)
+            right--;
+        mylist[left]=mylist[right];
+        <span class="hljs-keyword">while</span> (left&lt;right&amp;&amp;mylist[left]&lt;=povit)
+            left++;
+        mylist[right]=mylist[left];
     &#125;
-    swap(mylist[j],mylist[left]);
-    <span class="hljs-keyword">return</span> j;
+    mylist[left]=povit;
+    <span class="hljs-keyword">return</span> left;
 &#125;
 
-<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">quicksort</span><span class="hljs-params">(<span class="hljs-keyword">int</span> *mylist,<span class="hljs-keyword">int</span> left ,<span class="hljs-keyword">int</span> right)</span></span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">quicksort</span><span class="hljs-params">(<span class="hljs-keyword">int</span>* mylist,<span class="hljs-keyword">int</span> left, <span class="hljs-keyword">int</span> right)</span></span>
 <span class="hljs-function"></span>&#123;
-    <span class="hljs-keyword">if</span>(left&lt;right)
-    &#123;
-        <span class="hljs-keyword">int</span> q=partition(mylist,left,right);
-        quicksort(mylist,left,q<span class="hljs-number">-1</span>);
-        quicksort(mylist,q+<span class="hljs-number">1</span>,right);
-    &#125;
+    <span class="hljs-keyword">if</span>(left&gt;right)
+    <span class="hljs-keyword">return</span> ;
+    <span class="hljs-keyword">int</span> j=partation(mylist,left,right);
+    quicksort(mylist,left,j<span class="hljs-number">-1</span>);
+    quicksort(mylist,j+<span class="hljs-number">1</span>,right);
 &#125;
 
 <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
 <span class="hljs-function"></span>&#123;
-    <span class="hljs-keyword">int</span> len;
-    <span class="hljs-built_in">cin</span>&gt;&gt;len;
-    <span class="hljs-keyword">int</span> *mylist=<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span> [len];
-    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;len;i++)
-    <span class="hljs-built_in">cin</span>&gt;&gt;mylist[i];
-    quicksort(mylist,<span class="hljs-number">0</span>,len<span class="hljs-number">-1</span>);
-    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;len;i++)
+    <span class="hljs-keyword">int</span> mylist[<span class="hljs-number">6</span>]=&#123;<span class="hljs-number">0</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">6</span>&#125;;
+    quicksort(mylist,<span class="hljs-number">0</span>,<span class="hljs-number">5</span>);
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-number">6</span>;i++)
     <span class="hljs-built_in">cout</span>&lt;&lt;mylist[i]&lt;&lt;<span class="hljs-string">&quot; &quot;</span>;
     <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
@@ -379,15 +445,102 @@ min&lt; - min (min1 , min2)
 <p>由nT(n)-(n-1)T(n-1)=2T(n-1)+O(n)得</p>
 <p>T(n)=（1+1/n)T(n-1)+ O(n)</p>
 <p>归纳得T(n)=θ(nlogn)</p>
+<hr>
 <h1 id="选择问题"><a href="#选择问题" class="headerlink" title="选择问题"></a>选择问题</h1><p>对给定序列，选出其中第k小的元素</p>
 <p><strong>该问题可在O(nlogn)时间内解决，方法为先排序，再取出a[k-1]元素</strong></p>
 <p><strong>若用快速排序，可取得较好的平均复杂度，但最坏复杂度为O(n^2^)</strong></p>
+<p><em>朴素算法（使用快排）</em></p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">partation</span><span class="hljs-params">(<span class="hljs-keyword">int</span> * mylist, <span class="hljs-keyword">int</span> left ,<span class="hljs-keyword">int</span> right)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> povit=mylist[left];
+    <span class="hljs-keyword">while</span>(left&lt;right)&#123;
+        <span class="hljs-keyword">while</span> (left&lt;right&amp;&amp;mylist[right]&gt;=povit)
+            right--;
+        mylist[left]=mylist[right];
+        <span class="hljs-keyword">while</span> (left&lt;right&amp;&amp;mylist[left]&lt;=povit)
+            left++;
+        mylist[right]=mylist[left];
+    &#125;
+    mylist[left]=povit;
+    <span class="hljs-keyword">return</span> left;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">quicksort</span><span class="hljs-params">(<span class="hljs-keyword">int</span>* mylist,<span class="hljs-keyword">int</span> left, <span class="hljs-keyword">int</span> right,<span class="hljs-keyword">int</span> k)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span>(left==right)
+    <span class="hljs-keyword">return</span> mylist[left];
+    <span class="hljs-keyword">int</span> j=partation(mylist,left,right);
+    <span class="hljs-keyword">if</span>(k==j-left+<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">return</span> mylist[j];
+    <span class="hljs-keyword">if</span>(k-j+left&lt;<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">return</span> quicksort(mylist,left,j<span class="hljs-number">-1</span>,k);
+    <span class="hljs-keyword">else</span> 
+    <span class="hljs-keyword">return</span> quicksort(mylist,j+<span class="hljs-number">1</span>,right,k-j+left<span class="hljs-number">-1</span>);
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> len;
+    <span class="hljs-built_in">cin</span>&gt;&gt;len;
+    <span class="hljs-keyword">int</span> *mylist=<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span> [len];
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;len;i++)
+    <span class="hljs-built_in">cin</span>&gt;&gt;mylist[i];
+    <span class="hljs-built_in">cout</span>&lt;&lt;quicksort(mylist,<span class="hljs-number">0</span>,len<span class="hljs-number">-1</span>,<span class="hljs-number">3</span>)&lt;&lt;<span class="hljs-built_in">endl</span>;
+   
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre></div>
+
+<p><strong>复杂度分析：</strong></p>
+<p>若left和right总是同样大小，或者相差不超过一个元素，那么递归式如下</p>
+<p>T(n)=T(n/2)+cn， n&gt;1  </p>
+<p>​         d， n&lt;=1</p>
+<p>若n==2^k^，可通过迭代方法得到T(n)=θ(n)</p>
+<p><strong>即选择较好的分点，可以得到较好的性能。</strong></p>
+<h2 id="中间的中间"><a href="#中间的中间" class="headerlink" title="中间的中间"></a>中间的中间</h2><p><strong>若仔细地选择支点元素，则最坏情况下的时间开销也可以变成θ(n)</strong></p>
+<p><strong>规则：</strong></p>
+<p><strong>首先将数组a中的n 个元素分成n/r 组，r 为某一整常数。</strong></p>
+<p><strong>除了最后一组外，每组都有r 个元素。然后通过在每组中对r 个元素进行排序来寻找每组中位于中间位置的元素。</strong></p>
+<p><strong>最后对所得到的n/r 个中间元素，递归使用选择算法，求得”中间之中间”作为支点元素</strong></p>
+<blockquote>
+<p><strong>当使用中间的中间规则选取支点时，下定理成立</strong></p>
+<p><strong>若r=5，且a 中所有元素都不同，那么当n≥24时，有max{| left |, | right | }≤3n/ 4</strong></p>
+<p>*<em>有   ⌈1/2 * ⌊n/5⌋ ⌉  多个中间元素不大于mm。*</em></p>
+<p><strong>大于mm元素的数目有上界</strong></p>
+<p><img src="/2020/12/15/Divide-and-Conquer/%E5%AE%9A%E7%90%86.png" srcset="/img/loading.gif"></p>
+<p><strong>故，当n&gt;=24时，0.7n+1.2≤3n/4</strong></p>
+</blockquote>
+<p>r==5时</p>
+<p><strong>T(n) ≤ T(n/5) + T(3n/4) +Θ(n)</strong></p>
+<p>归纳法可证明当n≥24时有t(n)≤20cn</p>
+<p><strong>r=9, 当n≥90时，有max{ |left|,|right|}≤7n/8</strong></p>
+<p><strong>问：用第K小做支点的快速排序时间复杂度•在快速排序算法中，如果我们先调用最坏情形时间复杂度O(n)的选择算法找出第n/2小元素并以此为支点(pivot)对要排序的数组进行分划，则改进后的快速排序算法的最坏情形时间复杂度T(n)是什么？假定n=2k，列出T(n)满足的递归方程并分析.</strong></p>
+<p><strong>解答：用第n/2小的元素做支点，把数组分成均等的两半，同时，分化的最坏情形时间代价为O(n)=cn，则改进快速排序算法的最坏时间复杂度为T(n)=2T(n/2)+cn。符合主定理case2，T(n)=Θ(nlogn)。假定n=2k，T(n)=2T(n/2)+cn=2kT(1)+k⋅cn=Θ(n+nlogn)=Θ(nlogn)。</strong></p>
 
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Algorithm/">Algorithm</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Algorithm/">Algorithm</a>
+                    
+                      <a class="hover-with-bg" href="/tags/C-C/">C/C++</a>
+                    
+                  </div>
                 
               </div>
               
@@ -398,18 +551,12 @@ min&lt; - min (min1 , min2)
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/12/13/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%B1%A0%E6%9D%80%E6%AD%BB%E9%9A%BE%E8%80%85%E5%9B%BD%E5%AE%B6%E5%85%AC%E7%A5%AD%E6%97%A5/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">南京大屠杀死难者国家公祭日</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/12/11/%E3%80%8A%E5%AD%94%E4%B9%99%E5%B7%B1%E3%80%8B/">
-                        <span class="hidden-mobile">《孔乙己》</span>
+                      <a href="/2020/12/13/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%B1%A0%E6%9D%80%E6%AD%BB%E9%9A%BE%E8%80%85%E5%9B%BD%E5%AE%B6%E5%85%AC%E7%A5%AD%E6%97%A5/">
+                        <span class="hidden-mobile">南京大屠杀死难者国家公祭日</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
