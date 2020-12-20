@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.4k 字
+      2.5k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      52
+      53
        分钟
     </span>
   
@@ -244,7 +244,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：8 分钟前
+                  本文最后更新于：几秒前
                 
               </p>
             
@@ -271,9 +271,9 @@
     <span class="hljs-keyword">if</span>(dr&lt;tr+s&amp;&amp;dc&lt;tc+s)&#123;
         <span class="hljs-comment">//show that the defective part is in the up-left area</span>
         makeup_board(tr,tc,dr,dc,s);
-        mylist[tr+s][tc+s]=t+<span class="hljs-string">&#x27;A&#x27;</span>;
-        mylist[tr+s<span class="hljs-number">-1</span>][tc+s]=t+<span class="hljs-string">&#x27;A&#x27;</span>;
-        mylist[tr+s][tc+s<span class="hljs-number">-1</span>]=t+<span class="hljs-string">&#x27;A&#x27;</span>;
+        mylist[tr+s][tc+s]=t+<span class="hljs-string">&#x27;A&#x27;</span>;<span class="hljs-comment">//emmm, when chessboard big enough, it will beyond &#x27;Z&#x27;and there might have amazing thing</span>
+        mylist[tr+s<span class="hljs-number">-1</span>][tc+s]=t+<span class="hljs-string">&#x27;A&#x27;</span>;<span class="hljs-comment">//and there might have amazing thing.</span>
+        mylist[tr+s][tc+s<span class="hljs-number">-1</span>]=t+<span class="hljs-string">&#x27;A&#x27;</span>;<span class="hljs-comment">//so,if you want try a big chessboard, please use numbers.</span>
         makeup_board(tr,tc+s,tr+s<span class="hljs-number">-1</span>,tc+s,s);
         makeup_board(tr+s,tc,tr+s,tc+s<span class="hljs-number">-1</span>,s);
         makeup_board(tr+s,tc+s,tr+s,tc+s,s);
@@ -293,7 +293,7 @@
         makeup_board(tr,tc,tr+s<span class="hljs-number">-1</span>,tc+s<span class="hljs-number">-1</span>,s);
         makeup_board(tr,tc+s,tr+s<span class="hljs-number">-1</span>,tc+s,s);
         makeup_board(tr+s,tc+s,tr+s,tc+s,s);
-    &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(dr&gt;=tr+s&amp;&amp;dc&gt;=tc+s)&#123;<span class="hljs-comment">//down-right</span>
+    &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(dr&gt;=tr+s&amp;&amp;dc&gt;=tc+s)&#123;
         makeup_board(tr+s,tc+s,dr,dc,s);
         mylist[tr+s<span class="hljs-number">-1</span>][tc+s<span class="hljs-number">-1</span>]=t+<span class="hljs-string">&#x27;A&#x27;</span>;
         mylist[tr+s][tc+s<span class="hljs-number">-1</span>]=t+<span class="hljs-string">&#x27;A&#x27;</span>;
