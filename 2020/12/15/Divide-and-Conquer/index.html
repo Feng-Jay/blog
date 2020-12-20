@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2k 字
+      2.2k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      41
+      46
        分钟
     </span>
   
@@ -244,7 +244,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2 天前
+                  本文最后更新于：1 天前
                 
               </p>
             
@@ -533,6 +533,58 @@ min&lt; - min (min1 , min2)
 <p><strong>r=9, 当n≥90时，有max{ |left|,|right|}≤7n/8</strong></p>
 <p><strong>问：用第K小做支点的快速排序时间复杂度•在快速排序算法中，如果我们先调用最坏情形时间复杂度O(n)的选择算法找出第n/2小元素并以此为支点(pivot)对要排序的数组进行分划，则改进后的快速排序算法的最坏情形时间复杂度T(n)是什么？假定n=2k，列出T(n)满足的递归方程并分析.</strong></p>
 <p><strong>解答：用第n/2小的元素做支点，把数组分成均等的两半，同时，分化的最坏情形时间代价为O(n)=cn，则改进快速排序算法的最坏时间复杂度为T(n)=2T(n/2)+cn。符合主定理case2，T(n)=Θ(nlogn)。假定n=2k，T(n)=2T(n/2)+cn=2kT(1)+k⋅cn=Θ(n+nlogn)=Θ(nlogn)。</strong></p>
+<h1 id="求逆序个数"><a href="#求逆序个数" class="headerlink" title="求逆序个数"></a>求逆序个数</h1><div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+
+<span class="hljs-keyword">int</span> sum=<span class="hljs-number">0</span>;
+
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mergecount</span><span class="hljs-params">(<span class="hljs-keyword">int</span> *mylist,<span class="hljs-keyword">int</span> l, <span class="hljs-keyword">int</span> mid,<span class="hljs-keyword">int</span> r, <span class="hljs-keyword">int</span> *temp)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> p1=l, p2=mid+<span class="hljs-number">1</span>, index=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span>(p1&lt;=mid&amp;&amp;p2&lt;=r)&#123;
+        <span class="hljs-keyword">if</span>(mylist[p1]&lt;mylist[p2])&#123;
+            temp[index++]=mylist[p1++];
+        &#125;<span class="hljs-keyword">else</span>&#123;
+            temp[index++]=mylist[p2++];
+            sum+=mid-p1+<span class="hljs-number">1</span>;
+        &#125;
+    &#125;
+    <span class="hljs-keyword">while</span>(p1&lt;=mid)&#123;
+        temp[index++]=mylist[p1++];
+    &#125;
+    <span class="hljs-keyword">while</span>(p2&lt;=r)&#123;
+        temp[index++]=mylist[p2++];
+    &#125;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;r-l+<span class="hljs-number">1</span>;i++)
+    mylist[l+i]=temp[i];
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mergesort</span><span class="hljs-params">(<span class="hljs-keyword">int</span> *mylist, <span class="hljs-keyword">int</span> l, <span class="hljs-keyword">int</span> r,<span class="hljs-keyword">int</span> *temp)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span>(l&lt;r)&#123;
+        <span class="hljs-keyword">int</span> mid=(l+r)/<span class="hljs-number">2</span>;
+        mergesort(mylist,l,mid,temp);
+        mergesort(mylist,mid+<span class="hljs-number">1</span>,r,temp);
+        mergecount(mylist,l,mid,r,temp);
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> n;
+    <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;Input the number of data&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+    <span class="hljs-built_in">cin</span>&gt;&gt;n;
+    <span class="hljs-keyword">int</span> *temp=<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span> [n];
+    <span class="hljs-keyword">int</span> *mylist=<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n];
+    <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;Input datas&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;n;i++)
+    <span class="hljs-built_in">cin</span>&gt;&gt;mylist[i];
+    mergesort(mylist,<span class="hljs-number">0</span>,n<span class="hljs-number">-1</span>,temp);
+    <span class="hljs-built_in">cout</span>&lt;&lt;sum&lt;&lt;<span class="hljs-built_in">endl</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre></div>
+
 
             </div>
             <hr>
