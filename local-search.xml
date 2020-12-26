@@ -150,9 +150,9 @@
   
   
   <entry>
-    <title>Linux-存储管理</title>
-    <link href="/2020/11/17/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/"/>
-    <url>/2020/11/17/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/</url>
+    <title>Linux-内存管理</title>
+    <link href="/2020/11/17/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/"/>
+    <url>/2020/11/17/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</url>
     
     <content type="html"><![CDATA[<p>计算机组成及Linux系统基础知识、实验思路解析</p><a id="more"></a><h1 id="speed-problem"><a href="#speed-problem" class="headerlink" title="speed problem"></a>speed problem</h1><p>局部性原理</p><p>TLB(Translation Lookaside Buffer)&emsp; 相联存储器 &emsp; 快表(内存中叫慢表，存了全部的页表信息)</p><h1 id="Storage-Problem"><a href="#Storage-Problem" class="headerlink" title="Storage Problem"></a>Storage Problem</h1><p>请求式分页+多级页表(局部性原理) &emsp;时间换空间</p><p>倒排页表</p><p>1 OS，1 page，大小取决于物理内存大小。</p><p>下标为物理页帧号，内容存的是逻辑页号。</p><p>根据内容查找。</p><p>硬件实现hash查找(TLB)</p><h1 id="缺页中断"><a href="#缺页中断" class="headerlink" title="缺页中断"></a>缺页中断</h1><h1 id="页面置换算法"><a href="#页面置换算法" class="headerlink" title="页面置换算法"></a>页面置换算法</h1><p>抖动(thrashing)</p><h2 id="最优页面置换算法"><a href="#最优页面置换算法" class="headerlink" title="最优页面置换算法"></a>最优页面置换算法</h2><h2 id="最近未使用页面置换算法"><a href="#最近未使用页面置换算法" class="headerlink" title="最近未使用页面置换算法"></a>最近未使用页面置换算法</h2><h2 id="FF置换算法"><a href="#FF置换算法" class="headerlink" title="FF置换算法"></a>FF置换算法</h2><h2 id="二次机会页面算法"><a href="#二次机会页面算法" class="headerlink" title="二次机会页面算法"></a>二次机会页面算法</h2><h2 id="时钟页面置换算法"><a href="#时钟页面置换算法" class="headerlink" title="时钟页面置换算法"></a>时钟页面置换算法</h2><h2 id="LRU-最近最少使用"><a href="#LRU-最近最少使用" class="headerlink" title="LRU 最近最少使用"></a>LRU 最近最少使用</h2>]]></content>
     
