@@ -20,7 +20,7 @@
   <meta name="description" content="A Website for record my learning process.">
   <meta name="author" content="Feng Jay">
   <meta name="keywords" content="Blog Study Computer-science">
-  <title>Linux-内存管理 - 在知识海洋中狗刨</title>
+  <title>Deadlock - 在知识海洋中狗刨</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -180,8 +180,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-11-17 17:42" pubdate>
-        2020年11月17日 下午
+      <time datetime="2020-12-28 13:52" pubdate>
+        2020年12月28日 下午
       </time>
     </span>
   
@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      181 字
+      0 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      2
+      1
        分钟
     </span>
   
@@ -240,30 +240,16 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">Linux-内存管理</h1>
+            <h1 style="display: none">Deadlock</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：2 小时前
+                  本文最后更新于：42 分钟前
                 
               </p>
             
             <div class="markdown-body" id="post-body">
-              <p>All the things we learn is to realize a modern OS : Parallel and Multi-process.</p>
-<a id="more"></a>
-
-
-
-<h1 id="speed-problem"><a href="#speed-problem" class="headerlink" title="speed problem"></a>speed problem</h1><p>局部性原理</p>
-<p>TLB(Translation Lookaside Buffer)&emsp; 相联存储器 &emsp; 快表(内存中叫慢表，存了全部的页表信息)</p>
-<h1 id="Storage-Problem"><a href="#Storage-Problem" class="headerlink" title="Storage Problem"></a>Storage Problem</h1><p>请求式分页+多级页表(局部性原理) &emsp;时间换空间</p>
-<p>倒排页表</p>
-<p>1 OS，1 page，大小取决于物理内存大小。</p>
-<p>下标为物理页帧号，内容存的是逻辑页号。</p>
-<p>根据内容查找。</p>
-<p>硬件实现hash查找(TLB)</p>
-<h1 id="缺页中断"><a href="#缺页中断" class="headerlink" title="缺页中断"></a>缺页中断</h1><h1 id="页面置换算法"><a href="#页面置换算法" class="headerlink" title="页面置换算法"></a>页面置换算法</h1><p>抖动(thrashing)</p>
-<h2 id="最优页面置换算法"><a href="#最优页面置换算法" class="headerlink" title="最优页面置换算法"></a>最优页面置换算法</h2><h2 id="最近未使用页面置换算法"><a href="#最近未使用页面置换算法" class="headerlink" title="最近未使用页面置换算法"></a>最近未使用页面置换算法</h2><h2 id="FF置换算法"><a href="#FF置换算法" class="headerlink" title="FF置换算法"></a>FF置换算法</h2><h2 id="二次机会页面算法"><a href="#二次机会页面算法" class="headerlink" title="二次机会页面算法"></a>二次机会页面算法</h2><h2 id="时钟页面置换算法"><a href="#时钟页面置换算法" class="headerlink" title="时钟页面置换算法"></a>时钟页面置换算法</h2><h2 id="LRU-最近最少使用"><a href="#LRU-最近最少使用" class="headerlink" title="LRU 最近最少使用"></a>LRU 最近最少使用</h2>
+              
             </div>
             <hr>
             <div>
@@ -280,9 +266,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/C-C/">C/C++</a>
-                    
-                      <a class="hover-with-bg" href="/tags/OS/">OS</a>
+                      <a class="hover-with-bg" href="/tags/C-C-OS/">C/C++ OS</a>
                     
                   </div>
                 
@@ -295,18 +279,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/12/02/Operating%E2%80%94-System/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Linux-进程</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/11/13/%E6%9C%88%E5%A4%9C%E6%9D%82%E8%B0%88/">
-                        <span class="hidden-mobile">大学？人生？</span>
+                      <a href="/2020/12/27/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
+                        <span class="hidden-mobile">Linux-内存管理</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -480,7 +458,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Linux-内存管理&nbsp;",
+        "Deadlock&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
