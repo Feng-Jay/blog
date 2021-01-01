@@ -180,8 +180,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-12-02 22:04" pubdate>
-        2020年12月2日 晚上
+      <time datetime="2021-01-01 11:32" pubdate>
+        2021年1月1日 中午
       </time>
     </span>
   
@@ -244,7 +244,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：1 分钟前
+                  本文最后更新于：几秒前
                 
               </p>
             
@@ -254,7 +254,7 @@
 
 <h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><h2 id="进程模型"><a href="#进程模型" class="headerlink" title="进程模型"></a>进程模型</h2><p>进程是一个正在执行程序的实例，包括了程序代码和它当前的状态（寄存器…）</p>
 <p>一个进程包括三个部分</p>
-<p><img src="/2020/12/02/Operating%E2%80%94-System/Process.png" srcset="/img/loading.gif" alt="process contains"></p>
+<p><img src="/2021/01/01/Operating%E2%80%94-System/Process.png" srcset="/img/loading.gif" alt="process contains"></p>
 <p><em>Tips: The differences between process and program</em></p>
 <p><em>Program is just the static text</em></p>
 <p><em>Process is an dynamic entity being executed and has lifecycle</em></p>
@@ -272,13 +272,13 @@
 <p>2.出错退出(自愿的) 自愿时通常调用exit系统调用</p>
 <p>3.严重错误(非自愿)</p>
 <p>4.被其他进程杀死(非自愿)//在Linux和Windows中，如果一个进程被杀死，但他创建的进程不会被全部杀死</p>
-<h2 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h2><p><img src="/2020/12/02/Operating%E2%80%94-System/%E7%8A%B6%E6%80%81.png" srcset="/img/loading.gif" alt="进程状态"></p>
+<h2 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h2><p><img src="/2021/01/01/Operating%E2%80%94-System/%E7%8A%B6%E6%80%81.png" srcset="/img/loading.gif" alt="进程状态"></p>
 <p>处于阻塞状态的进程不会参与进程调度，处在运行和就绪状态的进程会在就绪队列中。</p>
 <p>Running-&gt;Block：进程需要等待数据(自发)</p>
 <p>Running-&gt;Ready：调度程序造成(优先级调度、时间片流转…)</p>
 <p>Ready-&gt;Running：调度程序造成</p>
 <p>Block-&gt;Ready：1.进程发起。2.OS发起。</p>
-<h2 id="进程的生命周期"><a href="#进程的生命周期" class="headerlink" title="进程的生命周期"></a>进程的生命周期</h2><img src="/2020/12/02/Operating%E2%80%94-System/lifeline.png" srcset="/img/loading.gif" alt="image-20201114151211842" style="zoom: 67%;">
+<h2 id="进程的生命周期"><a href="#进程的生命周期" class="headerlink" title="进程的生命周期"></a>进程的生命周期</h2><img src="/2021/01/01/Operating%E2%80%94-System/lifeline.png" srcset="/img/loading.gif" alt="image-20201114151211842" style="zoom: 67%;">
 
 <p><strong>I (Idle) state</strong>（空闲状态）</p>
 <p>进程在被创造前需要在进程/线程表中申请一个空间，这时处于SNONE状态</p>
@@ -322,12 +322,12 @@
 <td align="center">并行性、非阻塞系统调用、中断</td>
 </tr>
 </tbody></table>
-<h2 id="经典线程、POSIX线程"><a href="#经典线程、POSIX线程" class="headerlink" title="经典线程、POSIX线程"></a>经典线程、POSIX线程</h2><img src="/2020/12/02/Operating%E2%80%94-System/传统线程.png" srcset="/img/loading.gif" alt="传统线程" style="zoom: 67%;">
+<h2 id="经典线程、POSIX线程"><a href="#经典线程、POSIX线程" class="headerlink" title="经典线程、POSIX线程"></a>经典线程、POSIX线程</h2><img src="/2021/01/01/Operating%E2%80%94-System/传统线程.png" srcset="/img/loading.gif" alt="传统线程" style="zoom: 67%;">
 
 <p>在图a中可以看到三个传统的进程，每个进程有自己的地址空间和一个控制线程。</p>
 <p>图b中可以看到一个进程拥有三个控制线程，且运行在同一地址空间。</p>
 <p>在多线程进程中，所有线程都共享完全一样的地址空间，也就是共享同样的全局变量，且线程之间是不存在保护的。</p>
- <img src="/2020/12/02/Operating%E2%80%94-System/进线程内容.png" srcset="/img/loading.gif" style="zoom:67%;">
+ <img src="/2021/01/01/Operating%E2%80%94-System/进线程内容.png" srcset="/img/loading.gif" style="zoom:67%;">
 
 <p>上图给出了进线程中所包含的内容。</p>
 <p>有了线程的概念后，<strong>可以把进程当作资源管理的单位，线程当做执行的单位</strong>。</p>
@@ -441,13 +441,13 @@
 <p>可以看到，在这种情况下，IO进程总是在等待着计算密集型进程使用完CPU，从而导致运行时间很长。</p>
 <p>如果有可能让IO进程直接单独抢占一段时间，那么运行时间会大大减少。</p>
 <p><em>可通过下图理解进程执行的过程，并不是一直使用CPU然后一直使用IO就结束了，而是交错着的</em></p>
-<img src="/2020/12/02/Operating%E2%80%94-System/密集型.png" srcset="/img/loading.gif" style="zoom:50%;">
+<img src="/2021/01/01/Operating%E2%80%94-System/密集型.png" srcset="/img/loading.gif" style="zoom:50%;">
 
 <h3 id="最短作业优先"><a href="#最短作业优先" class="headerlink" title="最短作业优先"></a>最短作业优先</h3><p><em>由于需要知道运行时间，因此多用于专用OS，但可能出现starvation问题</em></p>
 <h3 id="最短剩余时间优先"><a href="#最短剩余时间优先" class="headerlink" title="最短剩余时间优先"></a>最短剩余时间优先</h3><p><em>由于需要知道剩余运行时间，只能在专用OS使用</em></p>
 <h3 id="高响应比优先"><a href="#高响应比优先" class="headerlink" title="高响应比优先"></a>高响应比优先</h3><p>响应比的计算:Response Radio = Turnaround time / Executing time = 1 + Waiting Time/ Executing Time</p>
 <h3 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h3><p>在一单道批处理系统中，一组作业的提交时刻和运行时间如下表所示。试计算一下三种作业调度算法的平均周转时间 T 和平均带权周转时间 W。 (1) 先来先服务; (2) 短作业优先 (3) 高响应比优先。作业提交时刻和运行时间如下表</p>
-<p><img src="/2020/12/02/Operating%E2%80%94-System/%E4%BE%8B%E9%A2%98.png" srcset="/img/loading.gif" alt="例题"></p>
+<p><img src="/2021/01/01/Operating%E2%80%94-System/%E4%BE%8B%E9%A2%98.png" srcset="/img/loading.gif" alt="例题"></p>
 <p>1.先来先服务</p>
 <p>根据题目可得到以下数据</p>
 <table>
@@ -641,7 +641,7 @@
 <h3 id="Priority-scheduling-优先级调度"><a href="#Priority-scheduling-优先级调度" class="headerlink" title="Priority scheduling (优先级调度)"></a>Priority scheduling (优先级调度)</h3><p>在Round-robin中，我们把每个进程都看作同等重要，而优先级调度就是要改变这种想法，给每个进程赋予一个优先级，优先级高的进程会先运行。</p>
 <p>为了防止高优先级进程一直运行下去，调度程序可能在每个时钟中断时降低其优先级，如果有高于其的进程，就开始调度。</p>
 <p>也可以给每个进程设置一个允许允许的最大时间片，超过时间片后次高级进程就会运行。</p>
-<img src="/2020/12/02/Operating%E2%80%94-System/优先级.png" srcset="/img/loading.gif" style="zoom:67%;">
+<img src="/2021/01/01/Operating%E2%80%94-System/优先级.png" srcset="/img/loading.gif" style="zoom:67%;">
 
 <h2 id="线程调度"><a href="#线程调度" class="headerlink" title="线程调度"></a>线程调度</h2><h3 id="用户态线程"><a href="#用户态线程" class="headerlink" title="用户态线程"></a>用户态线程</h3><p>内核并不知道线程的存在，因此还是会直接对线程使用调度程序。</p>
 <p>此时由进程中的线程调度程序来决定线程的运行。由于这里面并不存在时钟中断，所以线程可以按其意愿任意运行直到进程时间用完。</p>
@@ -1014,18 +1014,12 @@ semaphore database=<span class="hljs-number">1</span>;
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/12/04/flie-system/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">flie-system</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/11/13/%E6%9C%88%E5%A4%9C%E6%9D%82%E8%B0%88/">
-                        <span class="hidden-mobile">大学？人生？</span>
+                      <a href="/2020/12/31/2020%E5%B9%B4%E7%BB%88%E5%9B%9E%E9%A1%BE/">
+                        <span class="hidden-mobile">2020：迷雾中的一场奔赴</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
