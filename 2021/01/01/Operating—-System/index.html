@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      9k 字
+      9.6k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      134
+      145
        分钟
     </span>
   
@@ -1167,6 +1167,117 @@ semaphore s_mutex=<span class="hljs-number">1</span>;
         number_s++;
         V(&amp;s_mutex);
         V(&amp;seller);
+    &#125;
+    
+&#125;</code></pre></div>
+
+<h2 id="四、水果！"><a href="#四、水果！" class="headerlink" title="四、水果！"></a>四、水果！</h2><p>桌上有一空盘，运行存放一只水果，爸爸可向盘中放苹果，也可放桔子，儿子专等吃盘中的桔子，女儿专等吃盘中的苹果。规定当盘中空时一次只能放一个水果供吃者取用，用 P,V 原语实现爸爸儿子和女儿 3 个并发进程的同步。</p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">int</span> semaphore;
+semaphore empty=<span class="hljs-number">0</span>;
+semaphore mutex=<span class="hljs-number">1</span>;
+semaphore apple=<span class="hljs-number">0</span>;
+semaphore orange=<span class="hljs-number">0</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">dad</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;
+        P(&amp;empty);
+        P(&amp;mutex);
+        put_fruit();
+        V(apple <span class="hljs-keyword">or</span> orange);
+        V(&amp;mutex);
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">son</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;
+        P(&amp;orange);
+        P(&amp;mutex);
+        get orange!
+        V(&amp;mutex);
+        V(&amp;empty);
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">daugther</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;
+        P(&amp;apple);
+        P(&amp;mutex);
+        get apple!
+        V(&amp;mutex);
+        V(&amp;empty);
+    &#125;
+&#125;</code></pre></div>
+
+<h2 id="五、仓库问题"><a href="#五、仓库问题" class="headerlink" title="五、仓库问题"></a>五、仓库问题</h2><p> 有一个仓库，可以存放 A 和 B 两种产品，仓库的存储空间足够大，但要求：</p>
+<p>（ 1）一次只能存入一种产品（ A 或 B）；<br>（ 2） -N &lt; (A 产品数量-B 产品数量) &lt; M。<br>其中， N 和 M 是正整数。试用“存放 A”和“存放 B”以及 P、 V 操作描述产品 A 与产品 B 的入库过程。</p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">int</span> semaphore;
+semaphore mutex=<span class="hljs-number">1</span>;
+semaphore a=M<span class="hljs-number">-1</span>;
+semaphore b=N<span class="hljs-number">-1</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">putA</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    P(&amp;a);
+    P(&amp;mutex);
+    PUT IN THE STORAGE!
+    V(&amp;mutex);
+    V(&amp;b);
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">putB</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    P(&amp;b);
+    P(&amp;mutex);
+    PUT IN THE STORAGE!
+    V(&amp;mutex);
+    V(&amp;a);
+&#125;</code></pre></div>
+
+<h2 id="六、数字问题"><a href="#六、数字问题" class="headerlink" title="六、数字问题"></a>六、数字问题</h2><p>三个进程 P1、 P2、 P3 互斥使用一个包含 N(N&gt;0)个单元的缓冲区。 P1 每次用 produce()生成一个正整数并用 put()送入缓冲区某一空单元中;P2 每次用 getodd()从该缓冲区中取出一个奇数并用 countodd()统计奇数个数;P3 每次用 geteven()从该缓冲区中取出一个偶数并用 counteven()统计偶数个数。请用信号量机制实现这三个进程的同步与互斥活动,并说明所定义信号量的含义。要求用伪代码描述。</p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">int</span> semaphore;
+semaphore mutex=<span class="hljs-number">1</span>;
+semaphore empty=N;
+semaphore even=<span class="hljs-number">0</span>;
+semaphore odd=<span class="hljs-number">0</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">P1</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;
+        <span class="hljs-keyword">int</span> data=produce();
+        P(&amp;empty);
+        P(mutex);
+        PUT DATA!
+        V(&amp;mutex);
+        <span class="hljs-keyword">if</span>(data%<span class="hljs-number">2</span>==<span class="hljs-number">0</span>)
+        V(&amp;even);
+        <span class="hljs-keyword">else</span>
+        V(&amp;odd);
+    &#125;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">P2</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;
+        P(&amp;odd);
+        P(&amp;mutex);
+        getodd();
+        V(&amp;mutex);
+        V(&amp;empty);
+        countodd();
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">P3</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;
+        P(&amp;even);
+        P(&amp;mutex);
+        geteven();
+        V(&amp;mutex);
+        V(&amp;empty);
+        counteven();
     &#125;
     
 &#125;</code></pre></div>
