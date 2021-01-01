@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      8.1k 字
+      8.2k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      118
+      121
        分钟
     </span>
   
@@ -943,7 +943,8 @@ semaphore s[N];<span class="hljs-comment">/*每个哲学家一个信号量*/</sp
     &#125;
 &#125;</code></pre></div>
 
-<h2 id="读者—写者问题-互斥"><a href="#读者—写者问题-互斥" class="headerlink" title="读者—写者问题(互斥)"></a><font color="red">读者—写者问题(互斥)</font></h2><p>解决多个进程读写数据的情况：读者无互斥，读写，写写，有互斥。</p>
+<h2 id="读者—写者问题-互斥"><a href="#读者—写者问题-互斥" class="headerlink" title="读者—写者问题(互斥)"></a><font color="red">读者—写者问题(互斥)</font></h2><p><strong>读者优先</strong></p>
+<p>解决多个进程读写数据的情况：读者无互斥，读写，写写，有互斥。</p>
 <div class="hljs"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">int</span> semaphore;
 semaphore mutex=<span class="hljs-number">1</span>;<span class="hljs-comment">/*控制对reader的访问*/</span>
 semaphore database=<span class="hljs-number">1</span>;
@@ -980,6 +981,46 @@ semaphore database=<span class="hljs-number">1</span>;
 
 <p><strong>只需要让第一个读者获取数据库访问权限</strong>，<strong>其他读者仅需要</strong> <strong>reader++</strong> <strong>即可</strong>。</p>
 <p>而写者关心的问题就比较少了，只需要看是否有其他进程有数据库权限即可(写者和写者、读者间都要互斥)</p>
+<hr>
+<p><strong>写者优先</strong></p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">int</span> semaphore;
+<span class="hljs-keyword">int</span> rc=<span class="hljs-number">0</span>;
+<span class="hljs-keyword">int</span> wc=<span class="hljs-number">0</span>;
+semaphore db=<span class="hljs-number">1</span>;
+semaphore rcmutex=<span class="hljs-number">1</span>;
+semaphore wcmutex=<span class="hljs-number">1</span>;
+semaphore readable=<span class="hljs-number">1</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">reader</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    P(&amp;readable);
+    P(&amp;rcmutex);
+    <span class="hljs-keyword">if</span>(rc==<span class="hljs-number">0</span>) P(&amp;db);
+    rc++;
+    V(&amp;rcmutex);
+    V(&amp;readable);
+    read_data();
+    P(&amp;rcmutex);
+    rc--;
+    <span class="hljs-keyword">if</span>(rc==<span class="hljs-number">0</span>) V(&amp;db);
+    V(&amp;rcmutex);
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">writer</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    P(&amp;wcmutex);
+    <span class="hljs-keyword">if</span>(wc==<span class="hljs-number">0</span>) P(&amp;readable);
+    wc++;
+    V(&amp;wcmutex);
+    P(&amp;db);
+    write_data();
+    V(&amp;db);
+    P(&amp;wcmutex);
+    wc--;
+    <span class="hljs-keyword">if</span>(wc==<span class="hljs-number">0</span>) V(&amp;readable);
+    V(&amp;wcmutex);
+&#125;</code></pre></div>
+
 
             </div>
             <hr>
