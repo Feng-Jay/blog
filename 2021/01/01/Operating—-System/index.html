@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      8.2k 字
+      8.6k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      121
+      127
        分钟
     </span>
   
@@ -1019,6 +1019,77 @@ semaphore readable=<span class="hljs-number">1</span>;
     wc--;
     <span class="hljs-keyword">if</span>(wc==<span class="hljs-number">0</span>) V(&amp;readable);
     V(&amp;wcmutex);
+&#125;</code></pre></div>
+
+<p><strong>读写公平</strong></p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">int</span> semaphore;
+<span class="hljs-keyword">int</span> rc=<span class="hljs-number">0</span>;
+semaphore mutex=<span class="hljs-number">1</span>;
+semaphore db=<span class="hljs-number">1</span>;
+semaphore fair=<span class="hljs-number">1</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">reader</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;
+        P(&amp;fair);
+        P(&amp;mutex);
+        <span class="hljs-keyword">if</span>(rc==<span class="hljs-number">0</span>) P(&amp;db);
+        rc++;
+        V(&amp;mutex);
+        V(&amp;fair);
+        read_data();
+        P(&amp;mutex);
+        rc--
+        <span class="hljs-keyword">if</span>(rc==<span class="hljs-number">0</span>) V(&amp;db);
+        V(&amp;mutex);
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">writer</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;
+        P(&amp;fair);
+        P(&amp;db);
+        write_data();
+        V(&amp;db);
+        V(&amp;fair);
+    &#125;
+&#125;</code></pre></div>
+
+
+
+<h1 id="PV题"><a href="#PV题" class="headerlink" title="PV题"></a>PV题</h1><h2 id="一、嗜睡的理发师"><a href="#一、嗜睡的理发师" class="headerlink" title="一、嗜睡的理发师"></a>一、嗜睡的理发师</h2><p>有一个理发师，一把理发椅和 N 把供等候理发的顾客坐的椅子。如果没有顾客，则理发师便在理发师椅子上睡觉；当一个顾客到来时，必须唤醒理发师进行理发；如果理发师正在理发时又有顾客来到，则如果有空椅子可坐，他就坐下来等，如果没有空椅子，他就离开。为理发师和顾客各编一段程序（伪代码）描述他们的行为，要求不能带有竞争条件。</p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">int</span> semaphore;
+<span class="hljs-keyword">int</span> waiting=<span class="hljs-number">0</span>;
+<span class="hljs-keyword">int</span> chair=N;
+semaphore barber=<span class="hljs-number">0</span>,customer=<span class="hljs-number">0</span>,mutex=<span class="hljs-number">1</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Barber</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;
+        P(customer);<span class="hljs-comment">//无顾客，则睡眠</span>
+        P(mutex);
+        waiting--;
+        V(mutex);
+        V(barber);<span class="hljs-comment">//一个理发师开始理发</span>
+        cut_hair();
+    &#125;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Customer</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;
+        P(mutex);
+        <span class="hljs-keyword">if</span>(waiting&lt;chair)&#123;
+        waiting++;
+        V(mutex);
+        V(customer);<span class="hljs-comment">//唤醒理发师</span>
+        P(barber);<span class="hljs-comment">//没人理发，就睡</span>
+        get_hair_cut();<span class="hljs-comment">//理发</span>
+        &#125;<span class="hljs-keyword">else</span>&#123;
+            V(mutex);
+        &#125;
+
+    &#125;
 &#125;</code></pre></div>
 
 
