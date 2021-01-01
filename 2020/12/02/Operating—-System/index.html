@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      6.7k 字
+      7k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      99
+      103
        分钟
     </span>
   
@@ -244,7 +244,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：16 天前
+                  本文最后更新于：28 分钟前
                 
               </p>
             
@@ -651,18 +651,26 @@
 <p>用户级线程的切换只需要少量指令，但内核级线程切换需要上下文切换,修改内存，高速缓存…</p>
 <p>但内核级线程如果阻塞，并不用直接将整个进程挂起。</p>
 <p><em>另外，从A的线程切换到B的线程的代价高于在一个进程中切换线程，因此，在有多种选择的情况下，倾向于在相同进程中切换线程。</em></p>
-<h1 id="竞争条件与信号量"><a href="#竞争条件与信号量" class="headerlink" title="竞争条件与信号量"></a><font color="red">竞争条件与信号量</font></h1><p>竞争条件：多个进程读写某些共享数据，而最后的结果取决于进程运行的精确时序。且随着多核的增长，竞争条件变得越来越普遍。</p>
-<p>其原因在于OS的调度进程不会，也不可能确保各个进程之间有确定的顺序。</p>
-<p>因此，我们要做的就是避免竞争条件。其<strong>关键就是阻止多个进程同时读写共享的数据。</strong></p>
-<p>我们把对共享内存进行访问的程序片段成为**临界区域(critical region/section)**。</p>
-<p>&emsp;</p>
-<p><strong>对于一个好的解决方法要满足4个条件：</strong></p>
-<p><strong>1.任何两个进程不能同时在临界区中</strong></p>
-<p>2.不对CPU的速度和数量做任何假设</p>
-<p><strong>3.临界区外运行的进程不得阻塞其他进程</strong></p>
-<p>4.不得使进程无限期等待进入临界区</p>
-<p>&nbsp; </p>
-<h2 id="忙等待-busy-waiting-的互斥"><a href="#忙等待-busy-waiting-的互斥" class="headerlink" title="忙等待(busy waiting)的互斥"></a>忙等待(busy waiting)的互斥</h2><h3 id="一、屏蔽中断"><a href="#一、屏蔽中断" class="headerlink" title="一、屏蔽中断"></a>一、屏蔽中断</h3><p>对于单处理器来说，在进程进入临界区后立即屏蔽所有中断，在离开前打开中断是最直接的方法。屏蔽中断后，时钟中断也被屏蔽——CPU就不会切换到其他进程。</p>
+<h1 id="进程间通信（Inter-Process-Communication-IPC）"><a href="#进程间通信（Inter-Process-Communication-IPC）" class="headerlink" title="进程间通信（Inter Process Communication, IPC）"></a><font color="red">进程间通信（Inter Process Communication, IPC）</font></h1><p>进程间往往需要相互传递信息（例如你使用shell中的管道，她将一个进程的输出传递给另一个进程）。</p>
+<h2 id="IPC的三个问题"><a href="#IPC的三个问题" class="headerlink" title="IPC的三个问题"></a>IPC的三个问题</h2><ol>
+<li>一个进程如何把信息传递给另一个。</li>
+<li>如何确保两个/多个进程在关键活动中不会出现交叉。（比如12306的购票系统）</li>
+<li>如何确保多个进程之间有正确的执行顺序（一个更改数据的操作和一个print操作，当数据更改后再print才是正确的）</li>
+</ol>
+<p><strong>下面我们来解决这三个问题</strong></p>
+<h2 id="基础概念（竞争条件-amp-临界区）"><a href="#基础概念（竞争条件-amp-临界区）" class="headerlink" title="基础概念（竞争条件&amp;临界区）"></a>基础概念（竞争条件&amp;临界区）</h2><p><strong>竞争条件</strong>：<strong>多个进程读写某些共享数据，而最后的结果取决于进程运行的精确时序的情况</strong>。</p>
+<p>我们要实现IPC就要思考如何避免竞争条件？</p>
+<p>关键是使用一种方法来<strong>阻止多个进程同时读写共享的数据</strong>。即实现<strong>mutual exclusion</strong>（互斥）：一个进程使用共享数据时，其他进程不能做同样的操作。</p>
+<p>我们可以把阻止多进程同时读写共享数据的问题进行抽象，把对共享内存进行访问的<strong>程序片段</strong>称为<strong>临界区域/临界区</strong>（critical region）。</p>
+<p>All we need to do is 是<strong>两个进程不可能同时处于临界区。</strong></p>
+<p>更进一步，为了确保进程能够正确且高效地协作，我们对于一个好的解决方法<strong>提出4个要求：</strong></p>
+<p><strong>1）任何两个进程不能同时在临界区中</strong></p>
+<p>2）不对CPU的速度和数量做任何假设</p>
+<p><strong>3）临界区外运行的进程不得阻塞其他进程</strong></p>
+<p>4）不得使进程无限期等待进入临界区</p>
+<hr>
+<h2 id="忙等待-busy-waiting-的互斥"><a href="#忙等待-busy-waiting-的互斥" class="headerlink" title="忙等待(busy waiting)的互斥"></a>忙等待(busy waiting)的互斥</h2><p>本部分可行的解决方案都有一个<strong>特征</strong>：在无法进入临界区时，他们都会<strong>持续地占据CPU时间直到被调度（不会主动放弃）</strong>。所以称为busy waiting。</p>
+<h3 id="一、屏蔽中断"><a href="#一、屏蔽中断" class="headerlink" title="一、屏蔽中断"></a>一、屏蔽中断</h3><p>对于单处理器来说，在进程进入临界区后立即屏蔽所有中断，在离开前打开中断是最直接的方法。屏蔽中断后，时钟中断也被屏蔽——CPU就不会切换到其他进程。</p>
 <p>其缺点在于给了用户程序太大的权力。屏蔽中断对于OS来说很好，但对用户程序却不太合适。</p>
 <p>且由于多核的普及，其他CPU也是可以访问共享内存的。</p>
 <h3 id="二、锁变量"><a href="#二、锁变量" class="headerlink" title="二、锁变量"></a>二、锁变量</h3><p>一种软件解决方法。设置一个共享锁变量，进入临界区前要先开锁才能进入。</p>
