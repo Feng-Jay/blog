@@ -816,7 +816,7 @@ leave_region:
 <p>当消费者下次运行时，直接睡眠，生产者在数据产生完后也睡眠。</p>
 <p>emmm，他们就这样一起睡下去了。</p>
 <p><em>一种简单的解决方法是给消费者加一个唤醒等待位。类似spooling，就是wakeup信号的一个存储区。</em></p>
-<h2 id="信号量-Semaphore-的互斥与同步"><a href="#信号量-Semaphore-的互斥与同步" class="headerlink" title="#信号量(Semaphore)的互斥与同步"></a><font color="red">#信号量(Semaphore)的互斥与同步</font></h2><p>信号量是0或者大于0的整数。</p>
+<h2 id="信号量-Semaphore-的互斥与同步"><a href="#信号量-Semaphore-的互斥与同步" class="headerlink" title="信号量(Semaphore)的互斥与同步"></a><font color="red">信号量(Semaphore)的互斥与同步</font></h2><p>信号量是0或者大于0的整数。</p>
 <p>信号量只能被PV操作控制 (初始化除外；即使只想要读信号量的值也要通过PV)</p>
 <p><em>PV操作是原子操作</em>&emsp;</p>
 <p>P操作检查信号量，若大于0则将其减1。若等于0，则进程睡眠，且此时P操作并未结束。</p>
@@ -892,7 +892,7 @@ semaphore full=<span class="hljs-number">0</span>;
 <p><strong>注意，对full和empty的P操作必须在mutex之前</strong></p>
 <p>设想以下情况：假如生产者已经将缓存填满，若先对mutex进行P操作，在执行P(empty)会被阻塞，希望消费者唤醒它。但消费者先执行P(mutex)也被阻塞，此时二者都被阻塞。</p>
 <p>但在V操作时，并没有先后顺序。</p>
-<h1 id="哲学家就餐问题"><a href="#哲学家就餐问题" class="headerlink" title="哲学家就餐问题"></a><font color="red">哲学家就餐问题</font></h1><div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> N 5 <span class="hljs-comment">/*哲学家数目*/</span></span>
+<h2 id="哲学家就餐问题-同步"><a href="#哲学家就餐问题-同步" class="headerlink" title="哲学家就餐问题(同步)"></a><font color="red">哲学家就餐问题(同步)</font></h2><div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> N 5 <span class="hljs-comment">/*哲学家数目*/</span></span>
 <span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> LEFT (i+N-1)%N <span class="hljs-comment">/*i的左邻居编号*/</span></span>
 <span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> RIGHT (i+1)%N <span class="hljs-comment">/*i的右邻居编号*/</span></span>
 <span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> THINKING 0 <span class="hljs-comment">/*哲学家在思考*/</span></span>
@@ -943,7 +943,7 @@ semaphore s[N];<span class="hljs-comment">/*每个哲学家一个信号量*/</sp
     &#125;
 &#125;</code></pre></div>
 
-<h1 id="读者—写者问题"><a href="#读者—写者问题" class="headerlink" title="读者—写者问题"></a><font color="red">读者—写者问题</font></h1><p>解决多个进程读写数据的情况：读者无互斥，读写，写写，有互斥。</p>
+<h2 id="读者—写者问题-互斥"><a href="#读者—写者问题-互斥" class="headerlink" title="读者—写者问题(互斥)"></a><font color="red">读者—写者问题(互斥)</font></h2><p>解决多个进程读写数据的情况：读者无互斥，读写，写写，有互斥。</p>
 <div class="hljs"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">int</span> semaphore;
 semaphore mutex=<span class="hljs-number">1</span>;<span class="hljs-comment">/*控制对reader的访问*/</span>
 semaphore database=<span class="hljs-number">1</span>;
