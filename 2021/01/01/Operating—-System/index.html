@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      8.6k 字
+      9k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      127
+      134
        分钟
     </span>
   
@@ -1090,6 +1090,85 @@ semaphore barber=<span class="hljs-number">0</span>,customer=<span class="hljs-n
         &#125;
 
     &#125;
+&#125;</code></pre></div>
+
+<h2 id="二、吸烟者问题"><a href="#二、吸烟者问题" class="headerlink" title="二、吸烟者问题"></a>二、吸烟者问题</h2><p>三个吸烟者在一间房间内，还有一个香烟供应者。为了制造并抽掉香烟，每个吸烟者需要三样东西：烟草、纸和火柴。供应者有丰富的货物提供。三个吸烟者中，<br>第一个有自己的烟草，第二个有自己的纸，第三个有自己的火柴。供应者将两样东西放在桌子上，允许一个吸烟者进行对健康不利的吸烟。当吸烟者完成吸烟后唤醒供应者，供应者再放两样东西（随机地）在桌面上，然后唤醒另一个吸烟者。试为吸烟者和供应者编写程序解决问题。</p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">int</span> semaphore;
+semaphore s=<span class="hljs-number">1</span>;
+semaphore s1=<span class="hljs-number">0</span>,s2=<span class="hljs-number">0</span>,s3=<span class="hljs-number">0</span>;
+<span class="hljs-keyword">bool</span> material[<span class="hljs-number">3</span>]=&#123;<span class="hljs-number">0</span>&#125;;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">supply</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;
+        P(s);
+        <span class="hljs-keyword">int</span> i=rand()%<span class="hljs-number">3</span>;
+        material[(i+<span class="hljs-number">1</span>)%<span class="hljs-number">3</span>]=<span class="hljs-number">1</span>;
+        material[(i+<span class="hljs-number">3</span><span class="hljs-number">-1</span>)%<span class="hljs-number">3</span>]=<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">if</span>(material[<span class="hljs-number">0</span>]&amp;&amp;material[<span class="hljs-number">1</span>])
+        &#123;
+            V(s3);
+        &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(material[<span class="hljs-number">0</span>]&amp;&amp;material[<span class="hljs-number">2</span>])&#123;
+            V(s2);
+        &#125;<span class="hljs-keyword">else</span>&#123;
+            V(s1);
+        &#125;
+    &#125;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Smoker1</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;
+        P(s1);
+        smoke();
+        V(s);
+    &#125;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Smoker2</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;
+        P(s2);
+        somke();
+        V(s);
+    &#125;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Smoker3</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;
+        P(s3);
+        somke();
+        V(s);
+    &#125;
+&#125;</code></pre></div>
+
+<h2 id="三、面包师问题"><a href="#三、面包师问题" class="headerlink" title="三、面包师问题"></a>三、面包师问题</h2><p>面包师有很多面包和蛋糕，由 n 个销售人员销售。每个顾客进店后先取一个号，并且等着叫号。当一个销售人员空闲下来，就叫下一个号。请分别编写销售人<br>员和顾客进程的程序。</p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">int</span> semaphore;
+semaphore customer=<span class="hljs-number">0</span>;
+semaphore seller=n;
+semaphore c_mutex=<span class="hljs-number">1</span>;
+semaphore s_mutex=<span class="hljs-number">1</span>;
+<span class="hljs-keyword">int</span> number_c=<span class="hljs-number">0</span>,number_s=<span class="hljs-number">0</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Customer</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    P(&amp;c_mutex);
+    number_c++;
+    V(&amp;c_mutex);
+    V(customer);
+    P(seller);
+    Buy <span class="hljs-keyword">and</span> go ;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Seller</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;
+        P(&amp;customer);
+        P(&amp;s_mutex);
+        call the number_s customer;
+        number_s++;
+        V(&amp;s_mutex);
+        V(&amp;seller);
+    &#125;
+    
 &#125;</code></pre></div>
 
 
