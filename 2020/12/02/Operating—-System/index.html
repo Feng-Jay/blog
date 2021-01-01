@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      7k 字
+      7.7k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      103
+      112
        分钟
     </span>
   
@@ -244,7 +244,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：28 分钟前
+                  本文最后更新于：几秒前
                 
               </p>
             
@@ -670,11 +670,17 @@
 <p>4）不得使进程无限期等待进入临界区</p>
 <hr>
 <h2 id="忙等待-busy-waiting-的互斥"><a href="#忙等待-busy-waiting-的互斥" class="headerlink" title="忙等待(busy waiting)的互斥"></a>忙等待(busy waiting)的互斥</h2><p>本部分可行的解决方案都有一个<strong>特征</strong>：在无法进入临界区时，他们都会<strong>持续地占据CPU时间直到被调度（不会主动放弃）</strong>。所以称为busy waiting。</p>
-<h3 id="一、屏蔽中断"><a href="#一、屏蔽中断" class="headerlink" title="一、屏蔽中断"></a>一、屏蔽中断</h3><p>对于单处理器来说，在进程进入临界区后立即屏蔽所有中断，在离开前打开中断是最直接的方法。屏蔽中断后，时钟中断也被屏蔽——CPU就不会切换到其他进程。</p>
-<p>其缺点在于给了用户程序太大的权力。屏蔽中断对于OS来说很好，但对用户程序却不太合适。</p>
-<p>且由于多核的普及，其他CPU也是可以访问共享内存的。</p>
+<h3 id="一、屏蔽中断"><a href="#一、屏蔽中断" class="headerlink" title="一、屏蔽中断"></a>一、屏蔽中断</h3><p><strong>这是最简单粗暴的方法</strong></p>
+<p>对于单处理器来说，在进程进入临界区后立即屏蔽所有中断，在离开前打开中断是最直接的方法。因为屏蔽中断后，时钟中断也被屏蔽——CPU不会调度其他进程。</p>
+<p>其<strong>缺点</strong>在于给了<strong>用户程序太大的权力</strong>，一旦一个进程不再打开中断，那么整个OS/多核中的一个核就会终止运行。</p>
+<p>屏蔽中断对于OS来说很好，在更新数据时屏蔽中断可以确保短时间内完成，同时也确保执行的正确。</p>
+<p>总的来说：屏蔽中断对OS来说很有用，但对于用户程序来说并不是一个明智的解决方法。</p>
 <h3 id="二、锁变量"><a href="#二、锁变量" class="headerlink" title="二、锁变量"></a>二、锁变量</h3><p>一种软件解决方法。设置一个共享锁变量，进入临界区前要先开锁才能进入。</p>
-<p>但由于调度的不确定性，如果一个进程在读锁变量为0后，在准备将其设置为1之前被调度，另一个程序将其设置为1，进入临界区。此时再返回，第一个进程将锁变量设为1，也进入临界区。此时临界区中有两个程序。</p>
+<p>但这种解决方法是不行的，只是一个<strong>套娃的方法</strong>。设想下面的情况：</p>
+<p>如果一个进程在读锁变量为0后，在准备将其<strong>设置为1之前被调度</strong>；新调度的<strong>进程将其设置为1</strong>，<strong>进入临界区</strong>。</p>
+<p>此时再返回第一个进程，他也会将锁变量设为1，也进入临界区。</p>
+<p>此时临界区中有两个程序。</p>
+<p>So，这种方法只<strong>是转移了矛盾，并没有根本解决矛盾</strong>。</p>
 <h3 id="三、严格轮换法"><a href="#三、严格轮换法" class="headerlink" title="三、严格轮换法"></a>三、严格轮换法</h3><div class="hljs"><pre><code class="hljs cpp">
 <span class="hljs-keyword">int</span> turn=<span class="hljs-number">0</span>;
 <span class="hljs-comment">/*进程 0*/</span>
@@ -694,11 +700,12 @@
     noncritical_region();
 &#125;</code></pre></div>
 
-<p><em>功能描述：</em> 进程0首先检查turn为0，进入临界区；进程1检查turn为0，执行循环一直检查turn直至为1.</p>
-<p>连续测试一个变量直到某个值出现称为<strong>忙等待(Busy waiting)</strong> ——浪费CPU时间，上述锁称为自旋锁。</p>
-<p><em>但这种解法也是存在问题的</em></p>
-<p>假如进程0结束临界区操作，将turn设置为1,。进程0迅速完成非临界区操作，而进程1正在忙于非临界区操作。此时进程0无法进入临界区(turn==1),进程1也不进入临界区。<strong>说明在一个进程比另一个慢得多的情况下，该解法并不太好。</strong></p>
-<p><strong>违背前述条件3，进程0被在临界区外的进程1阻塞无法进入临界区。</strong></p>
+<p><em>功能描述：</em> 进程0首先检查turn为0，进入临界区；进程1检查turn为0，执行循环一直检查turn直至为1.（busy waiting!）</p>
+<p><em>但这种解法也是存在问题的。</em></p>
+<p>如果进程0是一个临界区密集型进程，进程1是一个非临界区密集型进程。</p>
+<p>当进程0结束临界区操作，将turn设置为1。进程0迅速完成非临界区操作，而进程1正在忙于非临界区操作。此时进程0无法进入临界区(此时turn==1),进程1也不进入临界区。</p>
+<p>这就<strong>违背了前面4个要求中的第3个：进程0被在临界区外的进程1阻塞无法进入临界区。</strong></p>
+<p><strong>说明在一个进程比另一个慢得多的情况下，该严格轮换法并不太好。</strong></p>
 <h3 id="四、Peterson解法-针对两个进程"><a href="#四、Peterson解法-针对两个进程" class="headerlink" title="四、Peterson解法   (针对两个进程)"></a>四、Peterson解法   (针对两个进程)</h3><div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> FALSE 0</span>
 <span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> TRUE 1</span>
 <span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> N 2 <span class="hljs-comment">//进程数量</span></span>
@@ -707,13 +714,13 @@
 
 <span class="hljs-keyword">int</span> interested[N]=&#123;<span class="hljs-number">0</span>&#125;; <span class="hljs-comment">//所有值初始化为0</span>
 
-<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">enter_region</span><span class="hljs-params">(<span class="hljs-keyword">int</span> process<span class="hljs-comment">/*进程是0或1*/</span>)</span></span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">enter_region</span><span class="hljs-params">(<span class="hljs-keyword">int</span> process)</span><span class="hljs-comment">/*进程号*/</span></span>
 <span class="hljs-function"></span>&#123;
     <span class="hljs-keyword">int</span> other;					    <span class="hljs-comment">/*另一进程号*/</span>
     other=<span class="hljs-number">1</span>-process;				
     interested[process]=TRUE;		<span class="hljs-comment">/*表示感兴趣*/</span>
     turn = process;					<span class="hljs-comment">/*设置标志*/</span>
-    <span class="hljs-keyword">while</span>(turn=process&amp;&amp;interested[other]==TRUE); <span class="hljs-comment">/*空语句*/</span>
+    <span class="hljs-keyword">while</span>(turn==process&amp;&amp;interested[other]==TRUE); <span class="hljs-comment">/*空语句*/</span>
 &#125;
 
 <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">leave_region</span><span class="hljs-params">(<span class="hljs-keyword">int</span> process)</span> 		<span class="hljs-comment">/*离开的进程*/</span></span>
@@ -721,22 +728,47 @@
     interested[process]=FALSE;		<span class="hljs-comment">/*离开临界区*/</span>
 &#125;</code></pre></div>
 
+<p>在<strong>进入临界区之前</strong>，各个进程使用自己的进程号（0/1）**调用enter_region()**。</p>
+<p>在<strong>完成临界区操作</strong>后，**调用leave_region()**。</p>
+<p>即当turn==自己 且 另一个进程没有离开临界区时，自己不能进入。</p>
+<p>如果两个进程几乎同时调用enter_region, 但进程0比1先存turn，那么最后turn==1。此时进程0可以进入临界区，进程1只能等待。</p>
+<p><strong>Attention：enter_region中的 turn 和 interest 设置顺序不能颠倒</strong></p>
+<p>假设现在已经颠倒 <em>变成酱紫 ↓↓↓</em></p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">enter_region</span><span class="hljs-params">(<span class="hljs-keyword">int</span> process)</span><span class="hljs-comment">/*进程号*/</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> other;					    <span class="hljs-comment">/*另一进程号*/</span>
+    other=<span class="hljs-number">1</span>-process;			
+    turn = process;					<span class="hljs-comment">/*设置标志*/</span>
+    interested[process]=TRUE;		<span class="hljs-comment">/*表示感兴趣*/</span>
+    <span class="hljs-keyword">while</span>(turn==process&amp;&amp;interested[other]==TRUE); <span class="hljs-comment">/*空语句*/</span>
+&#125;</code></pre></div>
+
+<p>如果进程0在将turn设置为0后被调度，进程1发现进程0没有interested，进入临界区。</p>
+<p>此时调度回进程0，进程0发现turn！=0, 进入临界区。</p>
+<p>此时有两个进程同时在临界区里，so… 出问题了。</p>
+<p><strong>进一步，我们思考一下peterson算法背后的思想以及为什么交换顺序后就不行</strong></p>
+<p>peterson算法的思想就是：类似孔融让梨，<strong>使用一个数组来表达每个进程想进入临界区的意图。每个进程要先表明自己的意图。最后一个进程要“让梨”，即如果turn是自己且对方想进入临界区，那自己就等待，让对方使用。</strong></p>
+<p>那么我们交换顺序后，就会出现一种情况：对方还没来得及表明意图，另一个进程就抢先看自己让不让梨（有些虚伪的感觉），结果对方还没说话你就抢过来话筒当然就不用让了，直接进入临界区。但此时对方却认为另一个人会让梨，于是自己也进入临界区。</p>
+<p>so…. 就出现了如此的尴尬局面。</p>
 <h3 id="五、TSL指令"><a href="#五、TSL指令" class="headerlink" title="五、TSL指令"></a>五、TSL指令</h3><p><strong>这是一种硬件支持方案</strong></p>
 <div class="hljs"><pre><code class="hljs bash">TSL RX, LOCK</code></pre></div>
 
-<p>称为测试并加锁(原语操作)，作用是将一个内存字lock读到寄存器RX中，同时写lock=1。然后在该内存地址上存一个非零值。</p>
-<p>执行TSL指令的CPU将锁住内存总线，禁止其他CPU在本指令结束前访问内存。</p>
+<p>称为测试并加锁(test and set lock) 是一个<strong>原语操作</strong>，作用是将一个内存字lock读到寄存器RX中，同时写lock=1。然后在该内存地址上存一个非零值。</p>
+<p>执行TSL指令的CPU将<strong>锁住内存总线</strong>，禁止其他CPU在本指令结束前访问内存。</p>
 <div class="hljs"><pre><code class="hljs bash">enter_region:
 	TSL REGISTER,LOCK		|复制锁到寄存器并将锁设为1
 	CMP REGISTER,<span class="hljs-variable">$0</span>	 		|判断锁是否为0
-	JNE enter_region		|若非0，说明锁已被设置循环
+	JNE enter_region		|若非0，说明锁已被设置，进入busy waiting的循环
 	RET
 leave_region:
 	MOVE LOCK,<span class="hljs-variable">$0</span>			|锁中存0
 	RET				        |<span class="hljs-built_in">return</span></code></pre></div>
 
+<p>与peterson的使用类似</p>
+<p>在进入临界区前，调用enter_region，将导致busy waiting直到锁空闲为止。</p>
+<p>在离开临界区时，调用leave_region，将lock设置为0；</p>
 <p>在intel的指令集中也有这样的操作：XCHG</p>
-<h1 id="信号量-Semaphore"><a href="#信号量-Semaphore" class="headerlink" title="信号量(Semaphore)"></a><font color="red">信号量(Semaphore)</font></h1><p>信号量是0或者大于0的整数。</p>
+<h2 id="睡眠与唤醒（Sleep-and-wakeup）的互斥"><a href="#睡眠与唤醒（Sleep-and-wakeup）的互斥" class="headerlink" title="睡眠与唤醒（Sleep and wakeup）的互斥"></a>睡眠与唤醒（Sleep and wakeup）的互斥</h2><h1 id="信号量-Semaphore"><a href="#信号量-Semaphore" class="headerlink" title="信号量(Semaphore)"></a><font color="red">信号量(Semaphore)</font></h1><p>信号量是0或者大于0的整数。</p>
 <p>信号量只能被PV操作控制 (初始化除外；即使只想要读信号量的值也要通过PV)</p>
 <p><em>PV操作是原子操作</em>&emsp;</p>
 <p>P操作检查信号量，若大于0则将其减1。若等于0，则进程睡眠。</p>
