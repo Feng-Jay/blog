@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      9.6k 字
+      9.7k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      145
+      148
        分钟
     </span>
   
@@ -1280,6 +1280,45 @@ semaphore odd=<span class="hljs-number">0</span>;
         counteven();
     &#125;
     
+&#125;</code></pre></div>
+
+<h2 id="七、窄桥问题"><a href="#七、窄桥问题" class="headerlink" title="七、窄桥问题"></a>七、窄桥问题</h2><p>有桥如下图所示，<img src="/2021/01/01/Operating%E2%80%94-System/bridge.png" srcset="/img/loading.gif"></p>
+<p>车流如箭头所示，桥上不允许两车交汇，但允许同方向多辆车依次通 过（即桥上可以有多个同方向的车）。用 P、V 操作实现交通管理以防止桥上堵塞。</p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">int</span> semaphore;
+semaphore bridge=<span class="hljs-number">1</span>;
+semaphore NS_mutex=<span class="hljs-number">1</span>;
+semaphore SN_mutex=<span class="hljs-number">1</span>;
+
+<span class="hljs-keyword">int</span> NSC=<span class="hljs-number">0</span>,SNC=<span class="hljs-number">0</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">N2S</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;
+        P(&amp;NS_mutex);
+        NSC++;
+        <span class="hljs-keyword">if</span>(NSC==<span class="hljs-number">1</span>) P(&amp;bridge);
+        V(&amp;NS_mutex);
+        GETTHROUGH!
+        P(&amp;NS_mutex);
+        NSC--;
+        <span class="hljs-keyword">if</span>(NSC==<span class="hljs-number">0</span>) V(&amp;bridge);
+        V(&amp;NS_mutex);
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">S2N</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;
+        P(&amp;SN_mutex);
+        SNC++;
+        <span class="hljs-keyword">if</span>(SNC==<span class="hljs-number">1</span>) P(&amp;bridge);
+        V(&amp;SN_mutex);
+        GETTHROUGH!
+        P(NS_mutex);
+        SNC--;
+        <span class="hljs-keyword">if</span>(SNC==<span class="hljs-number">0</span>) V(&amp;bridge);
+        V(&amp;NS_mutex)；
+    &#125;
 &#125;</code></pre></div>
 
 
