@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      7.7k 字
+      7.9k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      112
+      115
        分钟
     </span>
   
@@ -768,7 +768,11 @@ leave_region:
 <p>在进入临界区前，调用enter_region，将导致busy waiting直到锁空闲为止。</p>
 <p>在离开临界区时，调用leave_region，将lock设置为0；</p>
 <p>在intel的指令集中也有这样的操作：XCHG</p>
-<h2 id="睡眠与唤醒（Sleep-and-wakeup）的互斥"><a href="#睡眠与唤醒（Sleep-and-wakeup）的互斥" class="headerlink" title="睡眠与唤醒（Sleep and wakeup）的互斥"></a>睡眠与唤醒（Sleep and wakeup）的互斥</h2><h1 id="信号量-Semaphore"><a href="#信号量-Semaphore" class="headerlink" title="信号量(Semaphore)"></a><font color="red">信号量(Semaphore)</font></h1><p>信号量是0或者大于0的整数。</p>
+<h2 id="睡眠与唤醒（Sleep-and-wakeup）的互斥"><a href="#睡眠与唤醒（Sleep-and-wakeup）的互斥" class="headerlink" title="睡眠与唤醒（Sleep and wakeup）的互斥"></a>睡眠与唤醒（Sleep and wakeup）的互斥</h2><p>peterson算法和TSL解法都是正确的，但他们都有忙等待的缺点——不仅会浪费时间，还会可能引起意外的结果。</p>
+<p>设想一台计算机有两个进程：H与L，H优先级高于L。调度规则是：只要H处于就绪状态就可运行。若此时，L在critical region 那么H就处于就绪态，开始busy waiting。但由于H就绪时，L不会被调度(OS认为H就绪时就会运行，而且H优先级高于L，因此OS也不会主动对运行的H进行调度)，L也就无法离开临界区。H将永远等待下去。</p>
+<p>上述情况称为 <strong>优先级反转问题</strong>。</p>
+<p>所以，我们需要一种新的不同于busy waiting的解决方案来进行IPC。</p>
+<h1 id="信号量-Semaphore"><a href="#信号量-Semaphore" class="headerlink" title="信号量(Semaphore)"></a><font color="red">信号量(Semaphore)</font></h1><p>信号量是0或者大于0的整数。</p>
 <p>信号量只能被PV操作控制 (初始化除外；即使只想要读信号量的值也要通过PV)</p>
 <p><em>PV操作是原子操作</em>&emsp;</p>
 <p>P操作检查信号量，若大于0则将其减1。若等于0，则进程睡眠。</p>
