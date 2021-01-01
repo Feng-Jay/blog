@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      7.9k 字
+      8k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      115
+      116
        分钟
     </span>
   
@@ -772,6 +772,10 @@ leave_region:
 <p>设想一台计算机有两个进程：H与L，H优先级高于L。调度规则是：只要H处于就绪状态就可运行。若此时，L在critical region 那么H就处于就绪态，开始busy waiting。但由于H就绪时，L不会被调度(OS认为H就绪时就会运行，而且H优先级高于L，因此OS也不会主动对运行的H进行调度)，L也就无法离开临界区。H将永远等待下去。</p>
 <p>上述情况称为 <strong>优先级反转问题</strong>。</p>
 <p>所以，我们需要一种新的不同于busy waiting的解决方案来进行IPC。</p>
+<p><strong>所以有了sleep和wakeup这几条IPC原语，他们在无法进入临界区时将阻塞而不是busy waiting</strong></p>
+<p>sleep是一个引起调用进程阻塞的系统调用，即背挂起，直到被其他进程唤醒。</p>
+<p>wakeup就是唤醒的进程咯QWQ！</p>
+<p><em>呜，2021/1/1日的早上图书馆是真没人啊，哈哈哈哈，好喜欢这种感觉！！！哈哈哈哈哈哈哈哈哈哈！</em></p>
 <h1 id="信号量-Semaphore"><a href="#信号量-Semaphore" class="headerlink" title="信号量(Semaphore)"></a><font color="red">信号量(Semaphore)</font></h1><p>信号量是0或者大于0的整数。</p>
 <p>信号量只能被PV操作控制 (初始化除外；即使只想要读信号量的值也要通过PV)</p>
 <p><em>PV操作是原子操作</em>&emsp;</p>
