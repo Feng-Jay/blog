@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.1k 字
+      1.3k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      14
+      16
        分钟
     </span>
   
@@ -244,7 +244,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：10 小时前
+                  本文最后更新于：几秒前
                 
               </p>
             
@@ -296,6 +296,10 @@
 <h2 id="空闲内存管理"><a href="#空闲内存管理" class="headerlink" title="空闲内存管理"></a>空闲内存管理</h2><p>Swapping技术的基础要求我们 <strong>必须充分了解当前的内存状态。</strong></p>
 <p><strong>两种管理方法：</strong></p>
 <p><strong>1. bitmap(位图)法</strong></p>
+<p>即将内存划分为一些大小固定的分配单元，每一个分配单元对应bitmap中的1bit，用0表示空闲/1表示占用。<strong>可以看到，bitmap的大小由内存和分配单元大小共同确定。</strong></p>
+<p><strong>优点：实现简单且使用的空间大小固定。</strong></p>
+<p><strong>缺点：每当要使用内存空间时，都要对bitmap搜索直到找出一个有k个连续的0的串（emmm，开销略大）</strong></p>
+<p><strong>2.空闲区链表法</strong></p>
 
             </div>
             <hr>
