@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      222 字
+      271 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3
+      4
        分钟
     </span>
   
@@ -244,7 +244,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：几秒前
+                  本文最后更新于：15 分钟前
                 
               </p>
             
@@ -262,12 +262,17 @@
 <span class="hljs-keyword">WHERE</span> first_name=<span class="hljs-string">&#x27;Peternela&#x27;</span> <span class="hljs-keyword">AND</span> last_name=<span class="hljs-string">&#x27;Anick&#x27;</span>; <span class="hljs-comment">--附加条件</span></code></pre></div>
 
 <p><em>作用是寻找出employees表中 姓名为 Peternela Anick 的一行的所有数据</em></p>
-<p>可以使用 <code> AS</code>关键字来为关系中的列取 <code> Alias</code></p>
+<h2 id="SELECT-字段"><a href="#SELECT-字段" class="headerlink" title="SELECT 字段"></a>SELECT 字段</h2><p>可以使用 <code> AS</code>关键字来为关系中的列取 <code> Alias</code></p>
 <div class="hljs"><pre><code class="hljs SQL"><span class="hljs-keyword">SELECT</span> emp_no <span class="hljs-keyword">AS</span> emp_number <span class="hljs-comment">--取别名</span>
 <span class="hljs-keyword">FROM</span> employees <span class="hljs-comment">-- 查找的关系</span>
 <span class="hljs-keyword">WHERE</span> first_name=<span class="hljs-string">&#x27;Peternela&#x27;</span> <span class="hljs-keyword">AND</span> last_name=<span class="hljs-string">&#x27;Anick&#x27;</span>; <span class="hljs-comment">--附加条件</span></code></pre></div>
 
 <p><em>可将employees 中名为 P~ A~ 的emp_no元素输出</em> <strong>并将列名改为emp_number</strong></p>
+<p>可以在SELECT 中使用 <code>算数表达式</code> 以及 <code>常量</code> 来query</p>
+<div class="hljs"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> emp_no*<span class="hljs-number">10</span> <span class="hljs-comment">--可以看到</span>
+<span class="hljs-keyword">FROM</span> employees <span class="hljs-comment">-- 查找的关系</span>
+<span class="hljs-keyword">WHERE</span> first_name=<span class="hljs-string">&#x27;Peternela&#x27;</span> <span class="hljs-keyword">AND</span> last_name=<span class="hljs-string">&#x27;Anick&#x27;</span>; <span class="hljs-comment">--附加条件</span></code></pre></div>
+
 
             </div>
             <hr>
