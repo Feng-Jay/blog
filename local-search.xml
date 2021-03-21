@@ -8,7 +8,7 @@
     <link href="/2021/03/21/%E5%92%8C%E6%88%91%E4%B8%80%E8%B5%B7%E5%AD%A6PostgreSQL/"/>
     <url>/2021/03/21/%E5%92%8C%E6%88%91%E4%B8%80%E8%B5%B7%E5%AD%A6PostgreSQL/</url>
     
-    <content type="html"><![CDATA[<p>数月不见，甚是想念。</p><a id="more"></a><p>因最近参与了两个新项目以及分专业带来的亿点点作业(苦逼计科人)，所以一直没更新(还是懒)。</p><p>但接下来会尽力周更的！</p>]]></content>
+    <content type="html"><![CDATA[<p>数月不见，甚是想念。</p><a id="more"></a><p>因最近参与了两个新项目以及分专业带来的亿点点作业(苦逼计科人)，所以一直没更新(还是懒)。</p><p>但接下来会努力周更！！！</p>]]></content>
     
     
     <categories>
@@ -183,19 +183,6 @@
       <tag>C/C++</tag>
       
     </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>flie-system</title>
-    <link href="/2020/12/04/flie-system/"/>
-    <url>/2020/12/04/flie-system/</url>
-    
-    <content type="html"><![CDATA[<p>文件：名称(存在目录中)，属性，数据(存在数据块中)</p><p>inode 可以连续存储也可以非连续存储</p><p>存储属性(owner group size type…)。</p><p>1 file 1 inode-&gt; inumber</p><p>目录文件也有对应的inode，属性，内容(目录内文件名，inumber)</p><p>inode表由内核维护共享</p><p>root dic 的inumber由系统记录。</p><p>root dir 由inumber查inode表，读其数据块，知道目录内文件及inumber</p><p>索引复杂度取决于：目录深度与各层目录下文件多少。</p><p>OS可以控制目录深度：CWD（当前工作目录）//使用相对路径</p><p>data值即为pointer</p><h1 id="shared-files"><a href="#shared-files" class="headerlink" title="shared files"></a>shared files</h1><p>软链接/硬链接</p><h1 id="连续分配"><a href="#连续分配" class="headerlink" title="连续分配"></a>连续分配</h1><p>按块/扇区分配，优点：访问速度快。实现随机访问。</p><p>缺点：连续存储对文件大小不固定的文件可能会导致没有空余空间，只能剪切。</p><h1 id="非连续，link-list"><a href="#非连续，link-list" class="headerlink" title="非连续，link list"></a>非连续，link list</h1><p>大小灵活，访问速度慢。</p><h1 id="多级索引-商用"><a href="#多级索引-商用" class="headerlink" title="多级索引 商用"></a>多级索引 商用</h1><p> 部分作为直接指针（指向数据块）</p><p>部分作为K级间接指针(指向表)</p><p><strong>计算指向数据大小</strong></p><p>12+（1024/4)+(1024/4)(1024/4)+(1024/4)^3 </p><h1 id="Realize-file-system"><a href="#Realize-file-system" class="headerlink" title="Realize file system"></a>Realize file system</h1><p><strong>VFS将用户与file system隔绝</strong></p><p><strong>EXT2</strong></p><p>filesystem is full when:</p><p>1.No more inode block</p><p>2.No more data block</p><p> 多少个字节应该有一个inode( bytes-per-inode) 4096default(1:31)</p><p><strong>空闲块管理</strong></p><h1 id="Storage"><a href="#Storage" class="headerlink" title="Storage"></a>Storage</h1><h2 id="disk"><a href="#disk" class="headerlink" title="disk"></a>disk</h2><p>IDE<em>并行接口</em></p><p>ATA<em>串行接口</em></p><p>-PATA（parallel ATA / IDE）</p><p>-SATA（serial ATA）</p><p>SCS</p><p>SAS /server/</p><p>SSD/读写不对称，读&gt;&gt;写/</p><p><strong>磁盘臂调度算法</strong></p><p>time： seek time + rotational time + data read time(要读扇区转的时间)</p><h2 id="调度算法"><a href="#调度算法" class="headerlink" title="调度算法"></a><strong>调度算法</strong></h2><h3 id="FCFS"><a href="#FCFS" class="headerlink" title="FCFS"></a>FCFS</h3><h3 id="SSTF"><a href="#SSTF" class="headerlink" title="SSTF"></a>SSTF</h3><h3 id="SCAN"><a href="#SCAN" class="headerlink" title="SCAN"></a>SCAN</h3><p>一定会到顶，再折返。指明当前位置与方向。</p><h3 id="C-SCAN"><a href="#C-SCAN" class="headerlink" title="C-SCAN"></a>C-SCAN</h3><p>返程不响应。 解决SCAN对两端的不公平。</p><h3 id="LOOK"><a href="#LOOK" class="headerlink" title="LOOK"></a>LOOK</h3><p> 不会到顶。请求max min，确定范围。返程提供服务</p><h3 id="C-LOOK"><a href="#C-LOOK" class="headerlink" title="C-LOOK"></a>C-LOOK</h3><p>返程不响应。不会到顶。</p><h2 id="partition"><a href="#partition" class="headerlink" title="partition"></a>partition</h2><h1 id="LVM-server-back"><a href="#LVM-server-back" class="headerlink" title="LVM(server/back)"></a>LVM(server/back)</h1><p>Volume Group</p><p>Physical Volume分成PE，以块为单位划分为逻辑卷</p><pre><code class="hljs bash">pvcreat /dev/sda3vgcreatelvcreate -L 50M -n</code></pre><h1 id="RAID"><a href="#RAID" class="headerlink" title="RAID"></a>RAID</h1><p><strong>redundant array of independent disks</strong></p><p>PC:</p><p>slower, less reliable , smaller , but cheap;</p><p>RAID use multiple hard disks int an array to create a logic device.</p><p>Spare disk</p><h1 id="IO"><a href="#IO" class="headerlink" title="IO"></a>IO</h1>]]></content>
-    
-    
     
   </entry>
   
