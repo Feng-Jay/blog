@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>和我一起学PostgreSQL</title>
+    <link href="/2021/03/21/%E5%92%8C%E6%88%91%E4%B8%80%E8%B5%B7%E5%AD%A6PostgreSQL/"/>
+    <url>/2021/03/21/%E5%92%8C%E6%88%91%E4%B8%80%E8%B5%B7%E5%AD%A6PostgreSQL/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Linux-进程</title>
     <link href="/2021/01/01/Operating%E2%80%94-System/"/>
     <url>/2021/01/01/Operating%E2%80%94-System/</url>
@@ -50,60 +63,6 @@
       <tag>Life</tag>
       
       <tag>Thinking</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Deadlock</title>
-    <link href="/2020/12/28/Deadlock/"/>
-    <url>/2020/12/28/Deadlock/</url>
-    
-    <content type="html"><![CDATA[]]></content>
-    
-    
-    <categories>
-      
-      <category>Operating System</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>C/C++</tag>
-      
-      <tag>OS</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Linux-内存管理</title>
-    <link href="/2020/12/27/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/"/>
-    <url>/2020/12/27/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</url>
-    
-    <content type="html"><![CDATA[<p>Learning OS is like reading books, you can communicate with top researchers.</p><a id="more"></a><p><strong>In this blog, I will try to describe the knowledge in a time-line way.</strong></p><h1 id="Time-1-万物初生"><a href="#Time-1-万物初生" class="headerlink" title="Time 1 (万物初生)"></a>Time 1 (万物初生)</h1><p>新生的计算机并没有存储器抽象，彼时的程序直接对真实的物理内存进行操作。</p><p>example</p><pre><code class="hljs assembly">mov Reg1, 1000</code></pre><p>就是对物理地址为1000的数据进行操作。</p><p><strong>对于这样的一个raw计算机是不可能实现并行程序的，因为此时每个程序都直接对物理内存进行操作，二者之间没有隔离。很容易出现二者对同一个地址的操作。</strong></p><p>但通过硬件的帮助，我们可以实现一个很拙劣的可以运行多道程序的计算机。</p><p><strong>使用 保护位与静态重定位</strong> 将程序<strong>连续地</strong>装载到内存中</p><p>即对内存分块，每块分配一个<strong>4bit的保护键</strong>，保护键存储在CPU的特殊寄存器中。PSW（程序状态字）中也有一个4bit码，若进程访问内存的保护键与PSW中的码不同，则会停止访问。</p><p>此时，本以为大功告成，程序间已经被隔离了，就开始多程序同时运行，但却出现了问题。</p><p>考虑下面的情况。</p><img src="/2020/12/27/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/time1.png" style="zoom:150%;">    <p><em>当程序被连续装载时，他们实际在的物理地址与汇编代码使用的物理地址是不同的(都认为是自己独占内存，从0地址开始)。</em></p><p>当执行图中两个程序的JMP指令时，下方的JMP指令会被正确执行，而上方的JMP却会跳到错误的地方。</p><p>So, 彼时的人们提出了<strong>静态重定位</strong>的技术，即<strong>当程序被装载到一个地址上时，该地址会被加到每一个程序地址上。</strong></p><h1 id="Time-2-呼之欲出"><a href="#Time-2-呼之欲出" class="headerlink" title="Time 2 (呼之欲出)"></a>Time 2 (呼之欲出)</h1><h2 id="地址空间的提出"><a href="#地址空间的提出" class="headerlink" title="地址空间的提出"></a>地址空间的提出</h2><p>在第一时代，我们在使用静态重定位时就萌生了一个想法：<strong>能否让每个程序都有自己的一套地址呢？</strong></p><p>起初只能直接对物理地址进行操作，也正是因为此导致多程序同时运行变得困难。</p><p>而且随着Computer的普及，一些”别有用心”的人出现了，他们可以通过程序轻易地控制操作系统。</p><p><strong>这样的变化催促着一种变革，催促着对系统保护与重定位实现新的跨越</strong>，结合操作系统是对计算机底层内容的一个优美抽象，我们又能否将复杂的物理地址抽象成一个简单的形式呢？</p><p><strong>地址空间的概念呼之欲出</strong></p><p><strong>地址空间是一个进程可用于寻址内存的地址集合，每个进程都有一个自己的地址空间，且不同进程间的地址空间（一般情况下）是相互独立的。</strong></p><p>&emsp;</p><p>地址空间的简单实现：<strong>动态重定位</strong></p><p>此时新添加了两个硬件设备：<strong>基址寄存器、界限寄存器</strong></p><p>基址寄存器：存储程序的起始物理地址。</p><p>界限寄存器：存储程序的长度。</p><p>每当进程访问内存时，<strong>CPU都会把地址发送到内存总线上，自动把基址寄存器值加到地址上并且与界限寄存器进行比较。</strong></p><p><em>这种实现方法虽然简单，但还是有些不足：</em></p><p><em>1.程序仍然要求连续装入内存。</em></p><p><em>2.比较运算可以很快，但加法运算由于进位传递时间的问题，在没有特殊硬件加持的情况下会显得很慢。</em></p><h2 id="解决内存超载"><a href="#解决内存超载" class="headerlink" title="解决内存超载"></a>解决内存超载</h2><p>虽然我们有了地址空间，可以简单地实现多程序并行，但这也提出了一个新的问题：</p><p><strong>当全部程序的总的大小&gt;内存大小时，怎么办？</strong></p><p>最简单的策略就是：<strong>Swapping 技术</strong></p><p><strong>即让一个进程完整调入内存，运行一段时间后再存回disk。空闲的进程主要存储在磁盘上，不会占用内存。</strong></p><p>但会在<strong>内存中产生holes</strong>，在一定时间需要进行内存紧缩。</p><p>另外一个很重要的问题，即对<strong>一个换入内存的进程应该分配多大的内存？</strong></p><p>需要<strong>对数据段和堆栈段的增长有所考虑</strong>。</p><img src="/2020/12/27/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/time2.png" style="zoom:50%;"><h2 id="空闲内存管理"><a href="#空闲内存管理" class="headerlink" title="空闲内存管理"></a>空闲内存管理</h2><p>Swapping技术的基础要求我们 <strong>必须充分了解当前的内存状态。</strong></p><p><strong>两种管理方法：</strong></p><p><strong>1. bitmap(位图)法</strong></p><p>即将内存划分为一些大小固定的分配单元，每一个分配单元对应bitmap中的1bit，用0表示空闲/1表示占用。<strong>可以看到，bitmap的大小由内存和分配单元大小共同确定。</strong></p><p><strong>优点：实现简单且使用的空间大小固定。</strong></p><p><strong>缺点：每当要使用内存空间时，都要对bitmap搜索直到找出一个有k个连续的0的串（emmm，开销略大）</strong></p><p><strong>2.空闲区链表法</strong></p>]]></content>
-    
-    
-    <categories>
-      
-      <category>Operating System</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>C/C++</tag>
-      
-      <tag>OS</tag>
       
     </tags>
     
@@ -250,33 +209,6 @@
       <tag>Life</tag>
       
       <tag>Thinking</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>NEMU</title>
-    <link href="/2020/11/10/NEMU/"/>
-    <url>/2020/11/10/NEMU/</url>
-    
-    <content type="html"><![CDATA[<p>Record my programming process and give others some inspirations.</p><a id="more"></a><p>You can find source code from <a href="https://github.com/Feng-Jay/NEMU">My github repo</a></p><p>/* But please do not just ctrl+c and ctrl+v */</p><p>And here is a very useful manual <a href="https://nju-ics.gitbooks.io/ics2015-programming-assignment/content/PA0.html">NEMU_gitbook</a></p><h1 id="PA2"><a href="#PA2" class="headerlink" title="PA2"></a>PA2</h1><p>PA2要求我们在NEMU中实现部分X86指令集中的内容。</p><p>如果是第一次真正接触底层指令编写的话，一开始肯定是很茫然和无措的。(切身体会)</p><p>但别灰心，CS就是这样，只有不会才能提升嘛。那么就….开始！</p><h2 id="三个关键宏"><a href="#三个关键宏" class="headerlink" title="三个关键宏"></a>三个关键宏</h2><p>阅读指导书，会发现这样三个宏定义在实现新指令时都会被用到。</p><pre><code class="hljs c"><span class="hljs-string">&quot;nemu/include/cpu/helper.h&quot;</span><span class="hljs-comment">/* All function defined with &#x27;make_helper&#x27; return the length of the operation. */</span><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> make_helper(name) int name(swaddr_t eip)</span><span class="hljs-string">&quot;nemu/include/cpu/exec/helper.h&quot;</span><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> make_helper_v(name) </span>make_helper(concat(name, _v)) &#123; <span class="hljs-keyword">return</span> (ops_decoded.is_operand_size_16 ? concat(name, _w) : concat(name, _l)) (eip); \&#125;<span class="hljs-string">&quot;nemu/include/cpu/exec/helper.h&quot;</span><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> make_instr_helper(type) </span>make_helper(concat5(instr, _, type, _, SUFFIX)) &#123; <span class="hljs-keyword">return</span> idex(eip, concat4(decode_, type, _, SUFFIX), do_execute); &#125;</code></pre><p>这三个宏定义很巧妙地使用了函数指针和宏定义的配合。<a href="https://blog.csdn.net/Zz_1996/article/details/78758627">感兴趣可以了解一下</a></p><p><strong>其中，make_helper函数的功能是声明一个函数，并且返回操作的长度</strong></p><p>可以通过阅读代码知道，make_helper函数每次都要传入一个参数eip，返回一个int值。</p><p>&emsp;</p><p><strong>make_helper_v函数的作用是用来确定一个函数的后缀</strong></p><p>16位指令的话就+w(word,16bits)，否则就+l(long word, 32bits);</p><p>&emsp;</p><p><strong>make_instr_helper函数的作用就是确定函数的形式，并且进行译码、执行</strong></p><p>其中 <code>type</code> 为指令的形式, 通过调用 <code>idex()</code> 函数来进行执行的译码和执行。</p><p>&emsp;</p><p>如果看不太懂没关系，下面来一个实例</p><p><strong>mov_i2r_b指令的实现</strong></p><pre><code class="hljs c"><span class="hljs-string">&quot;nemu/src/cpu/exec/date-mov/mov.h&quot;</span>make_helper(mov_i2r_b);<span class="hljs-string">&quot;nemu/src/cpu/exec/date-mov/mov.c &quot;</span>make_helper_v(mov_i2r)    <span class="hljs-string">&quot;nemu/src/cpu/exec/date-mov/mov-template.h&quot;</span>make_instr_helper(i2r)    <span class="hljs-comment">/*ignored the do_execute part*/</span></code></pre>]]></content>
-    
-    
-    <categories>
-      
-      <category>Operating System</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>C/C++</tag>
-      
-      <tag>OS</tag>
       
     </tags>
     
