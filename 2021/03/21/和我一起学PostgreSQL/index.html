@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      373 字
+      475 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      5
+      7
        分钟
     </span>
   
@@ -244,7 +244,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：17 分钟前
+                  本文最后更新于：几秒前
                 
               </p>
             
@@ -269,6 +269,7 @@
 <span class="hljs-keyword">WHERE</span> first_name=<span class="hljs-string">&#x27;Peternela&#x27;</span> <span class="hljs-keyword">AND</span> last_name=<span class="hljs-string">&#x27;Anick&#x27;</span>; <span class="hljs-comment">--附加条件</span></code></pre></div>
 
 <p><em>可将employees 中名为 P~ A~ 的emp_no元素输出</em> <strong>并将列名改为emp_number</strong></p>
+<p>&nbsp;</p>
 <p>可以在SELECT 中使用 <code>算数表达式</code> 以及 <code>常量</code> 来query</p>
 <div class="hljs"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> emp_no*<span class="hljs-number">10</span> <span class="hljs-comment">--使用表达式取代一个列</span>
 <span class="hljs-keyword">FROM</span> employees <span class="hljs-comment">-- 查找的关系</span>
@@ -280,7 +281,15 @@
 <span class="hljs-keyword">WHERE</span> first_name=<span class="hljs-string">&#x27;Peternela&#x27;</span> <span class="hljs-keyword">AND</span> last_name=<span class="hljs-string">&#x27;Anick&#x27;</span>; <span class="hljs-comment">--附加条件</span></code></pre></div>
 
 <p><em>可以看到最后多了一个名叫 first_name的列，且列中值为 ‘temp’</em></p>
-<h2 id="Simple-WHERE"><a href="#Simple-WHERE" class="headerlink" title="Simple WHERE"></a>Simple WHERE</h2>
+<h2 id="Simple-WHERE"><a href="#Simple-WHERE" class="headerlink" title="Simple WHERE"></a>Simple WHERE</h2><p>可以使用 <code>=, &lt;&gt;, &lt;, &gt;, &lt;=, &gt;=</code>等比较操作符限制条件</p>
+<p>可以使用数学运算符/表达式，例如<code>emp_no*emp_no&lt;10002*10002</code>作为WHERE的条件</p>
+<p>同样可以对多个Boolean表达式间使用逻辑运算符：<code>AND OR NOT</code>.</p>
+<div class="hljs"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> *
+<span class="hljs-keyword">FROM</span> salaries
+<span class="hljs-keyword">WHERE</span> emp_no+<span class="hljs-number">1024</span> &gt; <span class="hljs-number">10001</span>+<span class="hljs-number">1024</span> <span class="hljs-keyword">AND</span> (salary &gt;= <span class="hljs-number">10000</span> <span class="hljs-keyword">OR</span> salary &lt;=<span class="hljs-number">50000</span>);
+<span class="hljs-comment">--可能没有特殊的实际意义，但只是一个示例。</span></code></pre></div>
+
+
             </div>
             <hr>
             <div>
