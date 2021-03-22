@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      753 字
+      751 字
     </span>
   
 
@@ -244,7 +244,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：1 分钟前
+                  本文最后更新于：几秒前
                 
               </p>
             
@@ -292,15 +292,11 @@
 
 
 <h2 id="SQL的模式匹配"><a href="#SQL的模式匹配" class="headerlink" title="SQL的模式匹配"></a>SQL的模式匹配</h2><p>使用keyword <code>LIKE  ESCAPE</code>以及通配符<code>%</code> <code>_</code>进行模式匹配</p>
-<div class="hljs"><pre><code class="hljs %```作用为代表任意**串**">
-&#96;&#96;&#96;_&#96;&#96;&#96;作用为代表任意 **单个字符**
-
-&#96;&#96;&#96;ESCAPE&#96;&#96;&#96;关键字说明在其后面的字符 **不是通配符，只是普通字符。**
-
-格式如下：
-
-&#96;&#96;&#96;sql
-s LIKE p-- p可以是含有通配符的字符串面板值</code></pre></div>
+<p>通配符<code>%</code>作用为代表任意<strong>串</strong></p>
+<p>通配符<code>_</code>作用为代表任意 <strong>单个字符</strong></p>
+<p>关键字<code>ESCAPE</code>说明在其后面的字符 <strong>不是通配符，只是普通字符。</strong></p>
+<p>格式如下：</p>
+<div class="hljs"><pre><code class="hljs sql">s LIKE p<span class="hljs-comment">-- p可以是含有通配符的字符串面板值</span></code></pre></div>
 
 <p>例子：</p>
 <div class="hljs"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> *
