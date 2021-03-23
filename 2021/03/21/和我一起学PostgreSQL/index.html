@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      751 字
+      991 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      11
+      14
        分钟
     </span>
   
@@ -304,7 +304,7 @@
 <span class="hljs-keyword">WHERE</span> first_name <span class="hljs-keyword">LIKE</span><span class="hljs-string">&#x27;Peter%&#x27;</span> <span class="hljs-keyword">OR</span> last_name <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;Peter%&#x27;</span>;</code></pre></div>
 
 <p><em>作用为查找名/姓中含有peter前缀的employee</em></p>
-<h1 id="SQL的NULL和三值逻辑"><a href="#SQL的NULL和三值逻辑" class="headerlink" title="SQL的NULL和三值逻辑"></a>SQL的NULL和三值逻辑</h1><h2 id="3种NULL"><a href="#3种NULL" class="headerlink" title="3种NULL"></a>3种NULL</h2><p>其实在SQL中我们只有一个NULL，但我们在讨论NULL的时候会将其划分为三种类型：</p>
+<h1 id="NULL和三值逻辑"><a href="#NULL和三值逻辑" class="headerlink" title="NULL和三值逻辑"></a>NULL和三值逻辑</h1><h2 id="3种NULL"><a href="#3种NULL" class="headerlink" title="3种NULL"></a>3种NULL</h2><p>其实在SQL中我们只有一个NULL，但我们在讨论NULL的时候会将其划分为三种类型：</p>
 <ul>
 <li>Value unknown(未知值)</li>
 <li>Value inapplicable(不适用的值)</li>
@@ -313,9 +313,27 @@
 <p>既然NULL是表中的数据，那么他势必会参与计算。<strong>但对于这个NULL值，使用数学计算会得到什么？使用逻辑(Boolean)运算又会得到什么？</strong></p>
 <p><strong>下面给出NULL的两条规则：</strong></p>
 <ul>
-<li>对NULL使用数学运算符，结果为NULL</li>
+<li>NULL参与数学运算，结果为NULL</li>
 <li>把NULL和任意值比较，使用比较符，结果为<strong>UNKNOWN</strong></li>
 </ul>
+<p><strong>NULL不是一个常量</strong>，所以不能使用NULL作为操作数</p>
+<p>sql中针对NULL的语句有 <code>IS NULL</code> 和 <code>IS NOT NULL</code>都返回一个Boolean。</p>
+<h2 id="UNKONOWN"><a href="#UNKONOWN" class="headerlink" title="UNKONOWN"></a>UNKONOWN</h2><img src="/2021/03/21/%E5%92%8C%E6%88%91%E4%B8%80%E8%B5%B7%E5%AD%A6PostgreSQL/table.png" srcset="/img/loading.gif" alt="truth_value_table" style="zoom: 80%;">
+
+<p>UNKNOWN除了对真值表带来了一些(很多)变化，<strong>他还会带来出乎意料的结果</strong></p>
+<p>例如在使用NOT语句时，假设以下情景：</p>
+<blockquote>
+<p>在对网络中在线流量的统计中，普通的二值逻辑只有：多和少两个概念。</p>
+<p>所以如果你想要筛选出流量少的时段，只需要找满足 NOT ‘流量多’的行即可。</p>
+<p>但在三值逻辑中却有三个标准：多，适量，少</p>
+<p>当你要筛选流量少的时段，使用二值逻辑相同的方法，会发现得不到想要的结果。</p>
+</blockquote>
+<p><strong>上述例子在使用多次NOT后更为明显！</strong></p>
+<blockquote>
+<p>假如使用两次 NOT，</p>
+<p>在二值逻辑中，还会是他本身。</p>
+<p>但在三值逻辑中，值是什么又会有谁知道呢？</p>
+</blockquote>
 
             </div>
             <hr>
