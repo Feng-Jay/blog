@@ -356,6 +356,9 @@
 <p>flags参数一般不用，设置为0</p>
 <p>from为client端地址，使用 *<em>(struct sockaddr</em>)&amp;client_addr**的形式</p>
 <p> fromlen为指针，指向from缓冲区长度值。</p>
+<p>最后只需要关闭socket。（<strong>非常像fd！</strong>）</p>
+<div class="hljs"><pre><code class="hljs cpp">close(Udp_socket);</code></pre></div>
+
 
             </div>
             <hr>
