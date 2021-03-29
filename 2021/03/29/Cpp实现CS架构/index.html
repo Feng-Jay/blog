@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      755 字
+      1.2k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      11
+      19
        分钟
     </span>
   
@@ -309,7 +309,54 @@
 <div class="hljs"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">bind</span><span class="hljs-params">(<span class="hljs-keyword">int</span> sock, struct sockaddr *addr, <span class="hljs-keyword">socklen_t</span> addrlen)</span></span>;  <span class="hljs-comment">//Linux</span></code></pre></div>
 
 <p><strong>关于sockaddr和sockaddr_in的区别详见：</strong> <a target="_blank" rel="noopener" href="https://blog.csdn.net/will130/article/details/53326740">这里</a></p>
-<h2 id="准备接受数据"><a href="#准备接受数据" class="headerlink" title="准备接受数据"></a>准备接受数据</h2>
+<h2 id="准备接受数据"><a href="#准备接受数据" class="headerlink" title="准备接受数据"></a>准备接受数据</h2><p>芜湖，我们终于结束了折磨人的初始化环节，接下来就简单了！</p>
+<p>我们首先要申请缓冲区来读写数据，并申请一些变量。<strong>就像Linux中通过文件描述符读写文件也需要缓冲区一样</strong></p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-keyword">char</span> recv_buf[<span class="hljs-number">50</span>];<span class="hljs-comment">//接受缓冲区</span>
+<span class="hljs-keyword">char</span> send_buf[<span class="hljs-number">50</span>];<span class="hljs-comment">//发送缓冲区</span>
+<span class="hljs-keyword">int</span> recv_num;<span class="hljs-comment">//接收字节数</span>
+<span class="hljs-keyword">int</span> send_num;<span class="hljs-comment">//发送字节数</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">client_addr</span>;</span><span class="hljs-comment">//客户地址</span>
+<span class="hljs-keyword">int</span> len=<span class="hljs-keyword">sizeof</span>(client_addr);<span class="hljs-comment">//客户地址长度</span></code></pre></div>
+
+<p><strong>为了将数据发送给client，我们也需要他的IP和端口号</strong>这就是在这里声明一个 client_addr的原因。</p>
+<h3 id="开始接-发数据"><a href="#开始接-发数据" class="headerlink" title="开始接/发数据"></a>开始接/发数据</h3><div class="hljs"><pre><code class="hljs cpp"><span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;
+    <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;waiting for data&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+    <span class="hljs-comment">//从client端接收数据</span>
+    recv_num=recvfrom(Udp_socket,recv_buf,<span class="hljs-keyword">sizeof</span>(recv_buf)<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>,(struct sockaddr*)&amp;client_addr,(<span class="hljs-keyword">socklen_t</span> *)&amp;len);
+    <span class="hljs-comment">//检验错误</span>
+    <span class="hljs-keyword">if</span>(recv_num&lt;<span class="hljs-number">0</span>)
+    &#123;
+        <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;receive ERROR&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+        <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);
+    &#125;
+    recv_buf[recv_num]=<span class="hljs-string">&#x27;\0&#x27;</span>;<span class="hljs-comment">//添加字符串结束符</span>
+    <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;Receive &quot;</span>&lt;&lt;recv_num&lt;&lt;<span class="hljs-string">&quot;bytes: &quot;</span>&lt;&lt;recv_buf&lt;&lt;<span class="hljs-built_in">endl</span>;
+    <span class="hljs-comment">//实现sever功能，即转化为大写。</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;recv_num;i++)&#123;
+        <span class="hljs-keyword">if</span>(recv_buf[i]&gt;=<span class="hljs-string">&#x27;a&#x27;</span>&amp;&amp;recv_buf[i]&lt;=<span class="hljs-string">&#x27;z&#x27;</span>)
+        send_buf[i]=<span class="hljs-built_in">toupper</span>(recv_buf[i]);
+    &#125;
+    send_buf[recv_num]=<span class="hljs-string">&#x27;\0&#x27;</span>;
+    <span class="hljs-comment">//发送转化完的数据</span>
+    send_num=sendto(Udp_socket,send_buf,recv_num,<span class="hljs-number">0</span>,(struct sockaddr*)&amp;client_addr,len);
+    <span class="hljs-keyword">if</span>(send_num&lt;<span class="hljs-number">0</span>)
+    &#123;
+        <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;send ERROR&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+        <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);
+    &#125;
+&#125;</code></pre></div>
+
+<p><strong>可以看到使用了recvfrom和sendto两个函数</strong></p>
+<p>recvfrom函数原型</p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">recvfrom</span><span class="hljs-params">(<span class="hljs-keyword">int</span> s, <span class="hljs-keyword">void</span> *buf, <span class="hljs-keyword">int</span> len, <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> flags, struct sockaddr *from,<span class="hljs-keyword">int</span> *fromlen)</span></span>;</code></pre></div>
+
+<p>s为socketfd，即sever当前使用的套接字</p>
+<p>buf为接收缓冲区，即声明的数组</p>
+<p>len为缓冲区大小，一般使用sizeof表示</p>
+<p>flags参数一般不用，设置为0</p>
+<p>from为client端地址，使用 *<em>(struct sockaddr</em>)&amp;client_addr**的形式</p>
+<p> fromlen为指针，指向from缓冲区长度值。</p>
+
             </div>
             <hr>
             <div>
