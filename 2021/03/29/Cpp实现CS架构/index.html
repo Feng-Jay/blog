@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      458 字
+      755 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      6
+      11
        分钟
     </span>
   
@@ -270,21 +270,46 @@
 <li>通过socket，确定目的地(client的ip和端口号)，发送响应内容。</li>
 </ol>
 <p><strong>接下来我们来一步步实现</strong></p>
-<ol>
-<li><p>创建socket</p>
-<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-comment">//创建Udp_socket,socket函数来自 sys/socket.h, IPPOROTO_UDP来自netinet/in.h</span>
+<h2 id="创建、初始化socket"><a href="#创建、初始化socket" class="headerlink" title="创建、初始化socket"></a>创建、初始化socket</h2><div class="hljs"><pre><code class="hljs cpp"><span class="hljs-comment">//创建Udp_socket,socket函数来自 sys/socket.h, IPPOROTO_UDP来自netinet/in.h</span>
 <span class="hljs-keyword">int</span> Udp_socket=socket(AF_INET,SOCK_DGRAM,IPPROTO_UDP);</code></pre></div>
 
 <p>socket函数原型为：</p>
 <div class="hljs"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">socket</span><span class="hljs-params">(<span class="hljs-keyword">int</span> af, <span class="hljs-keyword">int</span> type, <span class="hljs-keyword">int</span> protocol)</span></span>;</code></pre></div>
 
-<p>af代表地址族(ip)，一般为ipv4或ipv6</p>
+<p>af代表地址族(IP)，一般为ipv4或ipv6</p>
 <p>其中AF_INET代表IPV4 ip地址，SOCK_DGRAM表示是无保障传输，protocol即运输协议。</p>
-<p>你可以在<a target="_blank" rel="noopener" href="http://c.biancheng.net/cpp/html/3032.html">这里找到更多内容</a>。</p>
-<p><strong>为了能让client能访问到我们，sever必须有一个ip和一个响应端口</strong></p>
-</li>
-</ol>
+<p><strong>我们在这里就是声明了一个UDP的socket</strong></p>
+<p><a target="_blank" rel="noopener" href="http://c.biancheng.net/cpp/html/3032.html">你可以在这里找到更多内容</a>。</p>
+<p>为了能让client能访问到我们，我们使用<strong>bind函数</strong>进行绑定，将sever的套接字与一个IP和一个端口相连。</p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">sever_addr</span>;</span>
+   <span class="hljs-comment">//     struct sockaddr_in&#123;</span>
+   <span class="hljs-comment">//     sa_family_t     sin_family;   //地址族（Address Family），也就是地址类型</span>
+   <span class="hljs-comment">//     uint16_t        sin_port;     //16位的端口号</span>
+   <span class="hljs-comment">//     struct in_addr  sin_addr;     //32位IP地址</span>
+   <span class="hljs-comment">//     char            sin_zero[8];  //不使用，一般用0填充</span>
+   <span class="hljs-comment">// &#125;;</span>
+   <span class="hljs-comment">//		struct in_addr&#123;</span>
+   <span class="hljs-comment">//   		 in_addr_t  s_addr;  //32位的IP地址</span>
+   <span class="hljs-comment">//		&#125;;</span>
+   <span class="hljs-built_in">memset</span>(&amp;sever_addr,<span class="hljs-number">0</span>,<span class="hljs-keyword">sizeof</span>(sever_addr));
+   sever_addr.sin_family=AF_INET;
+   sever_addr.sin_port=htons(<span class="hljs-number">1234</span>);<span class="hljs-comment">//转为大端序</span>
+   sever_addr.sin_addr.s_addr=inet_addr(<span class="hljs-string">&quot;127.0.0.1&quot;</span>);<span class="hljs-comment">//function from arpa/inet.h</span>
 
+   bind(Udp_socket,(struct sockaddr*)&amp;sever_addr,<span class="hljs-keyword">sizeof</span>(sever_addr));</code></pre></div>
+
+<p>这里一下子多了很多内容，我们来看一下。</p>
+<p>首先是结构体 sockaddr_in，他的内容已在上面代码写出。</p>
+<blockquote>
+<p>​    首先是 sin_family成员，和sock函数的第一个参数含义相同，取值也要相同。<em>IPV4, AF_INET</em></p>
+<p>​    sin_port为要绑定的端口号。<em>理论取值为 0 ~65536，但因为 0 ~1023端口一般都分配给特点的应用，所    以尽量避免使用。</em> 可以在这个范围里随意选一个</p>
+<p>​    sin_addr竟然也是一个结构体…用来绑定IP</p>
+</blockquote>
+<p>bind函数原型：</p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">bind</span><span class="hljs-params">(<span class="hljs-keyword">int</span> sock, struct sockaddr *addr, <span class="hljs-keyword">socklen_t</span> addrlen)</span></span>;  <span class="hljs-comment">//Linux</span></code></pre></div>
+
+<p><strong>关于sockaddr和sockaddr_in的区别详见：</strong> <a target="_blank" rel="noopener" href="https://blog.csdn.net/will130/article/details/53326740">这里</a></p>
+<h2 id="准备接受数据"><a href="#准备接受数据" class="headerlink" title="准备接受数据"></a>准备接受数据</h2>
             </div>
             <hr>
             <div>
