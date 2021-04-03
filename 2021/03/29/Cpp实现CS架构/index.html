@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.8k 字
+      3.6k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      29
+      63
        分钟
     </span>
   
@@ -416,7 +416,258 @@
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 &#125;</code></pre></div>
 
-<h1 id="TCP实现CS"><a href="#TCP实现CS" class="headerlink" title="TCP实现CS"></a>TCP实现CS</h1>
+<h1 id="TCP实现CS"><a href="#TCP实现CS" class="headerlink" title="TCP实现CS"></a>TCP实现CS</h1><p>TCP协议与UDP协议的一大不同就是： TCP时面向连接传输层协议，而UDP是不面向连接的。</p>
+<p>二者的类比就像是: TCP是打电话，UDP是写信。即一个会建立专线，另一个和大家共享资源。</p>
+<p>UDP协议只是在IP上面很简单地封装了一层，而TCP要更加复杂。</p>
+<p><strong>不管怎么，在这篇博客中我们并不需要关心底层，我们只需要知道API就行了</strong> :happy:</p>
+<p>另外，请记住，TCP是面向连接的！</p>
+<h1 id="TCP-Client"><a href="#TCP-Client" class="headerlink" title="TCP_Client"></a>TCP_Client</h1><p>相信看过UDP程序后你对socket编程已经很有心得了，本部分我们就简单地实现一个server在收到消息后简单地print一句话给client的naive程序。</p>
+<p><strong>你会注意到这次我先编写的Client程序，原因是TCP协议下用户和服务器连接需要用户先于服务器 “握手” 创建连接</strong>，这样的顺序应该会更符合逻辑</p>
+<h2 id="创建、初始化socket-2"><a href="#创建、初始化socket-2" class="headerlink" title="创建、初始化socket"></a>创建、初始化socket</h2><p><strong>注意将 socket()函数中的type和protocol参数更改为稳定数据传输和TCP</strong></p>
+<p>其他和UDP_client的内容基本相同，也是不需要绑定自己的IP和Port</p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-comment">//创建套接字</span>
+        <span class="hljs-keyword">int</span> sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+        <span class="hljs-comment">//向服务器（特定的IP和端口）发起请求</span>
+        <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">serv_addr</span>;</span>
+        <span class="hljs-built_in">memset</span>(&amp;serv_addr, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(serv_addr));  <span class="hljs-comment">//每个字节都用0填充</span>
+        serv_addr.sin_family = AF_INET;  <span class="hljs-comment">//使用IPv4地址</span>
+        serv_addr.sin_addr.s_addr = inet_addr(<span class="hljs-string">&quot;127.0.0.1&quot;</span>);  <span class="hljs-comment">//具体的IP地址</span>
+        serv_addr.sin_port = htons(<span class="hljs-number">1234</span>);  <span class="hljs-comment">//端口</span>
+        connect(sock, (struct sockaddr*)&amp;serv_addr, <span class="hljs-keyword">sizeof</span>(serv_addr));</code></pre></div>
+
+<h2 id="创建连接-amp-准备发-收数据"><a href="#创建连接-amp-准备发-收数据" class="headerlink" title="创建连接&amp;准备发/收数据"></a>创建连接&amp;准备发/收数据</h2><p>由于我们实现的功能没有发数据，所以就少了一些内容。</p>
+<p><strong>注意，connect函数就是client用来和server建立连接的过程</strong></p>
+<div class="hljs"><pre><code class="hljs cpp">connect(sock, (struct sockaddr*)&amp;serv_addr, <span class="hljs-keyword">sizeof</span>(serv_addr));
+      
+       <span class="hljs-comment">//读取服务器传回的数据</span>
+       <span class="hljs-keyword">char</span> buffer[<span class="hljs-number">40</span>];
+       read(sock, buffer, <span class="hljs-keyword">sizeof</span>(buffer)<span class="hljs-number">-1</span>);
+      
+       <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Message form server: %s\n&quot;</span>, buffer);
+      
+       <span class="hljs-comment">//关闭套接字</span>
+       close(sock);
+       <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</code></pre></div>
+
+<p>connect函数原型：</p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">connect</span><span class="hljs-params">(<span class="hljs-keyword">int</span> sockfd, <span class="hljs-keyword">const</span> struct sockaddr* server_addr, <span class="hljs-keyword">socklen_t</span> addrlen)</span></span></code></pre></div>
+
+<p><em>sockfd即指定数据发送的套接字；</em></p>
+<p><em>server_addr即指定数据发送地址；</em></p>
+<p><em>addrlen即指定server_addr结构体的长度；</em></p>
+<p><strong>然后我们就可以通过read函数将取服务器发回的数据读入缓冲区中</strong></p>
+<h1 id="TCP-Server"><a href="#TCP-Server" class="headerlink" title="TCP_Server"></a>TCP_Server</h1><h2 id="创建、初始化socket-3"><a href="#创建、初始化socket-3" class="headerlink" title="创建、初始化socket"></a>创建、初始化socket</h2><p><strong>注意将 socket()函数中的type和protocol参数更改为稳定数据传输和TCP</strong></p>
+<p>其他和UDP_server的内容基本相同。</p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-keyword">int</span> serv_sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+        <span class="hljs-comment">//将套接字和IP、端口绑定</span>
+        <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">serv_addr</span>;</span>
+        <span class="hljs-built_in">memset</span>(&amp;serv_addr, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(serv_addr));  <span class="hljs-comment">//每个字节都用0填充</span>
+        serv_addr.sin_family = AF_INET;  <span class="hljs-comment">//使用IPv4地址</span>
+        serv_addr.sin_addr.s_addr = inet_addr(<span class="hljs-string">&quot;127.0.0.1&quot;</span>);  <span class="hljs-comment">//具体的IP地址</span>
+        serv_addr.sin_port = htons(<span class="hljs-number">1234</span>);  <span class="hljs-comment">//端口</span>
+        bind(serv_sock, (struct sockaddr*)&amp;serv_addr, <span class="hljs-keyword">sizeof</span>(serv_addr));</code></pre></div>
+
+<h2 id="接受数据"><a href="#接受数据" class="headerlink" title="接受数据"></a>接受数据</h2><p>由于我们实现的功能只有print，所以就不需要预先设定缓冲区</p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-comment">//进入监听状态，等待用户发起请求</span>
+        listen(serv_sock, <span class="hljs-number">20</span>);
+        <span class="hljs-comment">//接收客户端请求</span>
+        <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">clnt_addr</span>;</span>
+        <span class="hljs-keyword">socklen_t</span> clnt_addr_size = <span class="hljs-keyword">sizeof</span>(clnt_addr);
+        <span class="hljs-keyword">int</span> clnt_sock = accept(serv_sock, (struct sockaddr*)&amp;clnt_addr, &amp;clnt_addr_size);
+        <span class="hljs-comment">//向客户端发送数据</span>
+        <span class="hljs-keyword">char</span> str[] = <span class="hljs-string">&quot;hello client!&quot;</span>;
+        write(clnt_sock, str, <span class="hljs-keyword">sizeof</span>(str));</code></pre></div>
+
+<p><strong>这里出现了listen函数，即监听函数，这是对client中connect函数的一个照应。</strong></p>
+<p>listen函数原型：</p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">listen</span> <span class="hljs-params">( <span class="hljs-keyword">int</span> sockfd,  <span class="hljs-keyword">int</span> backlog )</span></span>;</code></pre></div>
+
+<p><em>sockfd即被 listen函数作用的套接字。是一个主动连接的套接字，也就是此时系统假设用户会对这个套接字调用connect函数。</em></p>
+<p>backlog  即server同时建立连接的上限值。</p>
+<p><strong>然后同accept函数接受client的请求</strong></p>
+<p>accept函数作用：接收一个套接字中已建立的连接。</p>
+<p>原型：</p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">accept</span><span class="hljs-params">(<span class="hljs-keyword">int</span> sockfd,struct sockaddr *addr,<span class="hljs-keyword">socklen_t</span> *addrlen)</span></span>;</code></pre></div>
+
+<p>emmm，相信大家都能看懂，<a target="_blank" rel="noopener" href="https://blog.csdn.net/david_xtd/article/details/7087843">不然就来这。</a></p>
+<h2 id="发送数据"><a href="#发送数据" class="headerlink" title="发送数据"></a>发送数据</h2><div class="hljs"><pre><code class="hljs cpp"><span class="hljs-comment">//向客户端发送数据</span>
+       <span class="hljs-keyword">char</span> str[] = <span class="hljs-string">&quot;hello client!&quot;</span>;
+       write(clnt_sock, str, <span class="hljs-keyword">sizeof</span>(str));
+      
+       <span class="hljs-comment">//关闭套接字</span>
+       close(clnt_sock);
+       close(serv_sock);
+       <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+   &#125;</code></pre></div>
+
+<p>通过write向client写数据。</p>
+<p>最后关闭socket即可。</p>
+<h1 id="Source-code"><a href="#Source-code" class="headerlink" title="Source code"></a>Source code</h1><h2 id="UDP-server-1"><a href="#UDP-server-1" class="headerlink" title="UDP_server"></a>UDP_server</h2><div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unistd.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;sys/socket.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;netinet/in.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;string.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;arpa/inet.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;string&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-comment">//创建Udp_socket,socket函数来自 socket.h, IPPOROTO_UDP来自in.h</span>
+    <span class="hljs-keyword">int</span> Udp_socket=socket(AF_INET,SOCK_DGRAM,IPPROTO_UDP);
+
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">sever_addr</span>;</span>
+    <span class="hljs-comment">//     struct sockaddr_in&#123;</span>
+    <span class="hljs-comment">//     sa_family_t     sin_family;   //地址族（Address Family），也就是地址类型</span>
+    <span class="hljs-comment">//     uint16_t        sin_port;     //16位的端口号</span>
+    <span class="hljs-comment">//     struct in_addr  sin_addr;     //32位IP地址</span>
+    <span class="hljs-comment">//     char            sin_zero[8];  //不使用，一般用0填充</span>
+    <span class="hljs-comment">// &#125;;</span>
+    <span class="hljs-built_in">memset</span>(&amp;sever_addr,<span class="hljs-number">0</span>,<span class="hljs-keyword">sizeof</span>(sever_addr));
+    sever_addr.sin_family=AF_INET;
+    sever_addr.sin_port=htons(<span class="hljs-number">1234</span>);
+    sever_addr.sin_addr.s_addr=inet_addr(<span class="hljs-string">&quot;127.0.0.1&quot;</span>);<span class="hljs-comment">//function from arpa/inet.h</span>
+    bind(Udp_socket,(struct sockaddr*)&amp;sever_addr,<span class="hljs-keyword">sizeof</span>(sever_addr));
+
+    <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;Sever is ready to response!!!&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+
+    <span class="hljs-keyword">char</span> recv_buf[<span class="hljs-number">50</span>];<span class="hljs-comment">//接受缓冲区</span>
+    <span class="hljs-keyword">char</span> send_buf[<span class="hljs-number">50</span>];<span class="hljs-comment">//发送缓冲区</span>
+    <span class="hljs-keyword">int</span> recv_num;
+    <span class="hljs-keyword">int</span> send_num;
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">client_addr</span>;</span>
+    <span class="hljs-keyword">int</span> len=<span class="hljs-keyword">sizeof</span>(client_addr);
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;
+        <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;waiting for data&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+        recv_num=recvfrom(Udp_socket,recv_buf,<span class="hljs-keyword">sizeof</span>(recv_buf)<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>,(struct sockaddr*)&amp;client_addr,(<span class="hljs-keyword">socklen_t</span> *)&amp;len);
+        <span class="hljs-keyword">if</span>(recv_num&lt;<span class="hljs-number">0</span>)
+        &#123;
+            <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;receive ERROR&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+            <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);
+        &#125;
+        recv_buf[recv_num]=<span class="hljs-string">&#x27;\0&#x27;</span>;
+        <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;Receive &quot;</span>&lt;&lt;recv_num&lt;&lt;<span class="hljs-string">&quot;bytes: &quot;</span>&lt;&lt;recv_buf&lt;&lt;<span class="hljs-built_in">endl</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;recv_num;i++)&#123;
+            <span class="hljs-keyword">if</span>(recv_buf[i]&gt;=<span class="hljs-string">&#x27;a&#x27;</span>&amp;&amp;recv_buf[i]&lt;=<span class="hljs-string">&#x27;z&#x27;</span>)
+            send_buf[i]=<span class="hljs-built_in">toupper</span>(recv_buf[i]);
+        &#125;
+        send_buf[recv_num]=<span class="hljs-string">&#x27;\0&#x27;</span>;
+        send_num=sendto(Udp_socket,send_buf,recv_num,<span class="hljs-number">0</span>,(struct sockaddr*)&amp;client_addr,len);
+        <span class="hljs-keyword">if</span>(send_num&lt;<span class="hljs-number">0</span>)
+        &#123;
+            <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;send ERROR&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+            <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);
+        &#125;
+    &#125;
+    close(Udp_socket);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre></div>
+
+<h2 id="UDP-Client"><a href="#UDP-Client" class="headerlink" title="UDP_Client"></a>UDP_Client</h2><div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unistd.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;sys/socket.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;arpa/inet.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;netinet/in.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;string.h&gt;</span></span>
+
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> Udp_socket=socket(AF_INET,SOCK_DGRAM,IPPROTO_UDP);
+
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">sever_addr</span>;</span>
+    <span class="hljs-built_in">memset</span>(&amp;sever_addr,<span class="hljs-number">0</span>,<span class="hljs-keyword">sizeof</span>(sever_addr));
+    sever_addr.sin_family=AF_INET;
+    sever_addr.sin_port=htons(<span class="hljs-number">1234</span>);
+    sever_addr.sin_addr.s_addr=inet_addr(<span class="hljs-string">&quot;127.0.0.1&quot;</span>);
+
+    <span class="hljs-keyword">int</span> len=<span class="hljs-keyword">sizeof</span>(sever_addr);
+    <span class="hljs-keyword">char</span> send_buf[<span class="hljs-number">50</span>];
+    <span class="hljs-keyword">char</span> recv_buf[<span class="hljs-number">50</span>];
+    <span class="hljs-keyword">int</span> send_num,recv_num;
+    <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;please input string!&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+    <span class="hljs-built_in">cin</span>&gt;&gt;send_buf;
+
+    send_num=sendto(Udp_socket,send_buf,<span class="hljs-built_in">strlen</span>(send_buf),<span class="hljs-number">0</span>,(struct sockaddr*)&amp;sever_addr,len);
+    <span class="hljs-keyword">if</span>(send_num&lt;<span class="hljs-number">0</span>)&#123;
+        <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;send ERROR&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+        <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);
+    &#125;
+    recv_num=recvfrom(Udp_socket,recv_buf,<span class="hljs-keyword">sizeof</span>(recv_buf),<span class="hljs-number">0</span>,(struct sockaddr*)&amp;sever_addr,(<span class="hljs-keyword">socklen_t</span>*)&amp;len);
+    <span class="hljs-keyword">if</span>(recv_num&lt;<span class="hljs-number">0</span>)&#123;
+        <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;receive ERROR&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+        <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);
+    &#125;
+    recv_buf[recv_num]=<span class="hljs-string">&#x27;\0&#x27;</span>;
+    <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;Sever give back: &quot;</span>&lt;&lt;recv_buf&lt;&lt;<span class="hljs-built_in">endl</span>;
+    
+    close(Udp_socket);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre></div>
+
+<h2 id="TCP-Client-1"><a href="#TCP-Client-1" class="headerlink" title="TCP_Client"></a>TCP_Client</h2><div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;string.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdlib.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unistd.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;arpa/inet.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;sys/socket.h&gt;</span></span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;
+    <span class="hljs-comment">//创建套接字</span>
+    <span class="hljs-keyword">int</span> sock = socket(AF_INET, SOCK_STREAM, <span class="hljs-number">0</span>);
+    <span class="hljs-comment">//向服务器（特定的IP和端口）发起请求</span>
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">serv_addr</span>;</span>
+    <span class="hljs-built_in">memset</span>(&amp;serv_addr, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(serv_addr));  <span class="hljs-comment">//每个字节都用0填充</span>
+    serv_addr.sin_family = AF_INET;  <span class="hljs-comment">//使用IPv4地址</span>
+    serv_addr.sin_addr.s_addr = inet_addr(<span class="hljs-string">&quot;127.0.0.1&quot;</span>);  <span class="hljs-comment">//具体的IP地址</span>
+    serv_addr.sin_port = htons(<span class="hljs-number">1234</span>);  <span class="hljs-comment">//端口</span>
+    connect(sock, (struct sockaddr*)&amp;serv_addr, <span class="hljs-keyword">sizeof</span>(serv_addr));
+   
+    <span class="hljs-comment">//读取服务器传回的数据</span>
+    <span class="hljs-keyword">char</span> buffer[<span class="hljs-number">40</span>];
+    read(sock, buffer, <span class="hljs-keyword">sizeof</span>(buffer)<span class="hljs-number">-1</span>);
+   
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Message form server: %s\n&quot;</span>, buffer);
+   
+    <span class="hljs-comment">//关闭套接字</span>
+    close(sock);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre></div>
+
+<h2 id="TCP-server"><a href="#TCP-server" class="headerlink" title="TCP_server"></a>TCP_server</h2><div class="hljs"><pre><code class="hljs CPP"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;string.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdlib.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unistd.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;arpa/inet.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;sys/socket.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;netinet/in.h&gt;</span></span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;
+    <span class="hljs-comment">//创建套接字</span>
+    <span class="hljs-keyword">int</span> serv_sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    <span class="hljs-comment">//将套接字和IP、端口绑定</span>
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">serv_addr</span>;</span>
+    <span class="hljs-built_in">memset</span>(&amp;serv_addr, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(serv_addr));  <span class="hljs-comment">//每个字节都用0填充</span>
+    serv_addr.sin_family = AF_INET;  <span class="hljs-comment">//使用IPv4地址</span>
+    serv_addr.sin_addr.s_addr = inet_addr(<span class="hljs-string">&quot;127.0.0.1&quot;</span>);  <span class="hljs-comment">//具体的IP地址</span>
+    serv_addr.sin_port = htons(<span class="hljs-number">1234</span>);  <span class="hljs-comment">//端口</span>
+    bind(serv_sock, (struct sockaddr*)&amp;serv_addr, <span class="hljs-keyword">sizeof</span>(serv_addr));
+    <span class="hljs-comment">//进入监听状态，等待用户发起请求</span>
+    listen(serv_sock, <span class="hljs-number">20</span>);
+    <span class="hljs-comment">//接收客户端请求</span>
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">clnt_addr</span>;</span>
+    <span class="hljs-keyword">socklen_t</span> clnt_addr_size = <span class="hljs-keyword">sizeof</span>(clnt_addr);
+    <span class="hljs-keyword">int</span> clnt_sock = accept(serv_sock, (struct sockaddr*)&amp;clnt_addr, &amp;clnt_addr_size);
+    <span class="hljs-comment">//向客户端发送数据</span>
+    <span class="hljs-keyword">char</span> str[] = <span class="hljs-string">&quot;hello client!&quot;</span>;
+    write(clnt_sock, str, <span class="hljs-keyword">sizeof</span>(str));
+   
+    <span class="hljs-comment">//关闭套接字</span>
+    close(clnt_sock);
+    close(serv_sock);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre></div>
+
+
             </div>
             <hr>
             <div>
