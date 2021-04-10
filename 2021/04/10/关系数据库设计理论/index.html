@@ -20,10 +20,23 @@
   <meta name="description" content="A Website for record my learning process.">
   <meta name="author" content="Feng Jay">
   <meta name="keywords" content="Blog Study Computer-science">
-  <title>归档 - 在知识海洋中狗刨</title>
+  <title>关系数据库设计理论 - 在知识海洋中狗刨</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atelier-cave-light.min.css" />
+    
+  
+
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -46,7 +59,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -152,7 +165,7 @@
 </nav>
 
     <div class="banner intro-2" id="background" parallax=true
-         style="background: url('/img/guidang.jpg') no-repeat center center;
+         style="background: url('/img/article.jpg') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
@@ -160,6 +173,51 @@
             <span class="h2" id="subtitle">
               
             </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-04-10 14:02" pubdate>
+        2021年4月10日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      195 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      2
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
 
             
           </div>
@@ -172,55 +230,118 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">共计 16 篇文章</p>
-  <hr>
-  
-    
       
-      <p class="h5">2021</p>
-    
-    <a href="/2021/04/10/%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">关系数据库设计理论</span>
-      <time style="float: right;">04-10</time>
-    </a>
-  
-    
-    <a href="/2021/03/29/Cpp%E5%AE%9E%E7%8E%B0CS%E6%9E%B6%E6%9E%84/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Cpp实现CS架构</span>
-      <time style="float: right;">03-29</time>
-    </a>
-  
-    
-    <a href="/2021/03/21/%E5%92%8C%E6%88%91%E4%B8%80%E8%B5%B7%E5%AD%A6PostgreSQL/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">和我一起学PostgreSQL</span>
-      <time style="float: right;">03-21</time>
-    </a>
-  
-    
-    <a href="/2021/01/01/Operating%E2%80%94-System/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Linux-进程</span>
-      <time style="float: right;">01-01</time>
-    </a>
-  
-</div>
 
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">关系数据库设计理论</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：几秒前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <p>上小旺老师的课没听懂，是我太菜了……</p>
+<a id="more"></a>
 
+<p>从理论层面讨论关系型数据库的设计。</p>
+<p>关系型数据库最重要的就是 <strong>关系</strong>二字，而关系常常要存在约束，<strong>函数依赖</strong>就是一个最常见的约束。</p>
+<h1 id="函数依赖-FD"><a href="#函数依赖-FD" class="headerlink" title="函数依赖(FD)"></a>函数依赖(FD)</h1><p>定义：若关系R的两个元组在属性A<del>1</del>,A<del>2</del>,…,A<del>n</del>上一致(即对应分量值相等)，那么它们必定在其他属性B<del>1</del>,B<del>2</del>,…,B<del>m</del>上也一致。</p>
+<p>记为A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;B<sub>1</sub>,B<sub>2</sub>,…,B<sub>m</sub>，称为A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub> <strong>函数决定</strong> B<sub>1</sub>,B<sub>2</sub>,…,B<sub>m</sub>。</p>
+<blockquote>
+<p>等价于</p>
+<p> A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;B<sub>1</sub></p>
+<p>A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;B<sub>2</sub></p>
+<p>……</p>
+<p>A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;B<sub>m</sub></p>
+</blockquote>
+<p>若关系R上的<strong>每个实例都</strong>能使一个给定的FD为真，则称R<strong>满足 函数依赖f</strong></p>
+<p>test<del>1</del></p>
 
-              </div>
             </div>
-          </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/DataBase/">DataBase</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Database/">Database</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/03/29/Cpp%E5%AE%9E%E7%8E%B0CS%E6%9E%B6%E6%9E%84/">
+                        <span class="hidden-mobile">Cpp实现CS架构</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                <script src="https://utteranc.es/client.js"
+        repo="Feng-Jay/commit-utterance"
+        issue-term="title"
+        theme="github-dark"
+        crossorigin="anonymous"
+        async>
+</script>
+              </article>
+            
+          </article>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
   </main>
 
@@ -321,6 +442,31 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
 
 
   <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
@@ -328,7 +474,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "归档&nbsp;",
+        "关系数据库设计理论&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
@@ -343,6 +489,21 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "rigth",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
 
 
   <script  src="/js/local-search.js" ></script>
@@ -356,6 +517,20 @@
   </script>
 
 
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
 
 
 

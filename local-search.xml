@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>关系数据库设计理论</title>
+    <link href="/2021/04/10/%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA/"/>
+    <url>/2021/04/10/%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA/</url>
+    
+    <content type="html"><![CDATA[<p>上小旺老师的课没听懂，是我太菜了……</p><a id="more"></a><p>从理论层面讨论关系型数据库的设计。</p><p>关系型数据库最重要的就是 <strong>关系</strong>二字，而关系常常要存在约束，<strong>函数依赖</strong>就是一个最常见的约束。</p><h1 id="函数依赖-FD"><a href="#函数依赖-FD" class="headerlink" title="函数依赖(FD)"></a>函数依赖(FD)</h1><p>定义：若关系R的两个元组在属性A<del>1</del>,A<del>2</del>,…,A<del>n</del>上一致(即对应分量值相等)，那么它们必定在其他属性B<del>1</del>,B<del>2</del>,…,B<del>m</del>上也一致。</p><p>记为A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;B<sub>1</sub>,B<sub>2</sub>,…,B<sub>m</sub>，称为A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub> <strong>函数决定</strong> B<sub>1</sub>,B<sub>2</sub>,…,B<sub>m</sub>。</p><blockquote><p>等价于</p><p> A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;B<sub>1</sub></p><p>A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;B<sub>2</sub></p><p>……</p><p>A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;B<sub>m</sub></p></blockquote><p>若关系R上的<strong>每个实例都</strong>能使一个给定的FD为真，则称R<strong>满足 函数依赖f</strong></p><p>test<del>1</del></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>DataBase</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Database</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Cpp实现CS架构</title>
     <link href="/2021/03/29/Cpp%E5%AE%9E%E7%8E%B0CS%E6%9E%B6%E6%9E%84/"/>
     <url>/2021/03/29/Cpp%E5%AE%9E%E7%8E%B0CS%E6%9E%B6%E6%9E%84/</url>
