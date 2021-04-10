@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2k 字
+      2.2k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      29
+      33
        分钟
     </span>
   
@@ -383,7 +383,23 @@ Output: 由R0分解出的关系集合，旗帜每个关系集合都属于BCNF
 
 
 
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p>R(A,B,C,D) FD: AB-&gt;C、C-&gt;D、D-&gt;A</p>
+<p>对{A,B,C,D}各个子集求闭包</p>
+<p>{A}+={A}, {B}+={B}, {C}+={C,D,A}, {D}+={D,A}</p>
+<p>{A,B}+={A,B,C,D}, {A,C}+={A,C}, {A,D}+={A,D},{B,C}+={A,B,C,D}, {B,D}+={A,B,C,D}</p>
+<p>可以得到 AB, BC, BD 都是键，所以无需继续求闭包了(都是超键)</p>
+<p>FD集合中：C-&gt;D, D-&gt;A不是BCNF</p>
+<p>选择C-&gt;D</p>
+<p>将属性划分为(A,D,C) 和(B,C)</p>
+<p>可知(B,C)一定属于BCNF(<strong>二元关系一定是</strong>)</p>
+<p>现在求(A,D,C)的FD集合，使用算法3.12</p>
+<p>FD为： C-&gt;D,  D-&gt;A</p>
+<p>且(A,D,C)中C为键，</p>
+<p>所以D-&gt;A违反BCNF,所以(A,D,C)不属于BCNF</p>
+<p>将(A,D,C)分为</p>
+<p>(A,D), (C,D)为BCNF(<strong>二元关系一定是</strong>)</p>
+<p>所以分解为：(B,C) (A,D) (C,D)</p>
+
             </div>
             <hr>
             <div>
