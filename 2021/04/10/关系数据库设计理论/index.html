@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.5k 字
+      2k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      22
+      29
        分钟
     </span>
   
@@ -244,7 +244,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：3 分钟前
+                  本文最后更新于：几秒前
                 
               </p>
             
@@ -345,7 +345,45 @@ Output: 在R1中成立的FD集合S
    C. 以各种方式执行ab直到T不再变化。</code></pre></div>
 
 <p>emmm，这算法就挺麻烦的。</p>
-<h1 id="BC范式"><a href="#BC范式" class="headerlink" title="BC范式"></a>BC范式</h1>
+<h1 id="BC范式"><a href="#BC范式" class="headerlink" title="BC范式"></a>BC范式</h1><p>啊，前面说了那么多就是为了引出BC范式。</p>
+<p>首先来看为什么要有BC范式</p>
+<p>因为我们在设计数据库时，当你试图在一个关系中包含过多信息是，就会产生 <strong>异常</strong>，例如：</p>
+<ul>
+<li>冗余</li>
+<li>更新异常</li>
+<li>删除异常</li>
+</ul>
+<p>而我们一般使用 <strong>分解关系的方法</strong>来消除异常，<strong>BC范式</strong>就是一个确保异常不存在的条件！</p>
+<h2 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h2><p>BC范式，即BCNF</p>
+<p>关系R属于BCNF iff 如果R中非平凡FD A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;B<sub>1</sub>,B<sub>2</sub>,…,B<sub>m</sub>成立则{A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>} 是关系R的键</p>
+<p>也就是说，<strong>每个非平凡FD的左边都必须是超键</strong></p>
+<p><strong>二元关系一定是BCNF</strong></p>
+<h2 id="分解为BCNF"><a href="#分解为BCNF" class="headerlink" title="分解为BCNF"></a>分解为BCNF</h2><p>策略：</p>
+<ol>
+<li><p>找到违反BCNF的非平凡FD A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;B<sub>1</sub>,B<sub>2</sub>,…,B<sub>m</sub>.</p>
+</li>
+<li><p>尽可能地向FD右边增加由A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>决定的属性(可以减少工作量)</p>
+</li>
+<li><p>将属性集合分为两个关系模式。</p>
+<p>一个包含了上述FD的所有属性，另一个包含该FD左边属性和不属于该FD的所有属性</p>
+</li>
+<li><p>再找到这两个关系模式的FD集合，判断是否为BCNF，若是则结束。若不是则对该FD再1执行上述操作。</p>
+</li>
+</ol>
+<h2 id="算法3-20"><a href="#算法3-20" class="headerlink" title="算法3.20"></a>算法3.20</h2><p><code>BCNF分解算法</code></p>
+<div class="hljs"><pre><code class="hljs bash">Input: 关系R0和其FD集合 S0
+Output: 由R0分解出的关系集合，旗帜每个关系集合都属于BCNF
+
+1. 检验R是否属于BCNF，若是，则直接返回&#123;R&#125;
+2. 若存在BCNF违例，假设为X-&gt;Y。
+   使用算法3.7计算X+，选择R1=X+为一个关系列表。
+   使用另一个关系列表R2包含X及不在X+中的属性
+3. 使用算法3.12计算R1和R2的FD集合，分别即为S1,S2
+4. 使用本算法递归地分解R1,R2.最后返回分解的集合</code></pre></div>
+
+
+
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2>
             </div>
             <hr>
             <div>
