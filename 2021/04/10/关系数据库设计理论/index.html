@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      195 字
+      1.5k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      2
+      22
        分钟
     </span>
   
@@ -244,7 +244,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：几秒前
+                  本文最后更新于：3 分钟前
                 
               </p>
             
@@ -252,9 +252,9 @@
               <p>上小旺老师的课没听懂，是我太菜了……</p>
 <a id="more"></a>
 
-<p>从理论层面讨论关系型数据库的设计。</p>
+<p>从理论层面讨论关系型数据库的设计。本文主要讨论如何化简BC范式。</p>
 <p>关系型数据库最重要的就是 <strong>关系</strong>二字，而关系常常要存在约束，<strong>函数依赖</strong>就是一个最常见的约束。</p>
-<h1 id="函数依赖-FD"><a href="#函数依赖-FD" class="headerlink" title="函数依赖(FD)"></a>函数依赖(FD)</h1><p>定义：若关系R的两个元组在属性A<del>1</del>,A<del>2</del>,…,A<del>n</del>上一致(即对应分量值相等)，那么它们必定在其他属性B<del>1</del>,B<del>2</del>,…,B<del>m</del>上也一致。</p>
+<h1 id="函数依赖-FD"><a href="#函数依赖-FD" class="headerlink" title="函数依赖(FD)"></a>函数依赖(FD)</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>定义：若关系R的两个元组在属性A<del>1</del>,A<del>2</del>,…,A<del>n</del>上一致(即对应分量值相等)，那么它们必定在其他属性B<del>1</del>,B<del>2</del>,…,B<del>m</del>上也一致。</p>
 <p>记为A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;B<sub>1</sub>,B<sub>2</sub>,…,B<sub>m</sub>，称为A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub> <strong>函数决定</strong> B<sub>1</sub>,B<sub>2</sub>,…,B<sub>m</sub>。</p>
 <blockquote>
 <p>等价于</p>
@@ -264,8 +264,88 @@
 <p>A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;B<sub>m</sub></p>
 </blockquote>
 <p>若关系R上的<strong>每个实例都</strong>能使一个给定的FD为真，则称R<strong>满足 函数依赖f</strong></p>
-<p>test<del>1</del></p>
+<h2 id="关系的键"><a href="#关系的键" class="headerlink" title="关系的键"></a>关系的键</h2><p>若满足下列条件，则认为一个/多个属性集{ A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>}是关系R的<strong>键</strong>：</p>
+<ul>
+<li>这些属性 <strong>函数决定</strong> 关系的所有其他属性。&lt;==&gt; R中不可能有两个不同元组具有相同的 A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>值。</li>
+<li>在{ A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>}的真子集中，没有一个能函数决定R的所有其他属性。<strong>键必须是最小的！</strong></li>
+</ul>
+<p><em>当键只有一个属性A时，称A为键</em></p>
+<p><strong>一个关系可能有多个键，通常需要设置一个主键。</strong>(primary key)</p>
+<h2 id="超键"><a href="#超键" class="headerlink" title="超键"></a>超键</h2><p>即<code>键的超集</code>，因此每个键都是超键.</p>
+<h1 id="函数依赖的规则"><a href="#函数依赖的规则" class="headerlink" title="函数依赖的规则"></a>函数依赖的规则</h1><p>即假设已知道关系满足一些FD集合，如何通过已知FD推导出其他存在的FD。</p>
+<p><code>对FD集合S和T，若关系实例集合满足S于其满足T的情况一样，就认为S和T等价</code></p>
+<p><code>若满足T中所有FD的每个关系实例也满足S中所有的FD，则认为S是从T中推断而来的</code></p>
+<h2 id="分解-结合规则"><a href="#分解-结合规则" class="headerlink" title="分解/结合规则"></a>分解/结合规则</h2><p>分解规则：</p>
+<p>使用FD集合： A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;B<sub>i</sub>(i=1,2,…,m)替换FD集合：A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;B<sub>1</sub>,B<sub>2</sub>,…,B<sub>m</sub>。</p>
+<p>组合规则：</p>
+<p>使用FD集合：A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;B<sub>1</sub>,B<sub>2</sub>,…,B<sub>m</sub>替换FD集合： A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;B<sub>i</sub>(i=1,2,…,m)。</p>
+<h2 id="平凡函数依赖规则"><a href="#平凡函数依赖规则" class="headerlink" title="平凡函数依赖规则"></a>平凡函数依赖规则</h2><p>若关系上的一个约束对所有关系实例都成立，且与其他约束无关，则称其为<code>平凡的</code>。</p>
+<p><strong>即平凡FD右边是左边的子集</strong></p>
+<p><strong>平凡函数依赖规则：</strong></p>
+<p>A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;B<sub>1</sub>,B<sub>2</sub>,…,B<sub>m</sub>等价于A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;C<sub>1</sub>,C<sub>2</sub>,…,C<sub>k</sub></p>
+<p><code>C是在集合B中而不在A中的属性</code></p>
+<h2 id="传递规则"><a href="#传递规则" class="headerlink" title="传递规则"></a>传递规则</h2><p>若关系R中有FD：A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;B<sub>1</sub>,B<sub>2</sub>,…,B<sub>m</sub> 和B<sub>1</sub>,B<sub>2</sub>,…,B<sub>m</sub> 一&gt;C<sub>1</sub>,C<sub>2</sub>,…,C<sub>k</sub> 都成立，那么A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;C<sub>1</sub>,C<sub>2</sub>,…,C<sub>k</sub> 在R中也成立。</p>
+<p><em>可以使用闭包来验证</em></p>
+<h2 id="属性的闭包"><a href="#属性的闭包" class="headerlink" title="属性的闭包"></a>属性的闭包</h2><p><strong>算法 3.7</strong></p>
+<div class="hljs"><pre><code class="hljs bash">Input: 属性集合&#123;A1,A2,...,An&#125;，FD集合S
+Output: 闭包&#123;A1,A2,...,An&#125;+
 
+1. 如果必要，分解S中的FD，使每个FD右边只有一个属性
+2. 设X为最后输出(闭包)。初始化为&#123;A1,A2,...,An&#125;
+3. 反复寻找FD:B1B2...Bm —&gt; C, s.t B1B2...Bm在X中且C不在X中;
+   若找到，则将C加入X，并重复该步骤。
+   当最终X不能再加入任何元素后，本步骤结束
+4. 得到结果X</code></pre></div>
+
+<p><em>很像Dijkstra算法</em></p>
+<p>应用：</p>
+<ul>
+<li><p><strong>使用闭包算法可以用来判断任一给定的FD</strong>A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;B是否可以由FD集合推导出来。</p>
+<p>只要计算FD集合计算闭包，若B在闭包中，则可以根据FD集合推导出来。</p>
+</li>
+<li><p><strong>使用闭包算法判断属性集合是否是键</strong>，只有当A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub> 是超键时，其闭包才会包括所有属性。</p>
+<p>若要验证A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>是否是键，则先求闭包，看是否包含了所有属性，再检查<code>最小性</code>。</p>
+</li>
+</ul>
+<h2 id="FD的闭包"><a href="#FD的闭包" class="headerlink" title="FD的闭包"></a>FD的闭包</h2><p>有些情况下，需要使用FD集合来表示一个关系的完全FD集合。但因为FD集合中等价的集合太多(基本集太多)。为了避免基本集激增，只考虑右边为单一属性的基本集。</p>
+<p><strong>最小化基本集</strong>：</p>
+<ul>
+<li>B中所有FD的右边均为单一属性</li>
+<li>从B中删除任何一个FD后，该集合不再是基本集</li>
+<li>对B中任何一个FD，若从其左边删除一个或多个属性，B将不是基本集</li>
+</ul>
+<p><em>无平凡FD</em></p>
+<h2 id="Armstrong公理"><a href="#Armstrong公理" class="headerlink" title="Armstrong公理"></a>Armstrong公理</h2><p><strong>判断FD能否从已知FD集合推断出了，除了闭包算法，也可以使用该公理</strong></p>
+<ul>
+<li><p>自反律</p>
+<p>若{B<sub>1</sub>,B<sub>2</sub>,…,B<sub>m</sub>}⊆{A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>} 则 A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;B<sub>1</sub>,B<sub>2</sub>,…,B<sub>m</sub></p>
+<p>即平凡FD</p>
+</li>
+<li><p>增广律</p>
+<p>若A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;B<sub>1</sub>,B<sub>2</sub>,…,B<sub>m</sub></p>
+<p>则A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>C<sub>1</sub>,C<sub>2</sub>,…,C<sub>k</sub> 一&gt;B<sub>1</sub>,B<sub>2</sub>,…,B<sub>m</sub>C<sub>1</sub>,C<sub>2</sub>,…,C<sub>k</sub> ，<strong>对于任何属性集合</strong>C<sub>1</sub>,C<sub>2</sub>,…,C<sub>k</sub> <strong>都成立</strong></p>
+</li>
+<li><p>传递律</p>
+<p>若有A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;B<sub>1</sub>,B<sub>2</sub>,…,B<sub>m</sub> 和B<sub>1</sub>,B<sub>2</sub>,…,B<sub>m</sub> 一&gt;C<sub>1</sub>,C<sub>2</sub>,…,C<sub>k</sub> 都成立，那么A<sub>1</sub>,A<sub>2</sub>,…,A<sub>n</sub>一&gt;C<sub>1</sub>,C<sub>2</sub>,…,C<sub>k</sub> 也成立</p>
+</li>
+</ul>
+<h2 id="投影函数依赖"><a href="#投影函数依赖" class="headerlink" title="投影函数依赖"></a>投影函数依赖</h2><p>如何根据已有的关系R和他的FD集合S, 得到R的投影 R<sub>1</sub>=π<sub>L</sub>(R)的FD集合？</p>
+<p>原则上可以通过集合S进行推断，找到只包含R<sub>1</sub>的属性，但这样emmm未免太麻烦。</p>
+<p><strong>算法3.12</strong></p>
+<div class="hljs"><pre><code class="hljs bash">Input: 关系R和投影得到的R1,以及在R中成立的FD集合S
+Output: 在R1中成立的FD集合S
+
+1. 设T为最终输出，T初始化为∅
+2. 对于R1属性的每一个子集X，根据FD集合S计算X+。
+   对所有在X+中且属于R1的属性A，将非平凡FD: X—&gt;A添加到T中
+3. 现在T为在R1成立的FD基本集，但不是最小化基本集。用下列方法构造最小化基本集
+   a. 若T中某FD F可通过其他FD推断出来，则从T中删除F
+   b. 若Y—&gt;B在T中，且Y至少有两个属性，从Y中删除一个属性改为Z.
+   	  若Z-&gt;B可以被推断出来，则用Z-&gt;B替换Y-&gt;B
+   C. 以各种方式执行ab直到T不再变化。</code></pre></div>
+
+<p>emmm，这算法就挺麻烦的。</p>
+<h1 id="BC范式"><a href="#BC范式" class="headerlink" title="BC范式"></a>BC范式</h1>
             </div>
             <hr>
             <div>
