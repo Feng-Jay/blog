@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.1k 字
+      3.9k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      31
+      58
        分钟
     </span>
   
@@ -244,7 +244,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：6 天前
+                  本文最后更新于：几秒前
                 
               </p>
             
@@ -424,6 +424,162 @@ ORDER BY A+B</code></pre></div>
 <span class="hljs-keyword">FROM</span> employees
 <span class="hljs-keyword">WHERE</span> employees.birth_date=<span class="hljs-string">&#x27;1959-10-30&#x27;</span><span class="hljs-keyword">AND</span> employees.hire_date=<span class="hljs-string">&#x27;1989-09-12&#x27;</span>);</code></pre></div>
 
+
+
+<h1 id="约束-amp-触发器"><a href="#约束-amp-触发器" class="headerlink" title="约束&amp;触发器"></a>约束&amp;触发器</h1><h2 id="键和外键"><a href="#键和外键" class="headerlink" title="键和外键"></a>键和外键</h2><p>外键的声明</p>
+<div class="hljs"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> Studio&#123;
+	<span class="hljs-keyword">name</span> <span class="hljs-built_in">CHAR</span>(<span class="hljs-number">30</span>) PRIMARY <span class="hljs-keyword">KEY</span>,
+	address <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">255</span>),
+	presC<span class="hljs-comment"># INT REFERENCES MovieExec(cert#)</span>
+	//或者单独声明外键
+	<span class="hljs-keyword">FOREIGN</span> <span class="hljs-keyword">KEY</span> (presC<span class="hljs-comment">#) REFERENCES MovieExec(cert#)</span>
+&#125;</code></pre></div>
+
+<p>外键对于<strong>引用完整性</strong>的保护：</p>
+<p>如上例子：若对关系 MovieExec（即<strong>被引用的关系</strong>）进行操作，外键有以下三种方案来确保引用完整性：</p>
+<ol>
+<li><p>缺省原则：即reject</p>
+<p>拒绝违法更新</p>
+</li>
+<li><p>级联原则(Cascade)：</p>
+<p>被引用属性的改变被同步到外键上，即若删除MovieExec中的元组，Studio中的元组也要伸出</p>
+</li>
+<li><p>置空值原则：Set-NULL</p>
+<p>即被引用关系上的改变影响到外键时，将外键值置为空值</p>
+</li>
+</ol>
+<p><strong>通过如下的形式设置方案：</strong></p>
+<div class="hljs"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> Studio&#123;
+	<span class="hljs-keyword">name</span> <span class="hljs-built_in">CHAR</span>(<span class="hljs-number">30</span>) PRIMARY <span class="hljs-keyword">KEY</span>,
+	address <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">255</span>),
+	presC<span class="hljs-comment"># INT REFERENCES MovieExec(cert#)</span>
+		<span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">SET</span> <span class="hljs-literal">NULL</span>
+		<span class="hljs-keyword">ON</span> <span class="hljs-keyword">UPDATE</span> <span class="hljs-keyword">CASCADE</span>//对不同操作设置不同的方案
+&#125;</code></pre></div>
+
+
+
+<p><strong>延迟约束检查</strong>：</p>
+<p>​    试想这样一种情况：你想对一个有外键的表中插入一个新元组，在此之前你需要在被引用表中插入对应的元组。但如果这两个相互形成约束，那么就变成了一个类似 <strong>死锁</strong>的情形。这时，约束阻止了我们的操作，所以我们需要延迟约束检查。</p>
+<p>​    在约束后可添加 <code>DEFERABLE</code>和<code>NOT DEFERABLE</code>选项来设置是<strong>推迟到事务提交前检查</strong>还是<strong>在可能违反外键约束的更新语句后立即检查。</strong></p>
+<p>在<code>DEFERABLE</code>后面有 <code>INITIALLY DEFERRED</code>或<code>INITIALLY IMMEDIATE</code>选项分别表示<strong>检查推迟到事务提交前</strong>；<strong>检查在每个语句后立刻执行</strong>。</p>
+<div class="hljs"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> Studio&#123;
+	<span class="hljs-keyword">name</span> <span class="hljs-built_in">CHAR</span>(<span class="hljs-number">30</span>) PRIMARY <span class="hljs-keyword">KEY</span>,
+	address <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">255</span>),
+	presC<span class="hljs-comment"># INT REFERENCES MovieExec(cert#)</span>
+		DEFERRABLE  <span class="hljs-keyword">INITIALLY</span> <span class="hljs-keyword">DEFERRED</span>//检查被推迟知道事务提交前
+		DEFERRABLE  <span class="hljs-keyword">INITIALLY</span> <span class="hljs-keyword">IMMEDIATE</span>//每个语句后都立即检查
+&#125;</code></pre></div>
+
+<p><strong>我们可以修改有名字的约束，可更改约束类型</strong>，Example:</p>
+<div class="hljs"><pre><code class="hljs sql"><span class="hljs-keyword">SET</span> <span class="hljs-keyword">CONSTRAINT</span> MyConstraint <span class="hljs-keyword">DEFERRED</span>;</code></pre></div>
+
+
+
+<h2 id="属性和元组上的约束"><a href="#属性和元组上的约束" class="headerlink" title="属性和元组上的约束"></a>属性和元组上的约束</h2><p><strong>非空值约束：NOT NULL</strong></p>
+<p>作用：不允许元组的该属性取空值*&emsp;(也就是说这是一个属性上的约束)*</p>
+<p><strong>基于属性的CHECK约束</strong></p>
+<p>Format:</p>
+<div class="hljs"><pre><code class="hljs sql"><span class="hljs-keyword">CHECK</span> (Expression...)</code></pre></div>
+
+<p>其中Expression可以为任何在WHERE子句中允许的描述：可以为简单的数值约束、可以存在查询</p>
+<p>但要注意，若要引用其他属性/关系，必须在WHERE关系中出现或者是约束属性所在关系的其他属性。</p>
+<p>Example:</p>
+<div class="hljs"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> XXX&#123;
+<span class="hljs-comment">/*简单的值约束*/</span>
+presC<span class="hljs-comment"># INT REFERENCES MovieExec(cert#)</span>
+	<span class="hljs-keyword">CHECK</span>(presC<span class="hljs-comment">#&gt;=100000)</span>
+<span class="hljs-comment">/*含有子查询的约束*/</span>
+presC<span class="hljs-comment"># INT CHECK</span>
+          (presC<span class="hljs-comment"># IN (SELECT cert# FROM MovieExec))</span>
+&#125;</code></pre></div>
+
+<p><strong>注意：CHECK的触发条件</strong></p>
+<p>只有当元组为该<strong>属性</strong>获取新值时被检查，若违背约束，拒绝修改。</p>
+<p>当数据库中修改没有改变与CHECK相关的属性时，CHECK不会被触发。</p>
+<p><strong>CHECK约束是单方面的</strong></p>
+<p>CHECK约束只会约束被设置的关系，但如果你的CHECK条件中有其他关系，当你修改这些关系时，<strong>CHECK不会被触发，即对条件中的关系而言该CHECK是透明的</strong>。很可能出现改动导致违背CHECK约束。</p>
+<p><strong>这也说明CHECK并不能起到Foreign Key的作用</strong></p>
+<p>&nbsp;</p>
+<p><strong>基于元组的CHECK</strong></p>
+<p>Example:</p>
+<div class="hljs"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> XXX&#123;
+	...,
+	<span class="hljs-keyword">CHECK</span> (gender=<span class="hljs-string">&#x27;F&#x27;</span><span class="hljs-keyword">OR</span> <span class="hljs-keyword">name</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;Ms.%&#x27;</span>)
+&#125;;</code></pre></div>
+
+<p><strong>每次向关系中插入元组 或 R元组修改时，都会触发CHECK约束</strong></p>
+<p><strong>一般来说，基于元组的约束会被更频繁的检查</strong></p>
+<h2 id="修改约束"><a href="#修改约束" class="headerlink" title="修改约束"></a>修改约束</h2><p><strong>给约束命名</strong></p>
+<p>为了修改/删除一个已经存在的约束，我们必须给约束命名。</p>
+<p>使用关键字 CONSTRAINT：</p>
+<div class="hljs"><pre><code class="hljs sql">name CHAR(30) CONSTRAINT NameIsKey PRIMARY KEY,
+gender CHAR(1) CONSTRAINT NoAndro <span class="hljs-keyword">CHECK</span> (gender <span class="hljs-keyword">IN</span> (<span class="hljs-string">&#x27;F&#x27;</span>,<span class="hljs-string">&#x27;M&#x27;</span>)),
+<span class="hljs-keyword">CONSTRAINT</span> RightTitle 
+			<span class="hljs-keyword">CHECK</span> (gender=<span class="hljs-string">&#x27;F&#x27;</span> <span class="hljs-keyword">OR</span> <span class="hljs-keyword">name</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;Ms.%&#x27;</span>);</code></pre></div>
+
+<p>&nbsp;</p>
+<p><strong>修改表上的约束</strong></p>
+<p>可以使用 <code>SET CONSTRAINT</code>语句将约束检查设置进行更改。</p>
+<p>通过使用 <code>ALTER TABLE</code>语句可以对约束做其他改变：</p>
+<div class="hljs"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> XXX <span class="hljs-keyword">DROP</span> <span class="hljs-keyword">CONSTRAINT</span> NameIsKey;//使用<span class="hljs-keyword">DROP</span> <span class="hljs-keyword">CONSTRAINT</span> 删除约束
+<span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> XXX <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">CONSTRAINT</span> NoAndro 
+								<span class="hljs-keyword">CHECK</span>(gender <span class="hljs-keyword">IN</span>(<span class="hljs-string">&#x27;F&#x27;</span>,<span class="hljs-string">&#x27;M&#x27;</span>));//使用ADD CONSTRAINT 添加约束</code></pre></div>
+
+<p><strong>注意：添加的约束一定是与元组有关的：</strong>基于元组的、键、外键。</p>
+<p>另外：除非要添加的约束在那个时刻持有表中的每个元组，否则不能对表添加约束。</p>
+<h2 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h2><p>SQL中主动元素最强有力的形式：断言和触发器。他们是数据库的一部分，与表是一个级别。</p>
+<p><strong>创建断言</strong></p>
+<div class="hljs"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">ASSERTION</span> &lt;<span class="hljs-keyword">name</span>&gt; <span class="hljs-keyword">CHECK</span>(&lt;conditions&gt;)</code></pre></div>
+
+<p><strong>断言建立时，断言的条件必须为真，并且要保持永真。即任何导致断言为假的操作都会被拒绝</strong></p>
+<p>断言中使用的任何属性都需要说明。且由于coditions必须是逻辑值，所以常常使用聚类函数来获得一个逻辑值。</p>
+<p>Example:</p>
+<div class="hljs"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">ASSERTION</span> RichPress <span class="hljs-keyword">CHECK</span>
+				(<span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span>
+                    (<span class="hljs-keyword">SELECT</span> Studio.name
+                     <span class="hljs-keyword">FROM</span> Studio,MovieExec
+                     <span class="hljs-keyword">WHERE</span> pressC<span class="hljs-comment"># = cert# AND netWorth&lt;10000000</span>
+                    )
+                );</code></pre></div>
+
+
+
+<p><strong>删除断言</strong></p>
+<div class="hljs"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">ASSERTION</span> &lt;<span class="hljs-keyword">name</span>&gt;</code></pre></div>
+
+<h2 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a>触发器</h2><p>1.当触发器声明的事情发生时，触发器被激活。(事件常常是对特定关系的插入、删除或修改)</p>
+<p>2.当触发器被激活时，触发器测试触发的条件，若不成立，则不做任何事情</p>
+<p>3.若条件成立，则与该触发器相连的动作由DBMS执行。(可以是任何操作)</p>
+<p><strong>创建触发器</strong></p>
+<p>触发器有很多选项：</p>
+<ul>
+<li>触发器的条件检查和动作可以在<strong>触发事件执行之前的数据库状态上</strong>或<strong>触发动作执行后的状态上</strong>执行。</li>
+<li>条件和动作可以引用元组的旧值和/或 触发事件中更新的元组的新值</li>
+<li>更新事件可以被局限到某个特定的属性或一些属性</li>
+<li>可以选择动作执行的方式：一次只对一个更新元组(行级触发器)/一次针对所有被改变元组(语句级触发器)</li>
+</ul>
+<p>Example：</p>
+<div class="hljs"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TRIGGER</span> NetWorthTrigger
+<span class="hljs-keyword">AFTER</span> <span class="hljs-keyword">UPDATE</span> <span class="hljs-keyword">OF</span> netWorth <span class="hljs-keyword">ON</span> MovieExec//指出在触发事件后执行
+<span class="hljs-keyword">REFERENCING</span> //引用旧元组和新元组
+	<span class="hljs-keyword">OLD</span> <span class="hljs-keyword">ROW</span> <span class="hljs-keyword">AS</span> OldTuple,
+	<span class="hljs-keyword">NEW</span> <span class="hljs-keyword">ROW</span> <span class="hljs-keyword">AS</span> NewTuple
+<span class="hljs-keyword">FOR</span> <span class="hljs-keyword">EACH</span> <span class="hljs-keyword">ROW</span>//告诉触发器一次只对一个更新元组执行
+<span class="hljs-keyword">WHEN</span> (OldTuple.netWorth&gt;NewTuple.netWorth)//执行动作
+	<span class="hljs-keyword">UPDATE</span> MovieExec
+	<span class="hljs-keyword">SET</span> netWorth = OldTuple.netWorth
+	<span class="hljs-keyword">WHERE</span> cert<span class="hljs-comment">#=NewTuple.cert#;</span></code></pre></div>
+
+<p>some notes:</p>
+<ul>
+<li><code>AFTER</code>可以替换为<code>BEFORE</code>或者<code>INSTEAD OF</code></li>
+<li>除了<code>UPDATE</code>之外，可能的触发事件还有<code>INSERT DELETE</code>, <code>OF</code>是可选项，表示事件只是<code>OF</code>保留字后列出属性的修改。<code>OF</code>在<code>INSERT DELETE</code>中不可用，因为二者都是针对元组的。</li>
+<li><code>WHEN</code>是可选项，若该短语缺省，则触发器一定会做出动作。</li>
+<li>动作可以不是单个SQL语句，可在<code>BEGIN...END</code>括起来的区域中写出多个SQL语句</li>
+<li>当触发事件为修改时，会有新旧元组之分，分别用：<code>NEW ROW AS、OLD ROW AS</code>命名；在<code>INSERT</code>和<code>DELETE</code>中，分别只有新和旧。</li>
+<li><code>FOR EACH ROW</code>表示为行级触发器，<code>FOR EACH STATEMENT</code>表示语句级触发器。<strong>语句级触发器不能直接引用新旧元组</strong>，可以引用 <strong>新旧元组的关系</strong>：<code>OLD TABLE AS OldStuff</code>、<code>NEW TABLE AS NewStuff</code>(语句级也可以)</li>
+</ul>
 
             </div>
             <hr>
