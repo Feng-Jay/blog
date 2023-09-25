@@ -1,0 +1,1217 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;light&#34;>
+
+<!--浏览器搞笑标题-->
+<script type="text/javascript" src="/js/FunnyTitle.js"></script>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/eye.png">
+  <link rel="icon" type="image/png" href="/img/eye.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="A Website for record my learning process.">
+  <meta name="author" content="Feng Jay">
+  <meta name="keywords" content="Blog Study Computer-science">
+  <title>Greedy Algorithm - 在知识海洋中狗刨</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atelier-cave-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>FFeng's Blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于我
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/article.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-12-05 19:25" pubdate>
+        2020年12月5日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      77
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">Greedy Algorithm</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：29 分钟前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <p>Try to be a good coder and emmm… review !</p>
+<span id="more"></span>
+
+<h1 id="优化问题"><a href="#优化问题" class="headerlink" title="优化问题"></a>优化问题</h1><h2 id="优化问题的概念"><a href="#优化问题的概念" class="headerlink" title="优化问题的概念"></a>优化问题的概念</h2><p>即通过一定条件约束，对一组变量进行操作，使目标到达最优值。</p>
+<h2 id="优化问题的一般描述"><a href="#优化问题的一般描述" class="headerlink" title="优化问题的一般描述"></a>优化问题的一般描述</h2><p><strong>优化问题的描述：</strong></p>
+<p><strong>1.问题的解为一复杂结构 (x1,x2,…,xn) xi∈Si（可选的方式）</strong></p>
+<p><strong>2.约束条件：B(x1,x2…,xn)，使B为true的元组称为可行解</strong></p>
+<p><strong>3.目标函数f(x1,…,xn)</strong> </p>
+<p><strong>优化解即指使目标函数取得最值的可行解，对应的目标函数值称为优化值</strong></p>
+<p><strong>贪心算法是求近似解的一种主要途径。</strong></p>
+<hr>
+<h1 id="贪心算法的思想及要点"><a href="#贪心算法的思想及要点" class="headerlink" title="贪心算法的思想及要点"></a>贪心算法的思想及要点</h1><h2 id="思想"><a href="#思想" class="headerlink" title="思想"></a>思想</h2><p>&emsp;&emsp;贪心算法是一种多步求解优化问题的方法，每步按一种局部最优的策略选择解的一个分量，算法以第n步结束时构造出问题的解。</p>
+<p>&emsp;&emsp;该算法问题在于：其<strong>贪婪的短视</strong>导致在很多情况下都会错过最优解，因为贪心算法不会从整体上对问题进行思考，只会埋头于当前情况。所以贪心算法不能用来求最大最小值、无法保证最后的解是最优的、只能求某些特定的解。</p>
+<p>&emsp;&emsp;所以实际上可以用贪心算法求得最优解的情况很少，所以我们要证明每一步所作的贪心选择最终能导出问题最优解。</p>
+<p><strong>Don’t worry. The codes here are simple and easy.</strong></p>
+<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ol>
+<li>不回溯</li>
+<li>局部优化策略可以减小开销，但不保证得到精确优化解</li>
+<li>不同贪心策略得到不同算法</li>
+<li>常使用使目标函数有最大增量的策略为贪心策略</li>
+</ol>
+<hr>
+<h1 id="货箱装船问题"><a href="#货箱装船问题" class="headerlink" title="货箱装船问题"></a>货箱装船问题</h1><p>下面我们来看一个很简单的例题</p>
+<blockquote>
+<p><strong>例 Loading Problem</strong></p>
+<p><strong>设有n个集装箱,集装箱大小一样，第i个设有n个集装箱,集装箱大小一样，第i个集装箱的重量为wi(1≤i≤n),设船的载重量为c.试设计一装船的方法使得装入的集装箱数目最多</strong></p>
+</blockquote>
+<p>&emsp;</p>
+<p>这是一道很基础的贪心算法题目，我们先按照<strong>优化问题的格式</strong>来描述一下他：</p>
+<p><strong>令问题的解为(x1,x2,…,xn) &nbsp;xi={0,1}//代表第i个箱子是否装载。</strong></p>
+<p><strong>问题的约束条件是Σi=1,n wixi&lt;=c; //装载箱子的总重量小于等于C</strong> </p>
+<p><strong>目标函数为 Σi=1,n xi； //装载的集装箱个数</strong></p>
+<p><strong>我们的目标是极大化目标函数。</strong></p>
+<p>因为目标函数是所装的集装箱数目，所以按照我们的常规思想，那么一定先装重量轻的集装箱。</p>
+<p>所以可以写出代码如下</p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span>
+
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n,c;
+<span class="hljs-type">int</span> weight[<span class="hljs-number">100</span>]=&#123;<span class="hljs-number">0</span>&#125;;
+<span class="hljs-type">int</span> countt=<span class="hljs-number">0</span>;
+<span class="hljs-type">int</span> tem_weight=<span class="hljs-number">0</span>;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    cin&gt;&gt;n;
+    cin&gt;&gt;c;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;n;i++)
+    cin&gt;&gt;weight[i];
+    <span class="hljs-built_in">sort</span>(weight,weight+n);
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;n;i++)
+    &#123;
+        <span class="hljs-keyword">if</span>(tem_weight+weight[i]&lt;=c)
+        &#123;
+            tem_weight+=weight[i];
+            countt++;
+        &#125;
+        <span class="hljs-keyword">else</span> &#123;<span class="hljs-keyword">break</span>;&#125;
+    &#125;
+    cout&lt;&lt;countt&lt;&lt;endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre></div>
+
+<p>这时你可能对这种贪心策略存疑，先装载重量低的箱子一定能得到最优解吗？</p>
+<p>下面给出证明</p>
+<p><u>证明:</u></p>
+<p><u>设问题最优解为(y1,y2,…,yn)</u></p>
+<p><u> </u></p>
+<p><u>如最优解不含箱子1，将箱子1替换优化解中某一个箱子得到一个新的解</u></p>
+<p><u>1.替换是必须的：若1还能装入船中，则(y1,y2,…,yn)不是优化的</u></p>
+<p><u>2.因为1是最轻的，所以替换后的解仍是可行的</u></p>
+<p><u>3.替换后的解装入的箱子数==优化的箱子数，它仍是优化解</u></p>
+<p><u>4.替换后新的优化解和贪心解都有箱子1</u></p>
+<p><u> </u></p>
+<p><u>反复替换得到一个优化解，优化解==贪心解</u></p>
+<p><u>替换次数是有穷的。</u></p>
+<p>这就确定了在这道题目里，我们的贪心解一定是优化解。</p>
+<p><strong>针对这个问题也引出一点：贪心解虽然在一种策略下只有一个，但问题的真正最优解可能有多个。</strong>   </p>
+<hr>
+<h1 id="0-1背包问题"><a href="#0-1背包问题" class="headerlink" title="0/1背包问题"></a>0/1背包问题</h1><blockquote>
+<p><strong>01背包问题</strong></p>
+<p><strong>设有容量c的背包和n件物品，物品i的重量为w<del>i</del> ;假定装入物品i获得的效益值为p<del>i</del>,试给出一装入物品的方法使获得的总效益值最大.</strong></p>
+</blockquote>
+<p><strong>首先说明，贪心法无法得出该问题的优化解，只能得到近似解</strong></p>
+<p>我们首先要决定贪心策略：</p>
+<ol>
+<li>选目前效益最大的物品</li>
+<li>选重量最小的物品</li>
+<li>选单位重量效益最大的物品</li>
+</ol>
+<p>贪心策略的决定后就可以进行编码。</p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-comment">//唯一要做的就是对贪心策略有关的数组进行排序</span>
+<span class="hljs-comment">//例如，使用贪心策略1，那就对效益值降序排序即可...</span>
+<span class="hljs-built_in">sort</span>(target_array, target_array+length,cmp);
+<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;length;i++)
+&#123;
+    <span class="hljs-keyword">if</span>(背包容量&lt;该物品重量)
+    &#123;
+        put;
+        容量-物品重量;
+        效益值+物品效益值;
+    &#125;
+&#125;
+<span class="hljs-keyword">return</span> X;</code></pre></div>
+
+
+
+<p><strong>由于贪心解和精确解之间存在误差，所以我们要有能够计算和减小误差的方法。</strong></p>
+<p><strong>计算：</strong></p>
+<p>贪心解与优化解之间误差= (优化值 - 贪心值) / 优化值 x 100%</p>
+<p>for example:</p>
+<p>n=2,c=y, w=[1,y], p=[10, 9y]</p>
+<p>使用 上述贪心策略3(价值密度)</p>
+<p>当y&gt;1时，所有的贪心解为(1,0)，贪心值为10</p>
+<p>而当y&gt;10/9时，优化值为9y</p>
+<p>所以当 1=&lt;y&lt;10/9时，误差==0</p>
+<p>y&gt;=10/9时，误差=(9y-10)/9y x 100%</p>
+<p>&emsp;</p>
+<p>减小误差方法：<strong>K-优化算法</strong></p>
+<p>概念：*<em>对贪心算法进行改进，让误差在1/(k+1)<em>100%之内</em></em></p>
+<p>具体方式：</p>
+<p><strong>1.先将一些物品装入背包，然后对剩余物品使用贪心策略。</strong></p>
+<p><strong>2.预先装入的物品不能超过K个</strong></p>
+<p><strong>3.对所有物品数不超过K的物品子集进行上述过程，从中找到有最大效益值的解为K-优化算法的解。</strong></p>
+<p><em>也就是说，如果用 2-优化算法，那么 预先装入0个、1个、2个的情况都要尝试。</em></p>
+<p><strong>K优化算法需要测试的子集数目为O(n^k^)</strong></p>
+<p><strong>每个子集做贪心需要时间为O(n)</strong></p>
+<p><strong>K&gt;0时，总时间开销为O(n^k+1^)</strong></p>
+<h1 id="Huffman-code"><a href="#Huffman-code" class="headerlink" title="Huffman code"></a>Huffman code</h1><div class="hljs"><pre><code class="hljs cpp"><span class="hljs-comment">/*Realize by using min_heap*/</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*Huffman tree&#x27;s node*/</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Treenode</span>&#123;
+    <span class="hljs-type">char</span> code;
+    Treenode *left;
+    Treenode *right;
+    <span class="hljs-built_in">Treenode</span>(<span class="hljs-type">char</span> x): <span class="hljs-built_in">code</span>(x),<span class="hljs-built_in">left</span>(<span class="hljs-literal">NULL</span>),<span class="hljs-built_in">right</span>(<span class="hljs-literal">NULL</span>)&#123;&#125;
+&#125;;
+<span class="hljs-comment">/*heap node*/</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">heapnode</span>&#123;
+    <span class="hljs-type">char</span> c; <span class="hljs-comment">//input&#x27;s character</span>
+    <span class="hljs-type">int</span> frequence;
+    Treenode *node; <span class="hljs-comment">//choose two min heapnode then let them be a tree</span>
+    <span class="hljs-built_in">heapnode</span>(<span class="hljs-type">char</span> _c,<span class="hljs-type">int</span> _n):<span class="hljs-built_in">c</span>(_c),<span class="hljs-built_in">frequence</span>(_n)&#123;&#125;
+&#125;;
+
+<span class="hljs-comment">/*ini the min_heap*/</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">insert2heap</span><span class="hljs-params">(vector &lt;heapnode&gt; &amp; heap, heapnode hc)</span></span>
+<span class="hljs-function"></span>&#123;
+    heap.<span class="hljs-built_in">push_back</span>(hc);
+    <span class="hljs-type">int</span> len=heap.<span class="hljs-built_in">size</span>();
+    <span class="hljs-type">int</span> childindex=len<span class="hljs-number">-1</span>;
+    <span class="hljs-type">int</span> parentindex=(childindex<span class="hljs-number">-1</span>)/<span class="hljs-number">2</span>;<span class="hljs-comment">// complete binary tree ~~~</span>
+    <span class="hljs-keyword">while</span>(parentindex&gt;=<span class="hljs-number">0</span>)&#123;
+        <span class="hljs-keyword">if</span>(heap[parentindex].frequence&gt;heap[childindex].frequence)&#123;
+            heapnode temp=heap[parentindex];
+            heap[parentindex]=heap[childindex];
+            heap[childindex]=temp;
+            
+            childindex=parentindex;
+            parentindex=(childindex<span class="hljs-number">-1</span>)/<span class="hljs-number">2</span>;<span class="hljs-comment">// if parent &gt; child, change them;</span>
+        &#125;
+        <span class="hljs-keyword">else</span>&#123;
+            <span class="hljs-keyword">break</span>;
+        &#125;
+        
+    &#125;
+
+&#125;
+
+<span class="hljs-comment">/*get elem from minheap*/</span>
+<span class="hljs-function">heapnode <span class="hljs-title">remove4heap</span><span class="hljs-params">(vector&lt;heapnode&gt; &amp; heap)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span>(heap.<span class="hljs-built_in">empty</span>())&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">heapnode</span>(<span class="hljs-string">&#x27;0&#x27;</span>,<span class="hljs-number">-1</span>);
+    &#125;
+    heapnode ans=heap[<span class="hljs-number">0</span>];
+    heap[<span class="hljs-number">0</span>]=heap.<span class="hljs-built_in">back</span>();
+    heap.<span class="hljs-built_in">pop_back</span>();<span class="hljs-comment">//let the big one on the top,then sort this heap like ini process.</span>
+
+    <span class="hljs-type">int</span> len=heap.<span class="hljs-built_in">size</span>();
+    <span class="hljs-type">int</span> parentindex=<span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> childindex=<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span>(childindex&lt;=len<span class="hljs-number">-1</span>)
+    &#123;
+        <span class="hljs-keyword">if</span>((childindex!=len<span class="hljs-number">-1</span>)&amp;&amp;(heap[childindex].frequence&gt;heap[childindex+<span class="hljs-number">1</span>].frequence))&#123;
+            childindex++;
+        &#125;
+
+        <span class="hljs-keyword">if</span>(heap[childindex].frequence&lt;heap[parentindex].frequence)&#123;
+            heapnode temp=heap[parentindex];
+            heap[parentindex]=heap[childindex];
+            heap[childindex]=temp;
+
+            parentindex=childindex;
+            childindex=<span class="hljs-number">2</span>*childindex+<span class="hljs-number">1</span>;
+        &#125;
+        <span class="hljs-keyword">else</span>&#123;
+            <span class="hljs-keyword">break</span>;
+        &#125;
+
+    &#125;
+    <span class="hljs-keyword">return</span> ans;
+&#125;
+<span class="hljs-comment">/*ini the huffman tree! yohooooo!*/</span>
+<span class="hljs-function">Treenode* <span class="hljs-title">huffman_encode</span><span class="hljs-params">(vector&lt;heapnode&gt; &amp;heap)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">while</span>(!heap.<span class="hljs-built_in">empty</span>())&#123;
+        <span class="hljs-keyword">if</span>(heap.<span class="hljs-built_in">size</span>()==<span class="hljs-number">1</span>)
+        <span class="hljs-keyword">return</span> heap[<span class="hljs-number">0</span>].node;
+        <span class="hljs-keyword">else</span>&#123;
+        heapnode x=<span class="hljs-built_in">remove4heap</span>(heap);
+        heapnode y= <span class="hljs-built_in">remove4heap</span>(heap);
+
+        Treenode* left;
+        <span class="hljs-keyword">if</span>(x.c!=<span class="hljs-number">0</span>)<span class="hljs-comment">// we let the newly built bintree(from two min node).c=0;and what we input !=0;</span>
+        &#123;
+            left=<span class="hljs-keyword">new</span> <span class="hljs-built_in">Treenode</span>(x.c);
+        &#125;
+        <span class="hljs-keyword">else</span>
+        &#123;
+            left=x.node;<span class="hljs-comment">//if has a bintree ,just use it.</span>
+        &#125;
+
+        Treenode* right;
+        <span class="hljs-keyword">if</span>(y.c!=<span class="hljs-number">0</span>)
+        &#123;
+            right=<span class="hljs-keyword">new</span> <span class="hljs-built_in">Treenode</span>(y.c);
+        &#125;
+        <span class="hljs-keyword">else</span>
+        &#123;
+            right=y.node;
+        &#125;
+        
+        Treenode* z=<span class="hljs-keyword">new</span> <span class="hljs-built_in">Treenode</span>(<span class="hljs-number">0</span>);
+        z-&gt;left=left;
+        z-&gt;right=right;
+        <span class="hljs-function">heapnode <span class="hljs-title">hc</span><span class="hljs-params">(<span class="hljs-number">0</span>,x.frequence+y.frequence)</span></span>;<span class="hljs-comment">// build a new bintree...</span>
+        hc.node=z;
+        <span class="hljs-built_in">insert2heap</span>(heap,hc);
+    &#125;
+    &#125;
+    <span class="hljs-keyword">return</span> heap[<span class="hljs-number">0</span>].node;
+&#125;
+
+<span class="hljs-comment">/*for check*/</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">outputheap</span><span class="hljs-params">(vector&lt;heapnode&gt; &amp;heap)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;heap.<span class="hljs-built_in">size</span>();i++)&#123;
+        cout&lt;&lt;heap[i].c&lt;&lt;<span class="hljs-string">&quot; : &quot;</span>&lt;&lt;heap[i].frequence&lt;&lt;endl;
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">outputHuffmantree</span><span class="hljs-params">(Treenode* root,string prefix)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span>(root-&gt;left==<span class="hljs-literal">NULL</span>&amp;&amp;root-&gt;right==<span class="hljs-literal">NULL</span>)&#123;
+        cout&lt;&lt;root-&gt;code&lt;&lt;<span class="hljs-string">&quot; &quot;</span>&lt;&lt;prefix.<span class="hljs-built_in">c_str</span>()&lt;&lt;endl;
+    &#125;
+    <span class="hljs-keyword">else</span>
+    &#123;
+        <span class="hljs-built_in">outputHuffmantree</span>(root-&gt;left,prefix+<span class="hljs-string">&quot;0&quot;</span>);
+        <span class="hljs-built_in">outputHuffmantree</span>(root-&gt;right,prefix+<span class="hljs-string">&quot;1&quot;</span>);
+    &#125;
+&#125;
+<span class="hljs-comment">//use these two to output huffmancode</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">outputHuffmantree</span><span class="hljs-params">(Treenode* root)</span></span>
+<span class="hljs-function"></span>&#123;
+   <span class="hljs-keyword">if</span> (root != <span class="hljs-literal">NULL</span>)
+	&#123;
+		<span class="hljs-built_in">outputHuffmantree</span>(root-&gt;left, <span class="hljs-string">&quot;0&quot;</span>);
+
+		<span class="hljs-built_in">outputHuffmantree</span>(root-&gt;right, <span class="hljs-string">&quot;1&quot;</span>);
+	&#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    vector&lt;heapnode&gt; heap;
+    vector&lt; pair&lt;<span class="hljs-type">char</span>,<span class="hljs-type">int</span>&gt; &gt; ci=&#123;
+        &#123;<span class="hljs-string">&#x27;A&#x27;</span>,<span class="hljs-number">3</span>&#125;,
+        &#123;<span class="hljs-string">&#x27;B&#x27;</span>,<span class="hljs-number">1</span>&#125;,
+        &#123;<span class="hljs-string">&#x27;C&#x27;</span>,<span class="hljs-number">2</span>&#125;,
+        &#123;<span class="hljs-string">&#x27;D&#x27;</span>,<span class="hljs-number">5</span>&#125;,
+        &#123;<span class="hljs-string">&#x27;E&#x27;</span>,<span class="hljs-number">10</span>&#125;,
+    &#125;;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> x :ci)&#123;
+        <span class="hljs-function">heapnode <span class="hljs-title">hc</span><span class="hljs-params">(x.first,x.second)</span></span>;
+        <span class="hljs-built_in">insert2heap</span>(heap,hc);
+    &#125;
+    <span class="hljs-built_in">outputheap</span>(heap);
+    cout&lt;&lt;<span class="hljs-string">&quot;------HUFFMAN CODE--------&quot;</span>&lt;&lt;endl;
+    Treenode* root=<span class="hljs-built_in">huffman_encode</span>(heap);
+    <span class="hljs-built_in">outputHuffmantree</span>(root);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+
+&#125;</code></pre></div>
+
+
+
+<h1 id="拓扑排序"><a href="#拓扑排序" class="headerlink" title="拓扑排序"></a>拓扑排序</h1><p><strong>定义：</strong></p>
+<p>任务的先后顺序可用有向图表示，称为AOV网络。<strong>有向图的顶点代表任务，有向边(i,j)表示先后关系：任务i完成后才能开始任务j。</strong></p>
+<p>拓扑排序要求对任务进行排序，使得排序序列先后关系和AOV网定义的先后关系一致。</p>
+<p><strong>根据任务的有向图建立拓扑序列的过程称为拓扑排序。</strong></p>
+<hr>
+<p>朴素思想就是对这n个任务进行全排列，<strong>时间复杂度为O(n!)</strong></p>
+<p>&emsp;</p>
+<p><strong>而贪心法从空集开始，每步产生拓扑序列中的一个顶点W。</strong></p>
+<p><strong>Greedy Startget</strong>：从当前不在拓扑序列的顶点中选取一顶点w，其所有先行节点v都在已产生的拓扑序列中，并将其加入到拓扑序列。</p>
+<p><em>使用检测入度的方法确定w：入度为0的顶点要加入到拓扑序列中。</em></p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-comment">/*easy code using martix to storage graphy*/</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;queue&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">tuopu</span><span class="hljs-params">(vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt;&amp; martix,vector&lt;<span class="hljs-type">int</span>&gt; &amp;indegree,<span class="hljs-type">int</span> num_node)</span></span>
+<span class="hljs-function"></span>&#123;
+    queue&lt;<span class="hljs-type">int</span>&gt; ans;
+    <span class="hljs-type">int</span> counter=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)<span class="hljs-comment">/*ini the queue*/</span>
+    &#123;
+        <span class="hljs-keyword">if</span>(indegree[i]==<span class="hljs-number">0</span>)
+        &#123; 
+            ans.<span class="hljs-built_in">push</span>(i);
+            indegree[i]=<span class="hljs-number">-1</span>;
+        &#125;
+    &#125;
+    <span class="hljs-keyword">while</span>(!ans.<span class="hljs-built_in">empty</span>())&#123;
+        <span class="hljs-type">int</span> temp=ans.<span class="hljs-built_in">front</span>();
+        cout&lt;&lt;temp&lt;&lt;<span class="hljs-string">&quot; &quot;</span>;
+        ans.<span class="hljs-built_in">pop</span>();
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)<span class="hljs-comment">/*pop,then modify indegree array, then push new node!*/</span>
+        &#123;
+            <span class="hljs-keyword">if</span>(martix[i][temp]&gt;<span class="hljs-number">0</span>)
+            &#123;
+                martix[i][temp]--;
+                indegree[i]--;
+            &#125;
+            <span class="hljs-keyword">if</span>(indegree[i]==<span class="hljs-number">0</span>)
+            &#123;
+                ans.<span class="hljs-built_in">push</span>(i);
+                indegree[i]=<span class="hljs-number">-1</span>;
+            &#125;
+        &#125;
+        counter++;
+    &#125;
+    cout&lt;&lt;endl;
+    <span class="hljs-keyword">if</span>(counter!=num_node)<span class="hljs-comment">/*check circle*/</span>
+    &#123;
+        cout&lt;&lt;<span class="hljs-string">&quot;Circle inside!&quot;</span>&lt;&lt;endl;
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-type">int</span> num_edge,num_node;
+    cout&lt;&lt;<span class="hljs-string">&quot;Input number of nodes and edges&quot;</span>&lt;&lt;endl;
+    cin&gt;&gt;num_node&gt;&gt;num_edge;
+
+    vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs-built_in">martix</span>(num_node,<span class="hljs-built_in">vector</span>&lt;<span class="hljs-type">int</span>&gt;(num_node) );
+   
+    cout&lt;&lt;<span class="hljs-string">&quot;Input nodes of each edge:x-&gt;y&quot;</span>&lt;&lt;endl;
+    <span class="hljs-type">int</span> x,y;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;num_edge;i++)
+    &#123;
+        cin&gt;&gt;x&gt;&gt;y;
+        martix[y][x]++;
+    &#125;
+    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">indegree</span><span class="hljs-params">(num_node)</span></span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)<span class="hljs-comment">/*calcilate indegree array*/</span>
+    &#123;
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">0</span>;j&lt;num_node;j++)
+        &#123;
+            <span class="hljs-keyword">if</span>(martix[i][j]!=<span class="hljs-number">0</span>)
+            indegree[i]++;
+        &#125;
+    &#125;
+    <span class="hljs-built_in">tuopu</span>(martix,indegree,num_node);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre></div>
+
+<h1 id="单源最短路经"><a href="#单源最短路经" class="headerlink" title="单源最短路经"></a>单源最短路经</h1><p><strong>问题描述：</strong>给定有向图G，其每条边都有一个非负的权值a[ i ] [ j ]，路径长度定义为路径上边的权值之和。<strong>给定源节点S，找出从S到图中所有其他节点的最短路径及其长度。</strong></p>
+<hr>
+<p><strong>迪杰斯特拉算法</strong> <em>适用于权值非负情况</em></p>
+<p>步骤：</p>
+<p><strong>1.维护一个集合S，该集合中源节点到其他节点的最短路已知，初始时该集合为空</strong></p>
+<p><strong>2.从V-S集合中寻找节点v，使源节点到该点距离最小</strong></p>
+<p><strong>3.更新V的临界点到源节点的距离值。</strong></p>
+<p><strong>正确性原理：</strong> 如果权值非负，那么最短路的子路径也是最短路，其长度小于原来路径长度。<em>so，我们从长度小的最短路找起。</em></p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-comment">/*easy code using martix to storage martix*/</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> max_node=<span class="hljs-number">50</span>;
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> max_dis=<span class="hljs-number">9999</span>;
+
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span>* S;
+<span class="hljs-type">int</span>* visted;
+<span class="hljs-type">int</span> G [max_node][max_node];
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dijkstra</span><span class="hljs-params">(<span class="hljs-type">int</span> num_node,<span class="hljs-type">int</span>* S,<span class="hljs-type">int</span> *visted,<span class="hljs-type">int</span> G[max_node][max_node])</span></span>
+<span class="hljs-function"></span>&#123;
+
+    <span class="hljs-type">int</span> temp;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> m=<span class="hljs-number">0</span>;m&lt;num_node;m++)
+    &#123;
+        <span class="hljs-type">int</span> min_dis=max_dis;
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)
+        &#123;
+            <span class="hljs-keyword">if</span>(visted[i]==<span class="hljs-number">0</span> &amp;&amp; S[i]&lt;min_dis)&#123;
+                min_dis=S[i];
+                temp=i;
+            &#125;
+        &#125;
+       
+        visted[temp]=<span class="hljs-number">1</span>;
+
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)
+        &#123;
+            <span class="hljs-keyword">if</span>(G[temp][i]&lt;max_dis)
+            &#123;
+                <span class="hljs-keyword">if</span>(S[i]&gt;S[temp]+G[temp][i])
+                &#123;
+                    S[i]=S[temp]+G[temp][i];
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-type">int</span> num_node,num_edge;
+    cout&lt;&lt;<span class="hljs-string">&quot;Input the number of nodes and edge&quot;</span>&lt;&lt;endl;
+    cin&gt;&gt;num_node&gt;&gt;num_edge;
+
+    S=<span class="hljs-keyword">new</span> <span class="hljs-type">int</span> [num_node];
+    visted=<span class="hljs-keyword">new</span> <span class="hljs-type">int</span>[num_node];
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)
+    visted[i]=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)&#123;
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">0</span>;j&lt;num_node;j++)&#123;
+            <span class="hljs-keyword">if</span>(i==j)
+            G[i][j]=<span class="hljs-number">0</span>;
+            <span class="hljs-keyword">else</span>
+            G[i][j]=max_dis;
+        &#125;
+    &#125;
+
+    <span class="hljs-type">int</span> x,y,weight;
+    cout&lt;&lt;<span class="hljs-string">&quot;Input the edge:X-&gt;Y and input the weight&quot;</span>&lt;&lt;endl;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;num_edge;i++)
+    &#123;
+        cin&gt;&gt;x&gt;&gt;y&gt;&gt;weight;
+        G[x<span class="hljs-number">-1</span>][y<span class="hljs-number">-1</span>]=weight;
+    &#125;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)
+    &#123;
+        S[i]=G[<span class="hljs-number">0</span>][i];
+    &#125;
+    visted[<span class="hljs-number">0</span>]=<span class="hljs-number">1</span>;
+
+    <span class="hljs-built_in">dijkstra</span>(num_node,S,visted,G);
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)
+    cout&lt;&lt;S[i]&lt;&lt;<span class="hljs-string">&quot; &quot;</span>;
+    cout&lt;&lt;endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre></div>
+
+<h1 id="最小生成树"><a href="#最小生成树" class="headerlink" title="最小生成树"></a>最小生成树</h1><p><strong>问题描述：</strong></p>
+<p>具有n个顶点的联通的无向图G，图的每条边e有一非负权值c(e)，也称为成本，求有最小成本的生成树，每个生成树刚好具有n-1条边。</p>
+<p>即选择n-1条边使他们形成G的最小生成树。</p>
+<h2 id="Kruskal-算法（以边为对象）"><a href="#Kruskal-算法（以边为对象）" class="headerlink" title="Kruskal 算法（以边为对象）"></a>Kruskal 算法（以边为对象）</h2><p><strong>贪心策略：</strong>每次都选权值最小且与以前选择的边不构成cycle的边e。</p>
+<p><em>需要按权值由大到小对边排序</em></p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-comment">/*easy code by merge set*/</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span>
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> max_node=<span class="hljs-number">50</span>;
+<span class="hljs-type">int</span>* father;
+<span class="hljs-type">int</span>* son;
+
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Edge</span>&#123;
+    <span class="hljs-type">int</span> x,y;<span class="hljs-comment">/*x-&gt;y*/</span>
+    <span class="hljs-type">int</span> weight;
+&#125;;
+
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">mycmp</span><span class="hljs-params">(Edge a, Edge b)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">return</span> a.weight&lt;b.weight;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">find_root</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">return</span> x==father[x] ? x : <span class="hljs-built_in">find_root</span>(father[x]); 
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">merge_set</span><span class="hljs-params">(<span class="hljs-type">int</span> x,<span class="hljs-type">int</span> y)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-type">int</span> rootx=<span class="hljs-built_in">find_root</span>(x);
+    <span class="hljs-type">int</span> rooty=<span class="hljs-built_in">find_root</span>(y);
+    <span class="hljs-keyword">if</span>(rootx==rooty)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(son[rootx]&gt;=son[rooty])&#123;
+        father[rooty]=rootx;
+        son[rootx]=son[rooty]+son[rootx];
+    &#125;
+    <span class="hljs-keyword">else</span>
+    &#123;
+        father[rootx]=rooty;
+        son[rooty]=son[rooty]+son[rootx];
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-type">int</span> num_node,num_edge;
+    <span class="hljs-type">int</span> counter=<span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> flag=<span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> ans=<span class="hljs-number">0</span>;
+    cout&lt;&lt;<span class="hljs-string">&quot;Input the number of nodes and edges&quot;</span>&lt;&lt;endl;
+    cin&gt;&gt;num_node&gt;&gt;num_edge;
+    Edge* edge=<span class="hljs-keyword">new</span> Edge[num_edge];
+    father= <span class="hljs-keyword">new</span> <span class="hljs-type">int</span> [num_node];
+    son=<span class="hljs-keyword">new</span> <span class="hljs-type">int</span> [num_node];
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)&#123;
+        father[i]=i;
+        son[i]=<span class="hljs-number">1</span>;
+    &#125;
+    cout&lt;&lt;<span class="hljs-string">&quot;Input the edge:x-&gt;y and the weight&quot;</span>&lt;&lt;endl;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;num_edge;i++)&#123;
+        cin&gt;&gt;edge[i].x&gt;&gt;edge[i].y&gt;&gt;edge[i].weight;
+    &#125;
+    <span class="hljs-built_in">sort</span>(edge,edge+num_edge,mycmp);
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;num_edge<span class="hljs-number">-1</span>;i++)&#123;
+        <span class="hljs-keyword">if</span>(<span class="hljs-built_in">merge_set</span>(edge[i].x,edge[i].y))
+        &#123;
+            counter++;
+            ans+=edge[i].weight;
+            cout&lt;&lt;edge[i].x&lt;&lt;<span class="hljs-string">&quot;-&gt;&quot;</span>&lt;&lt;edge[i].y&lt;&lt;endl;
+        &#125;
+        <span class="hljs-keyword">if</span>(counter==num_node<span class="hljs-number">-1</span>)
+        &#123;
+            flag=<span class="hljs-number">1</span>;
+            <span class="hljs-keyword">break</span>;
+        &#125;
+    &#125;
+    <span class="hljs-keyword">if</span>(flag)
+    &#123;
+        cout&lt;&lt;ans&lt;&lt;endl;
+    &#125;
+    <span class="hljs-keyword">else</span>
+    &#123;
+        cout&lt;&lt;<span class="hljs-string">&quot;Wrong data&quot;</span>&lt;&lt;endl;
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre></div>
+
+<h2 id="Prime-算法-（以点为对象）"><a href="#Prime-算法-（以点为对象）" class="headerlink" title="Prime 算法 （以点为对象）"></a>Prime 算法 （以点为对象）</h2><p><strong>算法描述：</strong></p>
+<p><strong>1）以某一个点开始，寻找当前该点可以访问的所有的边；</strong><br><strong>2）在已经寻找的边中发现最小边，这个边必须有一个点还没有访问过，将还没有访问的点加入我们的集合，记录添加的边；</strong><br><strong>3）寻找当前集合可以访问的所有边，重复2的过程，直到没有新的点可以加入；</strong><br><strong>4）此时由所有边构成的树即为最小生成树。</strong></p>
+<div class="hljs"><pre><code class="hljs cpp"><span class="hljs-comment">/*easy code using martix to storage graphy*/</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> Max_dis=<span class="hljs-number">9999</span>;
+
+<span class="hljs-type">int</span> num_node,num_edge;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">prime</span><span class="hljs-params">(<span class="hljs-type">int</span>**G,<span class="hljs-type">int</span> num_node,<span class="hljs-type">int</span> num_edge)</span></span>;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    cout&lt;&lt;<span class="hljs-string">&quot;Input the number of nodes and edges&quot;</span>&lt;&lt;endl;
+    cin&gt;&gt;num_node&gt;&gt;num_edge;
+    <span class="hljs-type">int</span> **G=<span class="hljs-keyword">new</span> <span class="hljs-type">int</span>* [num_node];
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i &lt;num_node;i++)
+		G[i] = <span class="hljs-keyword">new</span> <span class="hljs-type">int</span>[num_node];
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)&#123;
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">0</span>;j&lt;num_node;j++)&#123;
+            <span class="hljs-keyword">if</span>(i==j)
+            G[i][j]=<span class="hljs-number">0</span>;
+            <span class="hljs-keyword">else</span>
+            G[i][j]=Max_dis;
+        &#125;
+    &#125;
+
+    <span class="hljs-type">int</span> x,y,weight;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;num_edge;i++)
+    &#123;
+        cin&gt;&gt;x&gt;&gt;y&gt;&gt;weight;
+        G[x<span class="hljs-number">-1</span>][y<span class="hljs-number">-1</span>]=weight;
+        G[y<span class="hljs-number">-1</span>][x<span class="hljs-number">-1</span>]=weight;
+    &#125;
+    cout&lt;&lt;<span class="hljs-built_in">prime</span>(G,num_node,num_edge)&lt;&lt;endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">prime</span><span class="hljs-params">(<span class="hljs-type">int</span>**G ,<span class="hljs-type">int</span> num_node,<span class="hljs-type">int</span> num_edge)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-type">int</span> start[num_node];
+    <span class="hljs-type">int</span> lowdis[num_node];
+    <span class="hljs-type">int</span> minid=<span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> sum=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;num_node;i++)
+    &#123;
+        lowdis[i]=G[<span class="hljs-number">0</span>][i];
+    &#125;
+    start[<span class="hljs-number">0</span>]=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;num_node;i++)
+    &#123;
+        <span class="hljs-type">int</span> mindis=Max_dis;
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;num_node;j++)
+        &#123;
+            <span class="hljs-keyword">if</span>(lowdis[j]&lt;mindis&amp;&amp;lowdis[j]!=<span class="hljs-number">0</span>)
+            &#123;
+                mindis=lowdis[j];
+                minid=j;
+            &#125;
+        &#125;
+        lowdis[minid]=<span class="hljs-number">0</span>;
+        sum+=mindis;
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;num_node;j++)
+        &#123;
+            <span class="hljs-keyword">if</span>(lowdis[j]&gt;G[minid][j])
+            &#123;
+                lowdis[j]=G[minid][j];
+                start[j]=minid;
+            &#125;
+        &#125;
+    &#125;
+    <span class="hljs-keyword">return</span> sum;
+&#125;</code></pre></div>
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Algorithm/">Algorithm</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/C-C/">C/C++</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Algorithm/">Algorithm</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/13/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%B1%A0%E6%9D%80%E6%AD%BB%E9%9A%BE%E8%80%85%E5%9B%BD%E5%AE%B6%E5%85%AC%E7%A5%AD%E6%97%A5/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">南京大屠杀死难者国家公祭日</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/11/13/%E6%9C%88%E5%A4%9C%E6%9D%82%E8%B0%88/">
+                        <span class="hidden-mobile">大学？人生？</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                <script src="https://utteranc.es/client.js"
+        repo="Feng-Jay/commit-utterance"
+        issue-term="title"
+        theme="github-dark"
+        crossorigin="anonymous"
+        async>
+</script>
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Greedy Algorithm&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "rigth",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("8/9/2020 17:38:00");//在此处修改你的建站时间，格式：月/日/年 时:分:秒
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+
+
+</body>
+</html>
